@@ -19,6 +19,8 @@ import {
 } from './model.ts';
 import type { AssetGateOptions, CheckId, CheckOutput } from './types.ts';
 
+export const VALIDATOR_VERSION: string = validator.version();
+
 interface MeshTopology {
   nonDegenerate: Int32Array;
   degenerate: number;

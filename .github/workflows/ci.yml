@@ -11,5 +11,6 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @kensho/harness-render exec playwright install --with-deps chromium
       - run: pnpm test
       - run: pnpm proof

@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const THREE_ROOT = join(dirname(createRequire(import.meta.url).resolve('three')), '..');
+export const THREE_VERSION: string = (JSON.parse(readFileSync(join(THREE_ROOT, 'package.json'), 'utf8')) as { version: string }).version;
 const RUNNER = readFileSync(fileURLToPath(new URL('./page/runner.js', import.meta.url)));
 
 const PAGE = (query: string) => `<!doctype html>

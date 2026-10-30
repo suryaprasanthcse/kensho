@@ -17,7 +17,7 @@ declare module 'gltf-validator' {
     };
   }
   const validator: {
-    version: string;
+    version(): string;
     validateBytes(data: Uint8Array, options?: { uri?: string; maxIssues?: number; ignoredIssues?: string[] }): Promise<ValidatorReport>;
   };
   export default validator;
