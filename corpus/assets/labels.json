@@ -1,0 +1,3992 @@
+{
+  "format": "kensho-fixture-labels/1",
+  "generator": "synthetic-oracle/0.1",
+  "fixtures": [
+    {
+      "id": "CONTROL-00",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 0,
+      "control": true,
+      "file": "CONTROL-00.glb",
+      "bytes": 35144,
+      "sha256": "7913f1df0f792292a0c0406d1f914609b8919b084cc31ea4d7434c878d9940b5",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          817727,
+          1075004,
+          1238892
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-01",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 1,
+      "control": true,
+      "file": "CONTROL-01.glb",
+      "bytes": 8528,
+      "sha256": "d01597873cee56478d8bbee6116df43883a86fe10b60ae51bed4440e2646843f",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-02",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 2,
+      "control": true,
+      "file": "CONTROL-02.glb",
+      "bytes": 3564,
+      "sha256": "aaeccc265670df2e0dc6d822bea1e2b3b309c82b0f5137d4a840cb551acf9efa",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-03",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 3,
+      "control": true,
+      "file": "CONTROL-03.glb",
+      "bytes": 2048,
+      "sha256": "f81fb01d9041c617153f3667640a95ec783709fde462ff039f7125298c5a1500",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static",
+        "box_um": [
+          4440903,
+          446087,
+          2008516
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-04",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 4,
+      "control": true,
+      "file": "CONTROL-04.glb",
+      "bytes": 4124,
+      "sha256": "d86f15bf1f40a59f993f8c4e7651a39d7b074471ed698160ea7e4e42cc1635ce",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-05",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 5,
+      "control": true,
+      "file": "CONTROL-05.glb",
+      "bytes": 801244,
+      "sha256": "11199ee77adf5a0b17225e9fb9e8d3fb1ecd2bcf79604c4806d6ccc35f6e19a2",
+      "options": {
+        "tier": "desktop",
+        "class": "hero",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-06",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 6,
+      "control": true,
+      "file": "CONTROL-06.glb",
+      "bytes": 34352,
+      "sha256": "9bccaf373b03735b2b9a05955b2abbc89531b8c810fc68e6cc2d7ce7b06914ce",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          4659630,
+          3142147,
+          2877686
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-07",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 7,
+      "control": true,
+      "file": "CONTROL-07.glb",
+      "bytes": 1592,
+      "sha256": "ea7cd2b6f9ba5792ee8ba60a6d36e0eed48b1bef69445305fc03db7c5d1fd9a4",
+      "options": {
+        "tier": "desktop",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-08",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 8,
+      "control": true,
+      "file": "CONTROL-08.glb",
+      "bytes": 3692,
+      "sha256": "393f2f6fbb25d9320979b53086da9b1756643c77243c59d34b7ee839b83f3eb6",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-09",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 9,
+      "control": true,
+      "file": "CONTROL-09.glb",
+      "bytes": 36300,
+      "sha256": "cde971e912694913e1a5b52a06fa86c84dd826d2d0f68057551569969cf34719",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          570444,
+          1178233,
+          463887
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-10",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 10,
+      "control": true,
+      "file": "CONTROL-10.glb",
+      "bytes": 3904,
+      "sha256": "52581142a13857a8a5340dc7f3899ab23e10f7d5136c79bce6d5fa98396344e8",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-11",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 11,
+      "control": true,
+      "file": "CONTROL-11.glb",
+      "bytes": 104772,
+      "sha256": "f970471f32ff4e46d252dbda001dd926992f5e52143f16d9c2f491a10e081b99",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-12",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 12,
+      "control": true,
+      "file": "CONTROL-12.glb",
+      "bytes": 3564,
+      "sha256": "e4645781a851013135e2efd8f949fa85b8917b21cff21f271aca031a504cf4c4",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          2221150,
+          1415809,
+          2430285
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-13",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 13,
+      "control": true,
+      "file": "CONTROL-13.glb",
+      "bytes": 4124,
+      "sha256": "bebd728a437a62bd4e754a65fa51112591add5df9759c83a1831d1c2736c66be",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-14",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 14,
+      "control": true,
+      "file": "CONTROL-14.glb",
+      "bytes": 3900,
+      "sha256": "a790fb47658b9ea6493409427d998c50e934f37a4173e8c06365e509e38a8147",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-15",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 15,
+      "control": true,
+      "file": "CONTROL-15.glb",
+      "bytes": 200124,
+      "sha256": "82fe2f9ba71b0303ca71a31f3fd36c294ef434b3d04535107eca8674c5da8e04",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          4259444,
+          1687409,
+          2178164
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-16",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 16,
+      "control": true,
+      "file": "CONTROL-16.glb",
+      "bytes": 33836,
+      "sha256": "17e3a45c33be61dcbc8784d5bba37251d96696fc0a00a6c5c1c799ed605c3443",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-17",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 17,
+      "control": true,
+      "file": "CONTROL-17.glb",
+      "bytes": 198200,
+      "sha256": "3be422a0e4f7b7743420b2ece7684951381ce243614990912230d10f1e1e2756",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-18",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 18,
+      "control": true,
+      "file": "CONTROL-18.glb",
+      "bytes": 10392,
+      "sha256": "198ae0fcd647d171ab91c7369fa09ded11f157157930b3e9b36a1d191e28a8bf",
+      "options": {
+        "tier": "mobile",
+        "class": "hero",
+        "body": "static",
+        "box_um": [
+          491273,
+          1118410,
+          950924
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-19",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 19,
+      "control": true,
+      "file": "CONTROL-19.glb",
+      "bytes": 36716,
+      "sha256": "1bcf6f25f181564e14a7e0f180d208d49692600d1554be58fd25e79d57a39b1f",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-20",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 20,
+      "control": true,
+      "file": "CONTROL-20.glb",
+      "bytes": 2052,
+      "sha256": "21cb2b8bd0b80a87e855d143a63e23bca0535924b32023be5fa136855384a0b0",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-21",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 21,
+      "control": true,
+      "file": "CONTROL-21.glb",
+      "bytes": 103160,
+      "sha256": "21ba19fee05dba6d05455c3dbbee09dfa3c3db36edfb8372922971d589120e48",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          1712179,
+          966736,
+          915877
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-22",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 22,
+      "control": true,
+      "file": "CONTROL-22.glb",
+      "bytes": 4124,
+      "sha256": "b18cf9b8884151ae185f744d6956cf2db6a13b0f5a9779c0e27b27ed39d85ee1",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-23",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 23,
+      "control": true,
+      "file": "CONTROL-23.glb",
+      "bytes": 9032,
+      "sha256": "9322bf26cbd4a6632bb1725006671cd85c4536e320cd283c124862c608c99028",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-24",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 24,
+      "control": true,
+      "file": "CONTROL-24.glb",
+      "bytes": 67100,
+      "sha256": "1d2b253dbbb6686b45e3b51d14e54d70ff69271768c436591a516863de4f0201",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          1149388,
+          985914,
+          1957406
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-25",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 25,
+      "control": true,
+      "file": "CONTROL-25.glb",
+      "bytes": 34568,
+      "sha256": "fad0a8731b9d44b56630a85eb5749ea778446e45c073712682f73a7a08ae1858",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-26",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 26,
+      "control": true,
+      "file": "CONTROL-26.glb",
+      "bytes": 37536,
+      "sha256": "f2f47f90cb90449a743f74f1cfec715cad99d14b93ae2a15731fe458acc688de",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-27",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 27,
+      "control": true,
+      "file": "CONTROL-27.glb",
+      "bytes": 33896,
+      "sha256": "457dc22477964465b18ad557f39faba9b789446abddf6812a9e00e60a108df4e",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          347268,
+          602834,
+          1032138
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-28",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 28,
+      "control": true,
+      "file": "CONTROL-28.glb",
+      "bytes": 1580,
+      "sha256": "31cf55f3d008e5c0336142167f800b12de1c2191f13ffa390f0ae35fb193e887",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-29",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 29,
+      "control": true,
+      "file": "CONTROL-29.glb",
+      "bytes": 13860,
+      "sha256": "43e3710cf760a5c5363697f0c8541dca518bf2b1132a471967a721053cc8106d",
+      "options": {
+        "tier": "desktop",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-30",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 30,
+      "control": true,
+      "file": "CONTROL-30.glb",
+      "bytes": 3564,
+      "sha256": "50d8fb17ce09f638acebc8e2d9f369e038a1cc42b41f0fb9204b5326548cb830",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          2398288,
+          1969631,
+          787931
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-31",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 31,
+      "control": true,
+      "file": "CONTROL-31.glb",
+      "bytes": 4124,
+      "sha256": "6e523832858a400eb2e0846bb5406e46e2b2c1dfc8af9e1217cf1268826791a9",
+      "options": {
+        "tier": "desktop",
+        "class": "hero",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-32",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 32,
+      "control": true,
+      "file": "CONTROL-32.glb",
+      "bytes": 67876,
+      "sha256": "a3dff3b0ee5af505ab051e7c18a6f781cb600cd69dc041b0592c2580f52808c3",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-33",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 33,
+      "control": true,
+      "file": "CONTROL-33.glb",
+      "bytes": 1588,
+      "sha256": "605a5c8fed90abcbf42f5943fe7c4669f4f603822deaaf7cb08931cf7df489b7",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static",
+        "box_um": [
+          1217515,
+          2025967,
+          1764732
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-34",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 34,
+      "control": true,
+      "file": "CONTROL-34.glb",
+      "bytes": 68236,
+      "sha256": "def4e94b5cc40a81f6aae7e8dd73074bf0d2cda521f510bdbab49456d2d24f15",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-35",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 35,
+      "control": true,
+      "file": "CONTROL-35.glb",
+      "bytes": 36740,
+      "sha256": "a1aa647028cbd6674f09de9c9b338a089752e9474b8cc26174b2f179dd69aed8",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-36",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 36,
+      "control": true,
+      "file": "CONTROL-36.glb",
+      "bytes": 1920,
+      "sha256": "71d08958366ecfb4071632e28b89726d9d7651f84e4801b21db4181570b06a73",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          4118469,
+          2440312,
+          611830
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-37",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 37,
+      "control": true,
+      "file": "CONTROL-37.glb",
+      "bytes": 1960,
+      "sha256": "48c966a9edc72dd6576ba354a5d89007e5205f4197e22d46b9660745b6ca01cb",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-38",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 38,
+      "control": true,
+      "file": "CONTROL-38.glb",
+      "bytes": 33912,
+      "sha256": "67be7f92af798a03239bfb467a3f0b5d453c374169af8ae37d5152bbaa2d9062",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "CONTROL-39",
+      "class": "CONTROL",
+      "variant": "default",
+      "seed": 39,
+      "control": true,
+      "file": "CONTROL-39.glb",
+      "bytes": 36304,
+      "sha256": "b590e54e97c33f0903e9f0688c5344f3ce26c55fb99fce7911761742f2baed5c",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          1889818,
+          1141718,
+          2208798
+        ]
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-00",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "GLTF_INVALID-00.glb",
+      "bytes": 3411,
+      "sha256": "b4dd24bb940da54e411f840282a6c0898ecc13e5c6847bbbf8d1a10bf5c0cfc7",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-01",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "GLTF_INVALID-01.glb",
+      "bytes": 5992,
+      "sha256": "514797a626d13cda095c3c96e2075e38b9810d4aa6dbbb771c208af4e0897f29",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-02",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "GLTF_INVALID-02.glb",
+      "bytes": 5996,
+      "sha256": "f3597d5dafa2bdbd9d6d7f06bea5c80b92516515077d90c140e0b4bb865c7c51",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-03",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "GLTF_INVALID-03.glb",
+      "bytes": 6236,
+      "sha256": "1d2a2dbe0d3804c982d6fd1bdebccfaed206b1fe1aca9f464aee15f51716a675",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-04",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "GLTF_INVALID-04.glb",
+      "bytes": 5928,
+      "sha256": "e16a53ac2703ffdea0cc8b4088326157f4375a8abfa5d8fdca5ab15005928727",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-05",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "GLTF_INVALID-05.glb",
+      "bytes": 5033,
+      "sha256": "1622fa3fe0a11bcad66da8635165dcbf285cf58e1fa581efac3eb82962794a18",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-06",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "GLTF_INVALID-06.glb",
+      "bytes": 5996,
+      "sha256": "de8f5c0bd6a11b06106a87629f0db6d2e0d1882fd9500889246e8ebb2980f440",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-07",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "GLTF_INVALID-07.glb",
+      "bytes": 5968,
+      "sha256": "a16e386524fba3faac93a330106eb0dbfcf5cbfb163643b06113137b26e40f8e",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-08",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "GLTF_INVALID-08.glb",
+      "bytes": 6004,
+      "sha256": "fbde1bf7737027790ea22b5732a3b88c39f3051a40809b45cc1f3c8458a6e3fd",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "GLTF_INVALID-09",
+      "class": "GLTF_INVALID",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "GLTF_INVALID-09.glb",
+      "bytes": 6180,
+      "sha256": "04bb4d0fbb7b407a3efd9b70b2d2ac0d320189d71ef0abde4849508280c0f0d8",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "GLTF_INVALID"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-00",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "TEXTURE_BUDGET-00.glb",
+      "bytes": 11380,
+      "sha256": "3968c02f5deb782701381a309e5625d421076b735950d4d4340ef93a55af6002",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-01",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "TEXTURE_BUDGET-01.glb",
+      "bytes": 27700,
+      "sha256": "420a5e6aff7b57e96b27bc54d18098f074079c23a29c1ddcfd567c59b6b4ce2e",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-02",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "TEXTURE_BUDGET-02.glb",
+      "bytes": 17496,
+      "sha256": "115cc1ea4e456e100013da34ae90bbcdab5b22b8958dcc692ad5b3e2f58d16eb",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-03",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "TEXTURE_BUDGET-03.glb",
+      "bytes": 10348,
+      "sha256": "97dbb418d732891f2f21fe1c42ed58c6bbe067e2afb8984c8c1a83f23e8d10c4",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-04",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "TEXTURE_BUDGET-04.glb",
+      "bytes": 9832,
+      "sha256": "0af30eb2023cf8bfefa60ad9225718d999e518b97eaf6b66fb65243f8f92669c",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-05",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "TEXTURE_BUDGET-05.glb",
+      "bytes": 8748,
+      "sha256": "e9b1ce950062bb8ca5ae8197d3460b62a1b75ebd8cbad575096dd2f8f2273a40",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-06",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "TEXTURE_BUDGET-06.glb",
+      "bytes": 11372,
+      "sha256": "6ae47965adf492fd2d43315da2941693f9a12c3c9bf2b9bfd621f403c4c65460",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-07",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "TEXTURE_BUDGET-07.glb",
+      "bytes": 52216,
+      "sha256": "5acd38ba1d852944024774abb41a63db09b300f04317e55401979b4aae8a0f00",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-08",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "TEXTURE_BUDGET-08.glb",
+      "bytes": 52228,
+      "sha256": "8e4360c55510672cfc5fd0374702534cb9967a639396f7796065a51181e5c143",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TEXTURE_BUDGET-09",
+      "class": "TEXTURE_BUDGET",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "TEXTURE_BUDGET-09.glb",
+      "bytes": 51176,
+      "sha256": "ac180f50660ce4976f6b7e91977f38bd68422609ca637dc5f361f147f09ab758",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TEXTURE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-00",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-00.glb",
+      "bytes": 2188,
+      "sha256": "db11c4ac2db36614b9ca42cbbd3b7f355723f2f45dbabf78f973d741c6989d14",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-01",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-01.glb",
+      "bytes": 2188,
+      "sha256": "fdbe8ff232ac27a947967ea538d2c47c7cc9610fe647ffa71d07f5d468d51df8",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-02",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-02.glb",
+      "bytes": 2188,
+      "sha256": "704f3e00b678a916527621193c19ca73def2dd102d375123037f8f1839700668",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-03",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-03.glb",
+      "bytes": 2184,
+      "sha256": "3f8a03c3c5ee287ebed038e241174d9171c959926b47fe78608f1f0d949c8af8",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-04",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-04.glb",
+      "bytes": 2188,
+      "sha256": "3e10667e7be96d3dfb43f4fe165d0cf91b8cb7d4bfc9c93104c90abe2f93bc37",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-05",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-05.glb",
+      "bytes": 2188,
+      "sha256": "b321eeead9bbb7d232320539a4809189ff134d70985195849fd8bee739c5bf65",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-06",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-06.glb",
+      "bytes": 2188,
+      "sha256": "60dc2d4b93040ff38a486cd9b0fab5f35eeec92dc8ae2e766ce6239871c409df",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-07",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-07.glb",
+      "bytes": 2184,
+      "sha256": "476ae925dce368fcd66830e658854a6bc387669abdec87f8250efeb3480e2c4e",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-08",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-08.glb",
+      "bytes": 2188,
+      "sha256": "f7f3164c30a356e41551cf6b9b8757b5f087a2db8a3f67983b84561439ec9292",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE-09",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE-09.glb",
+      "bytes": 2188,
+      "sha256": "5cb327b0bfad24006de0b47a1186543ad35ff7166fd4782ea3b121d2cf48dd85",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE_STATIC-00",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "static",
+      "seed": 0,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE_STATIC-00.glb",
+      "bytes": 2184,
+      "sha256": "0c67862ce362b8a2974c5dfce91e351f842113fb01c927a4eb656bb9580fde65",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE_STATIC-01",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "static",
+      "seed": 1,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE_STATIC-01.glb",
+      "bytes": 2188,
+      "sha256": "c5b98e159c5a6cf8e3f8a37de43d05ed00a4dfc35c175a9f53aa3a63e3277793",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE_STATIC-02",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "static",
+      "seed": 2,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE_STATIC-02.glb",
+      "bytes": 2188,
+      "sha256": "27f0d554e60daa455699759c7b8e0a057bb2fb53cfc838305991b9df8f26c806",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONMANIFOLD_EDGE_STATIC-03",
+      "class": "NONMANIFOLD_EDGE",
+      "variant": "static",
+      "seed": 3,
+      "control": false,
+      "file": "NONMANIFOLD_EDGE_STATIC-03.glb",
+      "bytes": 2188,
+      "sha256": "cf23c6fab7adf286e2748041d774bc3352d5d544110d3d2d0b121103c4d1925a",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "NONMANIFOLD_EDGE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-00",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "OPEN_BOUNDARY-00.glb",
+      "bytes": 1544,
+      "sha256": "6f77c288cb5e12343cbb357e1e22d3da66c19204c531bd12d68069e4b5d9b8ec",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-01",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "OPEN_BOUNDARY-01.glb",
+      "bytes": 15580,
+      "sha256": "3bf5e1113679814e76a8e967d3b71e70be597fdcdef489c7fc1277f050ab7905",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-02",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "OPEN_BOUNDARY-02.glb",
+      "bytes": 21964,
+      "sha256": "c3eb01fc4b1f9ea5c21bfaf77875fb57a68d1e5d25ae7fbd8da0079af8aad76b",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-03",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "OPEN_BOUNDARY-03.glb",
+      "bytes": 27644,
+      "sha256": "460b83d2cd845ae23c117f9478173399bcf0aaba1c49652ffac01e379bc6ae2f",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-04",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "OPEN_BOUNDARY-04.glb",
+      "bytes": 1540,
+      "sha256": "b302e15466ab0032abec5b2b57115fa746df11914741e487fcf7a71f98a8b4ae",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-05",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "OPEN_BOUNDARY-05.glb",
+      "bytes": 9144,
+      "sha256": "1daa623e6fb8a180c1979639f4c85ff36a11101b3bb0cc615be4617134b947ac",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-06",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "OPEN_BOUNDARY-06.glb",
+      "bytes": 27540,
+      "sha256": "252802fbd898d790243f74ff349b0e986a2563db69b11bd03eab6c2e6b508a75",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-07",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "OPEN_BOUNDARY-07.glb",
+      "bytes": 27740,
+      "sha256": "4a5f3ec4d768b37d64c5bddc92977308c696186b0bacadd27a9ca98c46a80f47",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-08",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "OPEN_BOUNDARY-08.glb",
+      "bytes": 1540,
+      "sha256": "c1f204f5ecbd6ad75dcd1cad7b46364d76d4c5da10f611dd386c7fe842930e1f",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY-09",
+      "class": "OPEN_BOUNDARY",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "OPEN_BOUNDARY-09.glb",
+      "bytes": 15216,
+      "sha256": "bd19f016ca890a3a6c52f8dcbcb2d18aa1dcb8b7406357d9535cfd38e1aaa11d",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY_STATIC-00",
+      "class": "OPEN_BOUNDARY",
+      "variant": "static",
+      "seed": 0,
+      "control": false,
+      "file": "OPEN_BOUNDARY_STATIC-00.glb",
+      "bytes": 1520,
+      "sha256": "645e7d1075308f181845fb42917a75307f2d5e17307973f26ac47133c6b772ca",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY_STATIC-01",
+      "class": "OPEN_BOUNDARY",
+      "variant": "static",
+      "seed": 1,
+      "control": false,
+      "file": "OPEN_BOUNDARY_STATIC-01.glb",
+      "bytes": 27900,
+      "sha256": "f6f1c1fba3ba8fe0509d0cea6f7289ab7168d202a5b65113a4011f50ceb829b7",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY_STATIC-02",
+      "class": "OPEN_BOUNDARY",
+      "variant": "static",
+      "seed": 2,
+      "control": false,
+      "file": "OPEN_BOUNDARY_STATIC-02.glb",
+      "bytes": 24988,
+      "sha256": "74e4b952be4152d577f2043281c2e2cda6ea5c5c637b92aee6377781bdac6ee4",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "OPEN_BOUNDARY_STATIC-03",
+      "class": "OPEN_BOUNDARY",
+      "variant": "static",
+      "seed": 3,
+      "control": false,
+      "file": "OPEN_BOUNDARY_STATIC-03.glb",
+      "bytes": 23412,
+      "sha256": "ab0ffe02c0a422124be67261bf92e7add5c88c409bb35b89a0a24fe90997f7d5",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "OPEN_BOUNDARY"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-00",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "FLOATING_ISLANDS-00.glb",
+      "bytes": 30792,
+      "sha256": "9acf7641eab2f85b79a4020a2cabbf9123b9ba1d239435332e4ac924061c5d4a",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-01",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "FLOATING_ISLANDS-01.glb",
+      "bytes": 22428,
+      "sha256": "e93598b1efdd44f67818c80d10187f1288bc2eaa5e2d94c701c33da839a054cb",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-02",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "FLOATING_ISLANDS-02.glb",
+      "bytes": 28752,
+      "sha256": "8e35bfa1d809aa1a4498697641d32af68ad61062a1aaae239038935af7377735",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-03",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "FLOATING_ISLANDS-03.glb",
+      "bytes": 2220,
+      "sha256": "3e81a9f765a858d0e5face1e8ded5536a3cd0a1fec500ba35856200f438981bd",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-04",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "FLOATING_ISLANDS-04.glb",
+      "bytes": 2196,
+      "sha256": "6334b73999a8026c83a0bbbbcaca20e9bc1686b818fb9106fd8ddfdfc01a33e5",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-05",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "FLOATING_ISLANDS-05.glb",
+      "bytes": 15464,
+      "sha256": "90ded784134da788cd9458a200f0a074cfc09d4a3d602382290465990a357c8a",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-06",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "FLOATING_ISLANDS-06.glb",
+      "bytes": 2720,
+      "sha256": "308db63c52ad829b1fbdb1767051837e3d2ac4c83fa43e5b5ffdee136f98dbdb",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-07",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "FLOATING_ISLANDS-07.glb",
+      "bytes": 12872,
+      "sha256": "133eb47aefc8c43886a7b7a4a78ab71d3189aa64c4c00b9786b8aaebd4ddd10e",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-08",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "FLOATING_ISLANDS-08.glb",
+      "bytes": 2200,
+      "sha256": "e0c4e28d05948c0cd2cfaca7537618280461e4629a416e77c8f2538c142fd549",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS-09",
+      "class": "FLOATING_ISLANDS",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "FLOATING_ISLANDS-09.glb",
+      "bytes": 2216,
+      "sha256": "db568f9dff85af32ccf936df616a433997182ec9d738e8cd8cb43a622fbae2de",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-00",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-00.glb",
+      "bytes": 1632,
+      "sha256": "ff9df59c781f0a482c9dcd1128f360f35da54a8b858556b0ebc74e887460340a",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          2171875,
+          531250,
+          1765625
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-01",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-01.glb",
+      "bytes": 1620,
+      "sha256": "b772ca382d59f68a7f6b825b9f797e0470098da0bfac481be1666a587370e70d",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          1421875,
+          1984375,
+          562500
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-02",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-02.glb",
+      "bytes": 1608,
+      "sha256": "a1ef6787b9c42926e4831f30260d51a5a3fbd282a6c18f2caed3cb9a076a07bc",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          1750000,
+          1515625,
+          1515625
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-03",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-03.glb",
+      "bytes": 8436,
+      "sha256": "b617829754eb104b079d3098d457749acf925cd972537521e3e7fb1ababa166b",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          1062500,
+          1171875,
+          1781250
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-04",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-04.glb",
+      "bytes": 8092,
+      "sha256": "d6881a86f4ac1894c0a34f8779dd48529b89d550a0dd6ca07d00b8cee5cf1112",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          921875,
+          1718750,
+          1515625
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-05",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-05.glb",
+      "bytes": 8432,
+      "sha256": "7a042bbf21bf876e8e6726f8eb3bb16a5c5a8f21c835452e88f86dd9d15e203f",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          546875,
+          1687500,
+          1156250
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-06",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-06.glb",
+      "bytes": 8456,
+      "sha256": "a7f420baca9ce1921a30e52246caf8437aa0a58159e057d105a7dee402b95297",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          1843750,
+          1937500,
+          1234375
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-07",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-07.glb",
+      "bytes": 8100,
+      "sha256": "765d701230dcdb7bffba46080f1cfd367f4c07359a2cf31d923172a993af1760",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          1828125,
+          2125000,
+          2312500
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-08",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-08.glb",
+      "bytes": 8088,
+      "sha256": "d73107c867d6fefcf2b2b29fa93968d23b0c669f838f5b2bc7aa60bca2d7415a",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          921875,
+          1093750,
+          2187500
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "BBOX_CONFORMANCE-09",
+      "class": "BBOX_CONFORMANCE",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "BBOX_CONFORMANCE-09.glb",
+      "bytes": 1612,
+      "sha256": "6a00dd47187b5c1eb7cb9e5ee9591f9642f2249069047be412f15d8cd92a6d15",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic",
+        "box_um": [
+          890625,
+          1421875,
+          781250
+        ]
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "BBOX_CONFORMANCE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-00",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "HULL_COMPLEXITY-00.glb",
+      "bytes": 3264236,
+      "sha256": "85ea9f6202c42c2e7933144e98af168b80bf9bf3618dbeef0065eda093842d5d",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-01",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "HULL_COMPLEXITY-01.glb",
+      "bytes": 3130068,
+      "sha256": "d080c378f0ad4a9c8aba987e1779adfcdcd9500332fdd8613e692970252f29f2",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-02",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "HULL_COMPLEXITY-02.glb",
+      "bytes": 3755968,
+      "sha256": "c9f9654c2b291b1039c1ab948670e6908dea5b9b01909a39b42f3dd668e22e15",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-03",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "HULL_COMPLEXITY-03.glb",
+      "bytes": 2561200,
+      "sha256": "707e52d1e0e78689cf56baaef8407b821660a7b20f15bfc1d381958153e1a0da",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-04",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "HULL_COMPLEXITY-04.glb",
+      "bytes": 2269808,
+      "sha256": "ca6128988975cafcb0d82767ecc28576cdb1e1eb1ce25713a71095031d40b17f",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-05",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "HULL_COMPLEXITY-05.glb",
+      "bytes": 3332364,
+      "sha256": "7891acfe88ba17836a63431070d253779b9200ebb7cda7be260ae47f245f62d8",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-06",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "HULL_COMPLEXITY-06.glb",
+      "bytes": 3939948,
+      "sha256": "ac35a90b93a7fcd80d66de26e4a66453c060ff8e11b062e926d1a86d5fac1e0e",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-07",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "HULL_COMPLEXITY-07.glb",
+      "bytes": 3611944,
+      "sha256": "575996ea9dcbc22aab5c40a9056eba3656b7e21794ac366779b23dc8dd7e1970",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-08",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "HULL_COMPLEXITY-08.glb",
+      "bytes": 2591316,
+      "sha256": "c63df66c692e94bb9ff21eba39b4950495f3c0524f2a0c25bd1e2c713a65119a",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "HULL_COMPLEXITY-09",
+      "class": "HULL_COMPLEXITY",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "HULL_COMPLEXITY-09.glb",
+      "bytes": 2682692,
+      "sha256": "6023f2630c8a3efb2023f3cce6d31903d2403e9b4714ba126a3713122595c007",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "HULL_COMPLEXITY",
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-00",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-00.glb",
+      "bytes": 263008,
+      "sha256": "9f5204958e2817bb664394fd6826c8ae98ee707f1a570b5d1b5e88317cd1184a",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-01",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-01.glb",
+      "bytes": 49848,
+      "sha256": "b0d2da487c44d3121916a1ac72d3d8f20a29470080131d289038fd9bc87f149c",
+      "options": {
+        "tier": "mobile",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-02",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-02.glb",
+      "bytes": 755024,
+      "sha256": "dfd4eb2bdceacdbb301288591a7e50fb5993289fbad0469dbb7a63a0415c9d40",
+      "options": {
+        "tier": "mobile",
+        "class": "hero",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-03",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-03.glb",
+      "bytes": 706944,
+      "sha256": "6eb77efa5321f027b97e49c728116362c436e6e29537436b1d48a3f068803dd4",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-04",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-04.glb",
+      "bytes": 208540,
+      "sha256": "450bf655d658f2fbc62479522adf008042db5689c84e1128cbdefbe6c4088de1",
+      "options": {
+        "tier": "desktop",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-05",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-05.glb",
+      "bytes": 200072,
+      "sha256": "9946b55708858f0e1b3f3131fb72a1e083c1941f48f02753936b3277129fbecb",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-06",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-06.glb",
+      "bytes": 67844,
+      "sha256": "9718a7dff2dca6b79fb11c6584c19e02242f76876904015000f14ed6cf565c6b",
+      "options": {
+        "tier": "mobile",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-07",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-07.glb",
+      "bytes": 645300,
+      "sha256": "1a799e2437440cbc18885fcfd93e847325c1ed66883091dde832da33df2cbe89",
+      "options": {
+        "tier": "mobile",
+        "class": "hero",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-08",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-08.glb",
+      "bytes": 1057420,
+      "sha256": "0426ca34791a83a0b55a772ab4e729d03550d8628a4570a3b097a2d2cdf6fb2e",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "TRIANGLE_BUDGET-09",
+      "class": "TRIANGLE_BUDGET",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "TRIANGLE_BUDGET-09.glb",
+      "bytes": 138740,
+      "sha256": "f242dbf41939353b486c5ec79420cafcee4babff27b622ebafd22be0581a5147",
+      "options": {
+        "tier": "desktop",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "TRIANGLE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-00",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-00.glb",
+      "bytes": 34484,
+      "sha256": "155ab3976e6aef5fd56174a6daa747997ab54050cb5838ce4b1c65c68e5004d1",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-01",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-01.glb",
+      "bytes": 39544,
+      "sha256": "6da4ecd424f65cd8cd91009646a2c26e30627a88e8c503dbd99845b6d39e7dde",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-02",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-02.glb",
+      "bytes": 51128,
+      "sha256": "3613aa95e1b51895d9c95924766a0beaf05d1beceffa7e6ef99b25f748c0c301",
+      "options": {
+        "tier": "mobile",
+        "class": "hero",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-03",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-03.glb",
+      "bytes": 24136,
+      "sha256": "679427933436700dafda812e3601068c14d7dcc7a8e1e0da69e7fc2974c16ca1",
+      "options": {
+        "tier": "mobile",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-04",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-04.glb",
+      "bytes": 32488,
+      "sha256": "e34de3f05697b0089b580aae19846423c99ba116cd51f2e190616e54697cbd5b",
+      "options": {
+        "tier": "desktop",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-05",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-05.glb",
+      "bytes": 32800,
+      "sha256": "0d3fd2c1f8fa3af9b60701002489ab5a4cd4571cf9d4f2c7dca5fd7bb82dd2d1",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-06",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-06.glb",
+      "bytes": 33016,
+      "sha256": "63cabffb7d2248372d1b7dec3e637e69bf67241ede99e4237ba32176d0a3b9bb",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-07",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-07.glb",
+      "bytes": 48192,
+      "sha256": "0935890fed7f525193aa89f1f38d3332ea203a7480eef6c071018b4cd65fdc0f",
+      "options": {
+        "tier": "mobile",
+        "class": "hero",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-08",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-08.glb",
+      "bytes": 30604,
+      "sha256": "99eac1e2b455bb43f95d9d4452712f45f180569ef881cbf9638b3c53dcc66a22",
+      "options": {
+        "tier": "mobile",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "PRIMITIVE_BUDGET-09",
+      "class": "PRIMITIVE_BUDGET",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "PRIMITIVE_BUDGET-09.glb",
+      "bytes": 36284,
+      "sha256": "e4e035ce55abf3b4acaed418ae6cf8825379927f70f45c57efc3455b70b45604",
+      "options": {
+        "tier": "desktop",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "PRIMITIVE_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-00",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "MATERIAL_BUDGET-00.glb",
+      "bytes": 16424,
+      "sha256": "ae9ae8d891ddabf0c8f6fbf1d0347a9c0c43fcb10b0ada0d9d40cdde9111e4e7",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-01",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "MATERIAL_BUDGET-01.glb",
+      "bytes": 32548,
+      "sha256": "c2148f6dd946bf35819cb9c58a097827d41a0f3e8d8bae9d1da42e716526c927",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-02",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "MATERIAL_BUDGET-02.glb",
+      "bytes": 29980,
+      "sha256": "0cf4a1ea6a634ecb77e2be96f318088c6a0a64d16a61ecce6a4e61a4855f9892",
+      "options": {
+        "tier": "mobile",
+        "class": "hero",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-03",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "MATERIAL_BUDGET-03.glb",
+      "bytes": 9636,
+      "sha256": "e8bd8d025822769f4108e8ceb9794db705e5d24fa6a242e611a137c79d3a9b38",
+      "options": {
+        "tier": "mobile",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-04",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "MATERIAL_BUDGET-04.glb",
+      "bytes": 11808,
+      "sha256": "50829bfa343d92e6dc7bce40bd93e8eeee6f3eff073450ee3c379d2e48159bb6",
+      "options": {
+        "tier": "desktop",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-05",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "MATERIAL_BUDGET-05.glb",
+      "bytes": 18636,
+      "sha256": "47999ce30c70cfb495976d2de37f6bcda7fd175f631dd913bf5287e51ff8cf49",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-06",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "MATERIAL_BUDGET-06.glb",
+      "bytes": 32604,
+      "sha256": "04930edb8d884bd9be105b30512161f72088e2235e77e690785faadb7c4f2713",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-07",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "MATERIAL_BUDGET-07.glb",
+      "bytes": 20916,
+      "sha256": "c1b2d94194fd1a1a9828aeae74e399a83a603f985f82ca35324a91344974d9df",
+      "options": {
+        "tier": "mobile",
+        "class": "hero",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-08",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "MATERIAL_BUDGET-08.glb",
+      "bytes": 7376,
+      "sha256": "6991c4589e21968c14ff5863802bb2a63811469cc78d1dcc65c332ce5a80ff29",
+      "options": {
+        "tier": "mobile",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "MATERIAL_BUDGET-09",
+      "class": "MATERIAL_BUDGET",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "MATERIAL_BUDGET-09.glb",
+      "bytes": 11848,
+      "sha256": "7432946217860704c3b9ff8b9cefcfd5788746228713e6c8979631ec3e8de63b",
+      "options": {
+        "tier": "desktop",
+        "class": "background",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "MATERIAL_BUDGET"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-00",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "NONFINITE_POSITION-00.glb",
+      "bytes": 9016,
+      "sha256": "09ee35f45d6b529be8d5303886cb3c2881ca533622d09263f7bc91069aa6776c",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-01",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "NONFINITE_POSITION-01.glb",
+      "bytes": 8032,
+      "sha256": "a495b8f74f79ecb91814f7223f175c228a4e034054712f12f840876cb2282ddd",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-02",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "NONFINITE_POSITION-02.glb",
+      "bytes": 8384,
+      "sha256": "6b7fc81e1f7a89a8ebaca624ce58049b003fd220aed4061a15e85a62587d3023",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-03",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "NONFINITE_POSITION-03.glb",
+      "bytes": 8376,
+      "sha256": "d24ee378d49512721bcbcb101410d089d7e44c8a04586184553548f6beb19e75",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-04",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "NONFINITE_POSITION-04.glb",
+      "bytes": 8040,
+      "sha256": "69d7d977ccb5ed0499dcb095a4a9f11e17b99027fdfbc8a8a63689fc5ab2280b",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-05",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "NONFINITE_POSITION-05.glb",
+      "bytes": 9008,
+      "sha256": "8ca4fa20b8c930e60483dc7a386d37795c8f7c31a29849eef5ba3d22d96f27d8",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-06",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "NONFINITE_POSITION-06.glb",
+      "bytes": 9020,
+      "sha256": "c126430d2b411064971c4e47b9b43e449a4e3e5390ae6cb7bf3b4b7e7e017608",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-07",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "NONFINITE_POSITION-07.glb",
+      "bytes": 9004,
+      "sha256": "80144d1f79f150f445d580c090c96feb00388afaca96ebb0ec6ff1763b29c1b7",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-08",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "NONFINITE_POSITION-08.glb",
+      "bytes": 9016,
+      "sha256": "542ca5a0bb1d5fffee557d4b6cf144ca8a02bcb6de31b6d923edd377c8eec2ab",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "NONFINITE_POSITION-09",
+      "class": "NONFINITE_POSITION",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "NONFINITE_POSITION-09.glb",
+      "bytes": 8384,
+      "sha256": "f310decc8d55c8de5ed00da58677c3dfd148169ab043d6dcdbafc49f708fc18c",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "NONFINITE_POSITION"
+        ],
+        "allowed": [
+          "GLTF_INVALID"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-00",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-00.glb",
+      "bytes": 11580,
+      "sha256": "feecdeff6e2992f333acf59e7aebdce215b281ee3e3b363aa7a1854cdf86c28d",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-01",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-01.glb",
+      "bytes": 11268,
+      "sha256": "0c722a23a575aff4c8de98508a143218c09f990e5b9c3cc332832ffd08e3e889",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-02",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-02.glb",
+      "bytes": 10536,
+      "sha256": "cf70f88f389f7006d2a77792ded2679fc8a3a9fc4d0d780751bb49fba9c6ddf0",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-03",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-03.glb",
+      "bytes": 11072,
+      "sha256": "064f6b126ebbe6261de4a59409147420a9d73cd1eb223415ac816d38e8e161c2",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-04",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-04.glb",
+      "bytes": 10540,
+      "sha256": "5b6864e4cc77bd211025edb2e786c78da116f3609cf55c3fb0e68a5ec9301331",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-05",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-05.glb",
+      "bytes": 11312,
+      "sha256": "6cda628af23f1c47c396e76cec4b02636a6460abed58fe0b3e2deb0a6e0e1bf4",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-06",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-06.glb",
+      "bytes": 10992,
+      "sha256": "e9964fc834ba14ce35a16344497192858e7d1c0def8b5bb670706b4ef0a56833",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-07",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-07.glb",
+      "bytes": 11408,
+      "sha256": "5ab83845095ea07d845c912daefb767c83a75bb22cc71395d521beef415185c3",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-08",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-08.glb",
+      "bytes": 10796,
+      "sha256": "de32ec54cbf0fbdd481dac375caf6db7c3b48a2c543f25377338a812df1bc1ce",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_TRIANGLE-09",
+      "class": "DEGENERATE_TRIANGLE",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "DEGENERATE_TRIANGLE-09.glb",
+      "bytes": 11504,
+      "sha256": "17a01cf1f4f3712997f9235280838ef247e7b6187edd81c5fb39ac12086ef905",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-00",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-00.glb",
+      "bytes": 17152,
+      "sha256": "122f09fe29ac7d00782c36061c58e78f5c2ce595f64dc593ae123f74c01ee226",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-01",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-01.glb",
+      "bytes": 1556,
+      "sha256": "6b670f35e5b755284c14174b6f0433be55171a05ffa2dc2e323325fb7468dc29",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-02",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-02.glb",
+      "bytes": 21672,
+      "sha256": "f0ac310fea10e33f378e9e96a84fea295722ed70b95099be90689c4162b5c9e6",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-03",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-03.glb",
+      "bytes": 21400,
+      "sha256": "37cb9db22f3e4bf9d2364d5c683bf474425dc49534bad8f4edcc3779de647239",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-04",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-04.glb",
+      "bytes": 7416,
+      "sha256": "7a1bb79be213ead1a0c3e1d3f0ac1a1e55046aaa2080c2e3115f7d5ebb7ba204",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-05",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-05.glb",
+      "bytes": 1564,
+      "sha256": "1e4c35c15245679a986cb88a2203b6218951b292726c7a2c19477bab324dff79",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-06",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-06.glb",
+      "bytes": 12272,
+      "sha256": "4509076a0ba5444bfde8509e67cd8c0dd34af97b008c8587fecdc1cd57abe15f",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-07",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-07.glb",
+      "bytes": 10116,
+      "sha256": "748062604084b1f0ffce93895bd7c349b924d7cf885d150c35ea897e5f2a5429",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-08",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-08.glb",
+      "bytes": 22292,
+      "sha256": "dc86a1554ffc50f30d86ca06043495f5a161b92c8b96a8fd5e36e426b1f17ebe",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "WINDING_INCONSISTENT-09",
+      "class": "WINDING_INCONSISTENT",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "WINDING_INCONSISTENT-09.glb",
+      "bytes": 1560,
+      "sha256": "dee360744f72e3e4be8bc648071d8206cbfd0abb516870dcd5063fec2905cca1",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "WINDING_INCONSISTENT"
+        ],
+        "allowed": []
+      }
+    }
+  ]
+}
