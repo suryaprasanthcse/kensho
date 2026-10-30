@@ -52,7 +52,7 @@ const SHIPPED_LIST: CodeInfo[] = [
   def('LOAD_FAILED', 'G6', 'error', 'A request failed or returned an error status.', ['probe:failed_request']),
   // Bundle verification
   def('BUNDLE_UNSIGNED', 'BUNDLE', 'error', 'The bundle carries no signature.', ['unsigned']),
-  def('BUNDLE_SIGNATURE_INVALID', 'BUNDLE', 'error', 'The signature does not verify under the trusted key.', ['wrong_key']),
+  def('BUNDLE_SIGNATURE_INVALID', 'BUNDLE', 'error', 'The signature does not verify under the trusted key.', ['wrong_key', 'tampered_manifest']),
   def('BUNDLE_TAMPERED', 'BUNDLE', 'error', 'A file in the bundle does not match the hash in the signed manifest.', ['tampered_asset']),
   def('BUNDLE_MALFORMED', 'BUNDLE', 'error', 'The manifest is missing, unparseable or violates its schema.', ['malformed']),
 ];

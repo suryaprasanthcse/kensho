@@ -311,6 +311,10 @@ importers:
       three:
         specifier: 0.187.0
         version: 0.187.0
+    devDependencies:
+      '@kensho/synthetic_oracle':
+        specifier: workspace:*
+        version: link:../../providers/synthetic_oracle
 
   packages/ir:
     dependencies:

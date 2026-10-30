@@ -36,3 +36,9 @@ export function loadOrCreateDevKeys(dir: string): KeyPair {
   writeFileSync(pub, pair.publicKey.export({ type: 'spki', format: 'pem' }));
   return pair;
 }
+
+/** The trusted public key held in the given folder, or null when none exists. Never generates anything. */
+export function loadTrustedPublicKey(dir: string): KeyObject | null {
+  const pub = join(dir, 'gate.pub.pem');
+  return existsSync(pub) ? createPublicKey(readFileSync(pub)) : null;
+}

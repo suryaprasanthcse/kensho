@@ -2,6 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { buildManifest, loadOrCreateDevKeys, writeSignedBundle } from '@kensho/bundle';
 import { buildFixture } from '@kensho/synthetic_oracle';
 import { main } from '../src/main.ts';
 
@@ -17,15 +18,15 @@ beforeAll(async () => {
 });
 afterAll(() => rmSync(dir, { recursive: true, force: true }));
 
-async function run(...argv: string[]) {
+async function run(env: NodeJS.ProcessEnv, ...argv: string[]) {
   let stdout = '', stderr = '';
-  const code = await main(argv, { stdout: (t) => void (stdout += t), stderr: (t) => void (stderr += t) });
+  const code = await main(argv, { stdout: (t) => void (stdout += t), stderr: (t) => void (stderr += t) }, env);
   return { code, stdout, stderr };
 }
 
 describe('kensho asset-gate', () => {
   it('exits 0 on PASS and prints one JSON report', async () => {
-    const { code, stdout } = await run('asset-gate', files['CONTROL-02']!, '--tier', 'desktop');
+    const { code, stdout } = await run({}, 'asset-gate', files['CONTROL-02']!, '--tier', 'desktop');
     expect(code).toBe(0);
     const r = JSON.parse(stdout);
     expect(r).toMatchObject({ verdict: 'PASS', gate: 'G4', options: { tier: 'desktop', class: 'prop', body: 'dynamic', box_um: null } });
@@ -35,20 +36,20 @@ describe('kensho asset-gate', () => {
   });
 
   it('exits 1 on FAIL', async () => {
-    const { code, stdout } = await run('asset-gate', files['TRIANGLE_BUDGET-00']!, '--tier', 'mobile', '--class', 'background');
+    const { code, stdout } = await run({}, 'asset-gate', files['TRIANGLE_BUDGET-00']!, '--tier', 'mobile', '--class', 'background');
     expect(code).toBe(1);
     expect(JSON.parse(stdout).diagnostics.map((d: { code: string }) => d.code)).toContain('TRIANGLE_BUDGET');
   });
 
   it('applies --box-um', async () => {
-    const { code, stdout } = await run('asset-gate', files['BBOX_CONFORMANCE-00']!, '--tier', 'mobile', '--box-um', '1000000,1000000,1000000');
+    const { code, stdout } = await run({}, 'asset-gate', files['BBOX_CONFORMANCE-00']!, '--tier', 'mobile', '--box-um', '1000000,1000000,1000000');
     expect([0, 1]).toContain(code);
     expect(JSON.parse(stdout).options.box_um).toEqual([1_000_000, 1_000_000, 1_000_000]);
     expect(JSON.parse(stdout).checks.bbox.status).toBe('ran');
   });
 
   it('exits 2 (ABSTAIN) when the deadline passes, never 0', async () => {
-    const { code, stdout } = await run('asset-gate', files['CONTROL-02']!, '--tier', 'mobile', '--timeout-ms', '1');
+    const { code, stdout } = await run({}, 'asset-gate', files['CONTROL-02']!, '--tier', 'mobile', '--timeout-ms', '1');
     expect(code).toBe(2);
     expect(JSON.parse(stdout).verdict).toBe('ABSTAIN');
   });
@@ -68,8 +69,41 @@ describe('kensho asset-gate', () => {
     [['launch']],
     [[]],
   ])('exits 3 on a usage error: %j', async (argv) => {
-    const { code, stderr } = await run(...argv);
+    const { code, stderr } = await run({}, ...argv);
     expect(code).toBe(3);
     expect(stderr).toContain('usage');
+  });
+});
+
+describe('kensho smoke', () => {
+  let keyDir: string, bundle: string;
+  beforeAll(() => {
+    keyDir = join(dir, 'keys');
+    const keys = loadOrCreateDevKeys(keyDir);
+    const bytes = new Uint8Array([1, 2, 3]);
+    const m = buildManifest({ assets: [{ id: 'a', bytes, verdict: 'PASS', verdict_hash: 'a'.repeat(64) }], placements: [], gateVersions: { G4: 't' } });
+    bundle = join(dir, 'bundle');
+    writeSignedBundle(bundle, m, new Map([['a', bytes]]), keys);
+  });
+
+  it('exits 1 on a refused bundle, before launching any browser', async () => {
+    rmSync(join(bundle, 'manifest.sig'));
+    const { code, stdout } = await run({ KENSHO_KEY_DIR: keyDir }, 'smoke', bundle, '--tier', 'mobile');
+    expect(code).toBe(1);
+    expect(JSON.parse(stdout)).toMatchObject({ verdict: 'FAIL', gate: 'G6', environment: { chromium: null } });
+  });
+
+  it.each([
+    [['smoke']],
+    [['smoke', 'x', '--tier', 'huge']],
+    [['smoke', 'x', '--tier', 'mobile', '--timeout-ms', 'soon']],
+  ])('exits 3 on a usage error: %j', async (argv) => {
+    expect((await run({}, ...argv)).code).toBe(3);
+  });
+
+  it('exits 3 on an unknown test hook', async () => {
+    const { code, stderr } = await run({ KENSHO_TEST_HOOKS: 'nonsense' }, 'smoke', bundle, '--tier', 'mobile');
+    expect(code).toBe(3);
+    expect(stderr).toContain('unknown test hook');
   });
 });

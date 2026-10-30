@@ -11,6 +11,7 @@ export interface Io {
 const USAGE = `usage:
   kensho asset-gate <file.glb> --tier mobile|desktop [--class hero|prop|background] [--body dynamic|static]
                     [--box-um x,y,z] [--timeout-ms n]
+  kensho smoke <bundle-dir> --tier mobile|desktop [--timeout-ms n]
 
 exit codes: 0 PASS, 1 FAIL, 2 ABSTAIN, 3 usage`;
 
@@ -39,7 +40,7 @@ function parseBox(value: string | undefined): [number, number, number] | undefin
 }
 
 /** Runs the command line and returns the exit code. Output goes through `io` so tests can capture it. */
-export async function main(argv: string[], io: Io): Promise<number> {
+export async function main(argv: string[], io: Io, env: NodeJS.ProcessEnv = process.env): Promise<number> {
   try {
     const [command, ...rest] = argv;
     if (command === 'asset-gate') {
@@ -67,6 +68,25 @@ export async function main(argv: string[], io: Io): Promise<number> {
         throw new UsageError(`cannot read ${positionals[0]}: ${(e as Error).message}`);
       }
       const report = await runAssetGate(bytes, { tier, assetClass, body, ...(boxUm ? { boxUm } : {}) }, { timeoutMs });
+      io.stdout(JSON.stringify(report, null, 2) + '\n');
+      return exitCodeFor(report.verdict);
+    }
+    if (command === 'smoke') {
+      const { values, positionals } = parseArgs({
+        args: rest,
+        allowPositionals: true,
+        options: { tier: { type: 'string' }, 'timeout-ms': { type: 'string' } },
+      });
+      if (positionals.length !== 1) throw new UsageError('smoke takes exactly one <bundle-dir>');
+      const tier = oneOf<Tier>('tier', values.tier, ['mobile', 'desktop']);
+      const timeoutMs = positiveInt('timeout-ms', values['timeout-ms'], 60_000);
+      // test-only: KENSHO_TEST_HOOKS makes a probe fire on purpose; the hooks are recorded in the report
+      const hooks = (env.KENSHO_TEST_HOOKS ?? '').split(',').map((h) => h.trim()).filter(Boolean);
+      const { runSmoke, SMOKE_HOOKS } = await import('@kensho/harness-render');
+      for (const h of hooks) {
+        if (!(SMOKE_HOOKS as readonly string[]).includes(h)) throw new UsageError(`unknown test hook "${h}"`);
+      }
+      const report = await runSmoke(positionals[0]!, { tier, timeoutMs, hooks, ...(env.KENSHO_KEY_DIR ? { keyDir: env.KENSHO_KEY_DIR } : {}) });
       io.stdout(JSON.stringify(report, null, 2) + '\n');
       return exitCodeFor(report.verdict);
     }
