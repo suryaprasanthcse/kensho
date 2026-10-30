@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import fc from 'fast-check';
-import { applyPatch } from 'fast-json-patch';
+import { createRequire } from 'node:module';
 import {
   PLANNED_CODES,
   REGISTRY,
@@ -12,6 +12,8 @@ import {
   pointerFrom,
   sortDiagnostics,
 } from '../src/index.ts';
+
+const { applyPatch } = createRequire(import.meta.url)('fast-json-patch') as typeof import('fast-json-patch');
 
 describe('registry', () => {
   it('ships only codes that name at least one fixture', () => {

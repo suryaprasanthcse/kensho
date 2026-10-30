@@ -16,5 +16,8 @@
     "gltf-validator": "2.0.0-dev.3.10",
     "meshoptimizer": "1.3.0",
     "tsx": "4.23.15"
+  },
+  "devDependencies": {
+    "@kensho/synthetic_oracle": "workspace:*"
   }
 }

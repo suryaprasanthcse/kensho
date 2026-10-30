@@ -1,8 +1,12 @@
-import { validate, type Operation } from 'fast-json-patch';
+import { createRequire } from 'node:module';
+import type { Operation } from 'fast-json-patch';
 import type { Json } from '@kensho/ir';
 import { REGISTRY, isPlannedCode, type Gate, type Severity } from './registry.ts';
 
 export type { Operation as JsonPatchOperation };
+
+// fast-json-patch is CommonJS without statically detectable named exports, so load it through require
+const { validate } = createRequire(import.meta.url)('fast-json-patch') as typeof import('fast-json-patch');
 
 /** `{code, gate, severity, pointer, message, evidence, fix?}`. Evidence holds integers only, so it can be hashed. */
 export interface Diagnostic {

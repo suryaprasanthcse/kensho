@@ -13,5 +13,8 @@
     "@kensho/gates-asset": "workspace:*",
     "@kensho/harness-render": "workspace:*",
     "@kensho/bundle": "workspace:*"
+  },
+  "devDependencies": {
+    "@kensho/synthetic_oracle": "workspace:*"
   }
 }
