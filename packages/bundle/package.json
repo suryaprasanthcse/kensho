@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@kensho/ir": "workspace:*",
-    "@kensho/diagnostics": "workspace:*"
+    "@kensho/diagnostics": "workspace:*",
+    "zod": "4.6.7"
   }
 }
