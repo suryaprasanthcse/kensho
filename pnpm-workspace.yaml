@@ -1,0 +1,8 @@
+packages:
+  - packages/*
+  - providers/*
+  - bench
+minimumReleaseAgeExclude:
+  - three@0.187.0
+allowBuilds:
+  esbuild: false

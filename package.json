@@ -1,0 +1,25 @@
+{
+  "name": "kensho",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "kensho": "tsx packages/cli/src/bin.ts",
+    "fixtures": "tsx bench/src/fixtures-cli.ts",
+    "test": "vitest run",
+    "proof": "tsx bench/src/proof.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "fast-check": "4.10.2",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  }
+}

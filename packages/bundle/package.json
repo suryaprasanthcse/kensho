@@ -1,0 +1,14 @@
+{
+  "name": "@kensho/bundle",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@kensho/ir": "workspace:*",
+    "@kensho/diagnostics": "workspace:*"
+  }
+}

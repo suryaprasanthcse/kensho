@@ -1,0 +1,17 @@
+{
+  "name": "@kensho/harness-render",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@kensho/ir": "workspace:*",
+    "@kensho/diagnostics": "workspace:*",
+    "@kensho/bundle": "workspace:*",
+    "playwright": "1.64.1",
+    "three": "0.187.0"
+  }
+}

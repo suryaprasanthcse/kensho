@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kensho_service"
+version = "0.0.0"
+description = "FastAPI service exposing /verify, /bundle/{hash} and /replay, with Celery tasks. Placeholder: nothing is installed or run."
+requires-python = ">=3.12"
+license = { text = "UNLICENSED" }
+classifiers = ["Private :: Do Not Upload"]
+dependencies = []
+
+[tool.setuptools]
+packages = ["kensho_service"]

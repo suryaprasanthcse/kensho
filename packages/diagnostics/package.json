@@ -1,0 +1,14 @@
+{
+  "name": "@kensho/diagnostics",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@kensho/ir": "workspace:*",
+    "fast-json-patch": "3.1.1"
+  }
+}

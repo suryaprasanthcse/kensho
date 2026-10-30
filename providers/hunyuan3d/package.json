@@ -1,0 +1,13 @@
+{
+  "name": "@kensho/hunyuan3d",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@kensho/ir": "workspace:*"
+  }
+}

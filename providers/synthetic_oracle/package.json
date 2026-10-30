@@ -1,0 +1,15 @@
+{
+  "name": "@kensho/synthetic_oracle",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@kensho/ir": "workspace:*",
+    "@kensho/diagnostics": "workspace:*",
+    "@gltf-transform/core": "4.5.1"
+  }
+}

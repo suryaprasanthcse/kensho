@@ -1,0 +1,17 @@
+{
+  "name": "@kensho/cli",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@kensho/ir": "workspace:*",
+    "@kensho/diagnostics": "workspace:*",
+    "@kensho/gates-asset": "workspace:*",
+    "@kensho/harness-render": "workspace:*",
+    "@kensho/bundle": "workspace:*"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+.dev-keys/
+.generated/
+bench/out/
+*.log
+.claude/
+.DS_Store
