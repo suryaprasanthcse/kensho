@@ -54,6 +54,15 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 - "No new code appears" is judged over all severities. "Strictly shrinks" means a proper sub-multiset: no code occurs more often than before and at least one occurs less. A patch that clears one error but adds another instance of an existing code is refused as `not_shrinking`.
 - A scene that is not schema-valid is not repairable, and a patch that leaves the scene schema-invalid is refused.
 
+## Repair requests
+
+- The repair request sends `prompts/system.md` unchanged as the system message and `prompts/repair.md` rendered as the user message: the original prompt, the scene as two-space indented JSON, and the diagnostics as `{code, pointer, message, evidence}` (severity is left out; the checker produces no fix). The three placeholders are filled in a single pass, so text inside a value is never expanded. The DRAFT header comment of `repair.md` is removed before sending.
+- The reply is a **full corrected scene** under the same schema profile as a generation. The model never writes a patch. The patch is computed in code with fast-json-patch's `compare(original, reply)` and handed to `applyRepair` unchanged, so the acceptance rule is the same one the patch-level tests pin. `compare` yields operations by array index, so a reply that reorders entities has many operations; the acceptance rule judges the result, not the operations.
+- `repairFromScene` returns the number of operations (`ops`) with the result, and `check-tapes` records it per repair and summarises it (n, total, median, maximum) over all replies that were JSON objects and over accepted repairs only. The size of a patch is a descriptive metric, not part of acceptance.
+- A reply that is not a JSON object (unparseable text, a number, an array) is refused as `unparseable_reply` and has no operation count. A reply with zero operations fixes nothing and is refused as `not_shrinking`.
+- The instructions in `repair.md` name the three objective rules the user listed (no removal, no lowered count, no changed tag or type). They do not mention retargeting, which `applyRepair` allows only for a flagged target, so a reply that moves a valid target is refused without the model having been told. That is deliberate: the prompt says what was specified, and the acceptance rule is the judge.
+- A repair tape's `raw_output` is the corrected scene text. Tapes also carry an optional `usage` record (token counts as the provider reported them). Temperature, thinking and the other sampling parameters are omitted from requests, so `usage` is the only record of what a call cost. Checks and metrics never read it.
+
 ## Statistics
 
 - The flip rate is over (prompt, model) groups that have exactly three verdicts. Groups with any other number are left out and counted as `incomplete`. A flip compares the verdict (`pass`, `fail`, `schema_invalid`), not the diagnostic hash: two different failing scenes are not a flip.

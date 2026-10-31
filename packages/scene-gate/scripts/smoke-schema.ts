@@ -176,7 +176,7 @@ export async function runSmoke(env: Readonly<Record<string, string>>, send: Fetc
     }
     const request = REQUEST[provider](env[MODEL_VARIABLE[provider]] || DEFAULT_MODEL[provider]);
     try {
-      const response = await send(request.url, { method: 'POST', headers: request.headers(key), body: JSON.stringify(request.body), signal: AbortSignal.timeout(60_000) });
+      const response = await send(request.url, { method: 'POST', headers: request.headers(key), body: JSON.stringify(request.body), signal: AbortSignal.timeout(120_000) });
       if (!response.ok) {
         lines.push(`${provider}: HTTP ${response.status}, reply parses: no reply read`);
         if (options.diagnose && response.text) lines.push(`  detail: ${errorDetail(await response.text().catch(() => ''), key)}`);

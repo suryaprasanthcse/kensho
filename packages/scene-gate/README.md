@@ -51,7 +51,7 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 
 ## Repair
 
-`applyRepair(scene, patch)` applies an RFC 6902 patch to a copy of the scene and accepts it only if the multiset of error codes strictly shrinks and no new code appears. It refuses a patch that removes an objective or lowers a collect count, and one that changes an objective's tag or type. A reach or unlock objective may be retargeted to an existing entity of the right kind. It returns the accepted scene with before and after diagnostics, or a refusal with a reason.
+In the study a repair reply is a full corrected scene, and `repairFromScene(scene, reply)` computes the patch with `compare` and returns it with its operation count. `applyRepair(scene, patch)` applies an RFC 6902 patch to a copy of the scene and accepts it only if the multiset of error codes strictly shrinks and no new code appears. It refuses a patch that removes an objective or lowers a collect count, and one that changes an objective's tag or type. A reach or unlock objective may be retargeted to an existing entity of the right kind. It returns the accepted scene with before and after diagnostics, or a refusal with a reason.
 
 ## Running it
 
@@ -75,6 +75,8 @@ pnpm --filter @kensho/scene-gate check-tapes <tapes-dir>
 
 `scripts/smoke-schema.ts` (`pnpm --filter @kensho/scene-gate smoke-schema`) is a one-off check that each provider accepts its schema profile. It sends one request per provider, reading `ANTHROPIC_API_KEY` and `GEMINI_API_KEY` from the repository `.env`, and prints only the HTTP status and whether the reply parses. It is not part of the study, writes no tapes, and has only been tested offline with an injected `fetch`.
 
+`scripts/smoke-repair.ts` (`pnpm --filter @kensho/scene-gate smoke-repair <model>...`) sends one repair request per model for a fixture scene with a known error, built the way the study builds it, and prints one status line per model.
+
 The mutation check disables each check in turn (its module is aliased to a no-op) and asserts the suite then fails. It exits non-zero if any check survives.
 
 `check-tapes` re-checks recorded tapes offline and prints a JSON report: per-model verdict counts, the unplayable rate and flip rate with Wilson 95% intervals, repair outcomes, and any tape that failed to read. Add `--unreachable-height` to enable the optional check, and `--prompts prompts/prompts.json --system prompts/system.md` to flag tapes whose prompt or system hash differs from the frozen files.
@@ -89,9 +91,9 @@ const record = verdictRecord(evaluateRaw(modelText)); // { verdict, hash, codes 
 
 ## Tapes and prompts
 
-A tape (`src/harness.ts`) records one model call: model id, parameters, prompt hash, system hash, raw output, finish reason and timestamp. Tapes live at `<root>/<model>/<prompt_id>/<sample>.<kind>.json`, are written once and never overwritten, and everything else is derived from them. A `repair` tape holds the model's patch for the `generate` tape with the same model, prompt and sample.
+A tape (`src/harness.ts`) records one model call: model id, parameters, prompt hash, system hash, raw output, finish reason, token usage and timestamp. Tapes live at `<root>/<model>/<prompt_id>/<sample>.<kind>.json`, are written once and never overwritten, and everything else is derived from them. A `repair` tape holds the model's corrected full scene for the `generate` tape with the same model, prompt and sample; the patch is computed from it with `compare`.
 
-`prompts/prompts.json` (20 prompts: 10 ordinary, 10 structured, none adversarial) and `prompts/system.md` are marked DRAFT until reviewed and frozen.
+`prompts/prompts.json` (20 prompts: 10 ordinary, 10 structured, none adversarial), `prompts/system.md` and `prompts/repair.md` (the user message of the repair request) are marked DRAFT until reviewed and frozen. `PREREGISTRATION.md` records the study design and is DRAFT too.
 
 No API client exists. `SceneGenerator` in `src/harness.ts` is the marked interface where one goes later.
 
