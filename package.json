@@ -13,7 +13,8 @@
     "fixtures": "tsx bench/src/fixtures-cli.ts",
     "test": "vitest run",
     "proof": "tsx bench/src/proof.ts",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "real-assets": "tsx bench/src/real-assets.ts"
   },
   "devDependencies": {
     "@types/node": "26.6.6",

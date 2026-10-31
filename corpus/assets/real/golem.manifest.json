@@ -1,0 +1,140 @@
+{
+  "format": "kensho-real-assets/1",
+  "source": "golem_oct3",
+  "note": "Provenance for the five frozen Rodin props. The largest real-world dimension comes from golem_sizes.json; the other two dimensions were never declared, so box_um is null and conformance is not checked. No signed download URLs are recorded here.",
+  "assets": [
+    {
+      "id": "chest",
+      "class": "prop",
+      "body": "dynamic",
+      "box_um": null,
+      "size_largest_um": 900000,
+      "anchored": false,
+      "raw": {
+        "file": "assets/raw/chest.glb",
+        "sha256": "976f08994395acf08a95bffaac5c9ff71d2482ddd33744a089aa4401d0c9839e",
+        "bytes": 11466628,
+        "job": {
+          "prompt": "wooden treasure chest with a hinged lid, closed, boxy shape, metal corner brackets, game prop",
+          "tier": "server default",
+          "generation_id": "0a734bda-1ed2-430e-a7ff-5e7646b986f7",
+          "submitted_at": "2026-10-03T17:01:49+05:30",
+          "generation_seconds": 106
+        }
+      },
+      "split": {
+        "file": "assets/split/chest/chest_split.glb",
+        "sha256": "e42ff2dfbb0a389315010d457625c3218728a73bd3c8cdcf73a955cceb2705fe",
+        "bytes": 10760088
+      }
+    },
+    {
+      "id": "toolbox",
+      "class": "prop",
+      "body": "dynamic",
+      "box_um": null,
+      "size_largest_um": 550000,
+      "anchored": false,
+      "raw": {
+        "file": "assets/raw/toolbox.glb",
+        "sha256": "7b2fbff042654227411c5d9ba5633355fe75bf317fa1f02b4091ed77653608dd",
+        "bytes": 7588956,
+        "job": {
+          "prompt": "metal mechanic's toolbox with a hinged lid, closed, red paint, boxy shape, game prop",
+          "tier": "server default",
+          "generation_id": "5f7e08f1-4ded-4d5d-b4c8-95e437093d8f",
+          "submitted_at": "2026-10-03T17:40:44+05:30",
+          "generation_seconds": 78
+        }
+      },
+      "split": {
+        "file": "assets/split/toolbox/toolbox_split.glb",
+        "sha256": "27e79350b5553b41da7029f0eda4bca39fb72038eabfc52202b6807b7b5d6add",
+        "bytes": 7547040
+      }
+    },
+    {
+      "id": "laptop",
+      "class": "prop",
+      "body": "dynamic",
+      "box_um": null,
+      "size_largest_um": 360000,
+      "anchored": false,
+      "raw": {
+        "file": "assets/raw/laptop.glb",
+        "sha256": "50169d319b6a596553462b27663f7a0c61679f3a3f4cbe33b236bb302da3ab43",
+        "bytes": 8294096,
+        "job": {
+          "prompt": "clamshell laptop, closed, lid shut, game prop",
+          "tier": "server default",
+          "generation_id": "5cb89f56-7b46-475c-9b88-4cd264cf64e7",
+          "submitted_at": "2026-10-03T17:40:44+05:30",
+          "generation_seconds": 115
+        }
+      },
+      "split": {
+        "file": "assets/split/laptop/laptop_split.glb",
+        "sha256": "b76725f49015ec533ed7fe23955ac0f2e560a83ce049ee4a4ae4b3694d21ae5a",
+        "bytes": 7588604
+      }
+    },
+    {
+      "id": "vault_door",
+      "class": "hero",
+      "body": "static",
+      "box_um": null,
+      "size_largest_um": 2200000,
+      "anchored": true,
+      "raw": {
+        "file": "assets/raw/vault_door.glb",
+        "sha256": "62987e800e7269aa9edb580eaa12e74dd68279241145ee69168b6856a6cb73df",
+        "bytes": 14313984,
+        "job": {
+          "prompt": "A heavy steampunk bank vault door with a central locking wheel.",
+          "tier": "Gen-2.5-High",
+          "generation_id": "9c6e10f3-ded3-4334-bbf3-754a9fc18843",
+          "submitted_at": "2026-10-03T17:41:53+05:30",
+          "generation_seconds": 209
+        },
+        "bang_job": {
+          "kind": "bang",
+          "generation_id": "29ae73f0-a652-43fd-af75-87f6f63822a2"
+        }
+      },
+      "split": {
+        "file": "assets/split/vault_door/vault_door_split.glb",
+        "sha256": "79268a59ae2d9d9ef94df92d0836528c3b1f70bd5f1f31ad5d874753864d2ec2",
+        "bytes": 13154632
+      }
+    },
+    {
+      "id": "filing_cabinet",
+      "class": "prop",
+      "body": "dynamic",
+      "box_um": null,
+      "size_largest_um": 1300000,
+      "anchored": false,
+      "raw": {
+        "file": "assets/raw/filing_cabinet.glb",
+        "sha256": "b2754f6348644a65e013f2fc8d609df3c929b47337aadd4e318dcbe5230eb65d",
+        "bytes": 8441104,
+        "job": {
+          "prompt": "wooden filing cabinet with three drawers, game prop",
+          "tier": "server default",
+          "generation_id": "012ef178-e8e0-4b39-a46d-62b2b156b86f",
+          "submitted_at": "2026-10-03T17:40:44+05:30",
+          "generation_seconds": 77
+        },
+        "bang_job": {
+          "kind": "bang",
+          "generation_id": "4298b233-9098-464d-bae0-9975dcdf9a69"
+        }
+      },
+      "split": {
+        "file": "assets/split/filing_cabinet/filing_cabinet_split.glb",
+        "sha256": "ebbb632d854337e481b2cea8036fda9b0064fe06493a767b75505b22783d52e8",
+        "bytes": 9148796
+      }
+    }
+  ]
+}
