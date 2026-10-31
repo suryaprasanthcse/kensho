@@ -43,6 +43,8 @@ export async function runChecks(
 ): Promise<Map<CheckId, CheckOutput>> {
   const ctx = makeCtx(bytes, options);
   const results = new Map<CheckId, CheckOutput>();
+  ctx.results = results;
+  ctx.recheck = (other) => runChecks(other, options); // the autofix re-checks its own output, without test hooks
   for (const id of CHECK_IDS) {
     const t0 = performance.now();
     let out: CheckOutput;

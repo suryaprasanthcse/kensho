@@ -33,11 +33,11 @@ const SHIPPED_LIST: CodeInfo[] = [
   def('PRIMITIVE_BUDGET', 'G4', 'error', 'Primitive (draw) count exceeds the tier and class budget.', ['PRIMITIVE_BUDGET'], 'merge primitives'),
   def('MATERIAL_BUDGET', 'G4', 'error', 'Distinct material count exceeds the tier and class budget.', ['MATERIAL_BUDGET'], 'merge materials'),
   def('NONFINITE_POSITION', 'G4', 'error', 'A vertex position contains NaN or an infinity.', ['NONFINITE_POSITION']),
-  def('DEGENERATE_TRIANGLE', 'G4', 'error', 'The mesh contains zero-area triangles.', ['DEGENERATE_TRIANGLE'], 'drop degenerate triangles'),
+  def('DEGENERATE_TRIANGLE', 'G4', 'error', 'The mesh contains zero-area triangles. Up to 0.5% of all triangles are pruned by a verified autofix and only warned about; above that, or when they cannot be pruned, it is an error.', ['DEGENERATE_TRIANGLE', 'DEGENERATE_AUTOFIX', 'DEGENERATE_UNPRUNABLE'], 'prune degenerate triangles'),
   def('WINDING_INCONSISTENT', 'G4', 'error', 'Adjacent triangles disagree on winding order.', ['WINDING_INCONSISTENT']),
   def('NONMANIFOLD_EDGE', 'G4', 'error', 'An edge is shared by three or more triangles after weld. A warning for static bodies.', ['NONMANIFOLD_EDGE']),
   def('OPEN_BOUNDARY', 'G4', 'error', 'The surface has boundary edges after weld, so it is not closed. A warning for static bodies.', ['OPEN_BOUNDARY']),
-  def('FLOATING_ISLANDS', 'G4', 'error', 'A small detached component holds a negligible share of the surface area.', ['FLOATING_ISLANDS'], 'drop the island'),
+  def('FLOATING_ISLANDS', 'G4', 'error', 'A detached component holding under 1% of the surface area. A warning when it lies inside the convex hull of the main body (a decorative shell); an error when it lies outside (debris).', ['FLOATING_ISLANDS', 'FLOATING_ISLANDS_DECORATIVE'], 'drop the island'),
   def('BBOX_CONFORMANCE', 'G4', 'error', 'The asset aspect ratio does not match the declared box within tolerance.', ['BBOX_CONFORMANCE']),
   def('HULL_COMPLEXITY', 'G4', 'error', 'The collider source is too complex to derive a hull from without simplification first.', ['HULL_COMPLEXITY'], 'simplify before hull derivation'),
   // G6: render smoke

@@ -3555,8 +3555,8 @@
       "seed": 0,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-00.glb",
-      "bytes": 11580,
-      "sha256": "feecdeff6e2992f333acf59e7aebdce215b281ee3e3b363aa7a1854cdf86c28d",
+      "bytes": 12340,
+      "sha256": "cb17727279acb5416adee204c9b8ead7a713d4b6a0e95e726670994b47587ff0",
       "options": {
         "tier": "mobile",
         "class": "prop",
@@ -3577,8 +3577,8 @@
       "seed": 1,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-01.glb",
-      "bytes": 11268,
-      "sha256": "0c722a23a575aff4c8de98508a143218c09f990e5b9c3cc332832ffd08e3e889",
+      "bytes": 16960,
+      "sha256": "9d9b972bfb529e4227c016396c1281b15e81d196511b8aec269d134d59a3c609",
       "options": {
         "tier": "desktop",
         "class": "prop",
@@ -3599,8 +3599,8 @@
       "seed": 2,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-02.glb",
-      "bytes": 10536,
-      "sha256": "cf70f88f389f7006d2a77792ded2679fc8a3a9fc4d0d780751bb49fba9c6ddf0",
+      "bytes": 24320,
+      "sha256": "e3c5a938336da383b50641084d40ed0ed40d7941818fc17cf815090c764d917a",
       "options": {
         "tier": "mobile",
         "class": "prop",
@@ -3621,8 +3621,8 @@
       "seed": 3,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-03.glb",
-      "bytes": 11072,
-      "sha256": "064f6b126ebbe6261de4a59409147420a9d73cd1eb223415ac816d38e8e161c2",
+      "bytes": 20248,
+      "sha256": "8bfea4094dcf2564ba212d9da42e090f6171999015d95c9661309a61733a5203",
       "options": {
         "tier": "desktop",
         "class": "prop",
@@ -3643,8 +3643,8 @@
       "seed": 4,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-04.glb",
-      "bytes": 10540,
-      "sha256": "5b6864e4cc77bd211025edb2e786c78da116f3609cf55c3fb0e68a5ec9301331",
+      "bytes": 20116,
+      "sha256": "a5c27573ff87ec668faa6d89d218b8d0dad50e8ce8ff51905aa33a2431b55154",
       "options": {
         "tier": "mobile",
         "class": "prop",
@@ -3665,8 +3665,8 @@
       "seed": 5,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-05.glb",
-      "bytes": 11312,
-      "sha256": "6cda628af23f1c47c396e76cec4b02636a6460abed58fe0b3e2deb0a6e0e1bf4",
+      "bytes": 22540,
+      "sha256": "89fa07756fb9d57abf43b237123155443d5c8e2dc6a9706bb7d8e683b07a3dae",
       "options": {
         "tier": "desktop",
         "class": "prop",
@@ -3687,8 +3687,8 @@
       "seed": 6,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-06.glb",
-      "bytes": 10992,
-      "sha256": "e9964fc834ba14ce35a16344497192858e7d1c0def8b5bb670706b4ef0a56833",
+      "bytes": 23676,
+      "sha256": "83c23c488f338c87c49f60a2dbd9d69cf27d14b49580e38e0afcea7ab11b7d02",
       "options": {
         "tier": "mobile",
         "class": "prop",
@@ -3709,8 +3709,8 @@
       "seed": 7,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-07.glb",
-      "bytes": 11408,
-      "sha256": "5ab83845095ea07d845c912daefb767c83a75bb22cc71395d521beef415185c3",
+      "bytes": 13368,
+      "sha256": "2feabb373263e29dc026f1c6f9792ec792f43d92e4d3fa6ff46f8088ed6e8565",
       "options": {
         "tier": "desktop",
         "class": "prop",
@@ -3731,8 +3731,8 @@
       "seed": 8,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-08.glb",
-      "bytes": 10796,
-      "sha256": "de32ec54cbf0fbdd481dac375caf6db7c3b48a2c543f25377338a812df1bc1ce",
+      "bytes": 17408,
+      "sha256": "22bb6b75de29a26d0992841f4714f199a2116ca7fa9020d8f4551f70d861daa5",
       "options": {
         "tier": "mobile",
         "class": "prop",
@@ -3753,8 +3753,8 @@
       "seed": 9,
       "control": false,
       "file": "DEGENERATE_TRIANGLE-09.glb",
-      "bytes": 11504,
-      "sha256": "17a01cf1f4f3712997f9235280838ef247e7b6187edd81c5fb39ac12086ef905",
+      "bytes": 15036,
+      "sha256": "bc410807a27272170035d968ad442d64ca0d5ac0a782f9ea142f6c201d9952a1",
       "options": {
         "tier": "desktop",
         "class": "prop",
@@ -3764,6 +3764,696 @@
         "verdict": "FAIL",
         "codes": [
           "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-00",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-00.glb",
+      "bytes": 32448,
+      "sha256": "97a3d71ab23caabb602eac12d787d1a573437245ef9e07e4fbddb6a30d7f9b9b",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-01",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-01.glb",
+      "bytes": 31388,
+      "sha256": "5aada18a5b5b4045a2bfb26861bb701ffd543d9312dd438bfd7784fec1e7debb",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-02",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-02.glb",
+      "bytes": 37404,
+      "sha256": "3354448892a41594a1d7f850dd485a134769555356c21618ee673e921996646d",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-03",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-03.glb",
+      "bytes": 60344,
+      "sha256": "71db334163302ed3a5a529d0198e5ec2038d7a9916df9806042afb354409ac62",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-04",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-04.glb",
+      "bytes": 67360,
+      "sha256": "744bf8296cda3a1eb5025c8e901588c666377dd21fe84ff509585f972f93c80f",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-05",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-05.glb",
+      "bytes": 21552,
+      "sha256": "f2000719647afb207d0fa87efc20eeafb4af34af4cc01c64f057b0b26f4658c6",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-06",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-06.glb",
+      "bytes": 41124,
+      "sha256": "1ef4c37eea5c1ce36a7201966128513e0710c542df189700c56b7f956c90fdc3",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-07",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-07.glb",
+      "bytes": 56296,
+      "sha256": "c30a38c61c2ab71e114e90a289ab80435a9e06e0c3d3d06f08fd6f6d101c8dd0",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-08",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-08.glb",
+      "bytes": 24612,
+      "sha256": "627075ea723598b7e1ac54e0bdcd05eb05dc47c234fe486025c71e3dd60bc7c8",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_AUTOFIX-09",
+      "class": "DEGENERATE_AUTOFIX",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "DEGENERATE_AUTOFIX-09.glb",
+      "bytes": 32452,
+      "sha256": "f5a310559f9771977b6c68681df07ae6a95d8037c0585891c5a84f1c278b2311",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [],
+        "autofix": "sound"
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-00",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-00.glb",
+      "bytes": 17624,
+      "sha256": "3a7b07d02a026735e7f8a97ac018a0eddbc7ec2ca1329eaebd504044b0080916",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-01",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-01.glb",
+      "bytes": 12244,
+      "sha256": "7cd2f4722a1e067a3cbc67e066c05a94dca3b75074d34518f9699fdb4498796b",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-02",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-02.glb",
+      "bytes": 21028,
+      "sha256": "74f03faa30a1158f1e67d92dd88df8f78e39c7bed27125db1d30f888afdd9968",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-03",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-03.glb",
+      "bytes": 19784,
+      "sha256": "343709321f9efa9300710e4068137f45990f6050b0daea58a02cc9fd4a037438",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-04",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-04.glb",
+      "bytes": 15512,
+      "sha256": "895fb45179e2f7d3a9f1f14a05e1f54ebb1d4a0fc556c586c133ca8b0c2787c3",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-05",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-05.glb",
+      "bytes": 11812,
+      "sha256": "14a910a3ff46f940f010f2302ddedfe9de42bd24ca93542f2515a6bdd0f908b3",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-06",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-06.glb",
+      "bytes": 16664,
+      "sha256": "a4e6ba447e705afff39c0bc8902d27a0fb9070e297c01b10f98ea6a9a0ff4a85",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-07",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-07.glb",
+      "bytes": 22616,
+      "sha256": "1d88a1e1ec337533a66d4006b08c1ddc0ff7a6c15d98aa00c7556a6459b1e358",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-08",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-08.glb",
+      "bytes": 14168,
+      "sha256": "00c99f09dfd303f2fe619f562287bbe0d403f657824e556b7d7e4691f82212a3",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "DEGENERATE_UNPRUNABLE-09",
+      "class": "DEGENERATE_UNPRUNABLE",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "DEGENERATE_UNPRUNABLE-09.glb",
+      "bytes": 13780,
+      "sha256": "ab1459d4451731aac4885422601d1ff777ddd729fc1af8584e9c0f3b0b08e0f9",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "static"
+      },
+      "expected": {
+        "verdict": "FAIL",
+        "codes": [
+          "DEGENERATE_TRIANGLE"
+        ],
+        "allowed": [
+          "OPEN_BOUNDARY"
+        ]
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-00",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 0,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-00.glb",
+      "bytes": 2724,
+      "sha256": "df9534db5d6c9492d4af10b3816501995e86b80fa7880d4cab0dbb1b0c69da82",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-01",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 1,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-01.glb",
+      "bytes": 16484,
+      "sha256": "091804546b218615c6b3496ca82b07dfbbe7c13a5d12e21ded55b987fb63168e",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-02",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 2,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-02.glb",
+      "bytes": 28748,
+      "sha256": "97f3ebb14a069c3896a2c2817918871e5dabb8a76536eb1a8fcba4a833ee682a",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-03",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 3,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-03.glb",
+      "bytes": 31960,
+      "sha256": "acb9164df5c29a0f12dcba762a89035c4d327ee4d072996a319f2181e0e0bdd8",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-04",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 4,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-04.glb",
+      "bytes": 2168,
+      "sha256": "c021d887fb5d562e022ce20cfeb41fcaab0b060251a3419a08ca2de17c3c90aa",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-05",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 5,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-05.glb",
+      "bytes": 25244,
+      "sha256": "41d203c043a738d44adf08cbe26ec3fa41feb88bce0252bcc20e8291204965dc",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-06",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 6,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-06.glb",
+      "bytes": 2724,
+      "sha256": "1c2f6487a0731e3730354f38bf63f39abbfa2f296720cdb6cdcb6a46832c0ce2",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-07",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 7,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-07.glb",
+      "bytes": 31284,
+      "sha256": "1b3c89ac55c4f7522ce65580ce22360fe269a207d3ae24be4ba0fc59b475e677",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-08",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 8,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-08.glb",
+      "bytes": 29428,
+      "sha256": "35e012b085f55e474ed87a3ca7a149f4d53d6143c3b2ae3511e6aed567bb354b",
+      "options": {
+        "tier": "mobile",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
+        ],
+        "allowed": []
+      }
+    },
+    {
+      "id": "FLOATING_ISLANDS_DECORATIVE-09",
+      "class": "FLOATING_ISLANDS_DECORATIVE",
+      "variant": "default",
+      "seed": 9,
+      "control": false,
+      "file": "FLOATING_ISLANDS_DECORATIVE-09.glb",
+      "bytes": 22948,
+      "sha256": "390057c44e0405581c4e3b1aa16c9a2c36536967e9ae995906ade69638219164",
+      "options": {
+        "tier": "desktop",
+        "class": "prop",
+        "body": "dynamic"
+      },
+      "expected": {
+        "verdict": "PASS",
+        "codes": [
+          "FLOATING_ISLANDS"
         ],
         "allowed": []
       }

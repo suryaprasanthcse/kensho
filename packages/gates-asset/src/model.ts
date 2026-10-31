@@ -15,6 +15,8 @@ export interface MeshModel {
   index: number;
   /** Welded vertex ids, three per triangle, over all primitives. Triangles touching non-finite vertices are skipped. */
   tris: Int32Array;
+  /** For each kept triangle, its position in its primitive's own triangle sequence (skipped triangles still count). */
+  triOrdinal: Int32Array;
   /** First triangle of each primitive, so a triangle can be traced to its primitive. */
   primStart: number[];
   /** Welded vertex positions in mesh-local space (xyz). */
@@ -28,10 +30,14 @@ export interface AssetModel {
   instances: Instance[];
 }
 
-export async function parseGlb(bytes: Uint8Array): Promise<Document> {
+/** A reader and writer for the extensions this gate understands. Meshopt can be read, not written. */
+export async function makeIO(): Promise<NodeIO> {
   await MeshoptDecoder.ready;
-  const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({ 'meshopt.decoder': MeshoptDecoder });
-  return io.readBinary(bytes);
+  return new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({ 'meshopt.decoder': MeshoptDecoder });
+}
+
+export async function parseGlb(bytes: Uint8Array): Promise<Document> {
+  return (await makeIO()).readBinary(bytes);
 }
 
 export function buildAssetModel(doc: Document): AssetModel {
@@ -113,6 +119,7 @@ export function buildMeshModel(mesh: Mesh, index: number): MeshModel {
   const ids = new Map<string, number>();
   const pos: number[] = [];
   const tris: number[] = [];
+  const ords: number[] = [];
   const primStart: number[] = [];
   const grid = 1_000_000 / THRESHOLDS.weldUm;
   for (const prim of mesh.listPrimitives()) {
@@ -140,14 +147,34 @@ export function buildMeshModel(mesh: Mesh, index: number): MeshModel {
       map[v] = id;
       return id;
     };
+    let ordinal = -1;
     for (const [a, b, c] of triangleIndices(prim)) {
+      ordinal++;
       if (a >= n || b >= n || c >= n) continue;
       const wa = weldOf(a), wb = weldOf(b), wc = weldOf(c);
       if (wa < 0 || wb < 0 || wc < 0) continue;
       tris.push(wa, wb, wc);
+      ords.push(ordinal);
     }
   }
-  return { index, tris: Int32Array.from(tris), primStart, pos: Float64Array.from(pos), vertexCount: pos.length / 3 };
+  return { index, tris: Int32Array.from(tris), triOrdinal: Int32Array.from(ords), primStart, pos: Float64Array.from(pos), vertexCount: pos.length / 3 };
+}
+
+/**
+ * The one definition of a degenerate triangle: two welded corners coincide, or its area is at or below the
+ * threshold. The gate and the autofix both use it, so the fix removes exactly what the check counted.
+ */
+export function triangleIsDegenerate(m: MeshModel, t: number): boolean {
+  const a = m.tris[t * 3]!, b = m.tris[t * 3 + 1]!, c = m.tris[t * 3 + 2]!;
+  if (a === b || b === c || a === c) return true;
+  return triangleAreaM2(m, t) * 1e12 <= THRESHOLDS.degenerateAreaUm2;
+}
+
+export function triangleAreaM2(m: MeshModel, t: number): number {
+  const a = m.tris[t * 3]!, b = m.tris[t * 3 + 1]!, c = m.tris[t * 3 + 2]!;
+  const ux = m.pos[b * 3]! - m.pos[a * 3]!, uy = m.pos[b * 3 + 1]! - m.pos[a * 3 + 1]!, uz = m.pos[b * 3 + 2]! - m.pos[a * 3 + 2]!;
+  const vx = m.pos[c * 3]! - m.pos[a * 3]!, vy = m.pos[c * 3 + 1]! - m.pos[a * 3 + 1]!, vz = m.pos[c * 3 + 2]! - m.pos[a * 3 + 2]!;
+  return 0.5 * Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx);
 }
 
 export function primitiveOfTriangle(m: MeshModel, t: number): number {

@@ -21,6 +21,8 @@ export interface Expected {
   codes: string[];
   /** Codes that may appear without counting as unexpected. */
   allowed: string[];
+  /** The prune autofix must run and be proven sound. */
+  autofix?: 'sound';
 }
 
 export interface Fixture {
@@ -63,6 +65,9 @@ export const CLASS_COUNTS: ReadonlyArray<readonly [string, string, number]> = [
   ['MATERIAL_BUDGET', 'default', 10],
   ['NONFINITE_POSITION', 'default', 10],
   ['DEGENERATE_TRIANGLE', 'default', 10],
+  ['DEGENERATE_AUTOFIX', 'default', 10],
+  ['DEGENERATE_UNPRUNABLE', 'default', 10],
+  ['FLOATING_ISLANDS_DECORATIVE', 'default', 10],
   ['WINDING_INCONSISTENT', 'default', 10],
 ];
 
@@ -384,9 +389,15 @@ function nonFinitePlan(rng: Rng, seed: number): Plan {
   };
 }
 
-function degeneratePlan(rng: Rng, seed: number): Plan {
-  const g = fitDims(closedShape(rng, rng.pick(['sphere', 'cylinder', 'capsule', 'torus'] as Kind[]), 400), randomDims(rng, 0.4, 1.6));
-  const k = rng.int(1, 20);
+/**
+ * A closed shape plus extra zero-area triangles. `reject` puts them above the 0.5% pruning threshold; `autofix`
+ * keeps them at or below 0.4%, where the gate prunes them and must prove the repair sound.
+ */
+function degeneratePlan(rng: Rng, seed: number, mode: 'reject' | 'autofix' = 'reject'): Plan {
+  const target = mode === 'reject' ? rng.int(400, 1000) : rng.int(800, 3000);
+  const g = fitDims(closedShape(rng, rng.pick(['sphere', 'cylinder', 'capsule', 'torus'] as Kind[]), target), randomDims(rng, 0.4, 1.6));
+  const base = G.triCount(g);
+  const k = mode === 'reject' ? Math.ceil(base * 0.0055) + rng.int(1, 12) : rng.int(1, Math.max(1, Math.floor(base * 0.004)));
   for (let i = 0; i < k; i++) {
     const n = G.vertCount(g);
     if (i % 3 === 0) {
@@ -405,9 +416,48 @@ function degeneratePlan(rng: Rng, seed: number): Plan {
   }
   return {
     options: { tier: TIERS[seed % 2]!, class: 'prop', body: 'dynamic' },
-    expected: { verdict: 'FAIL', codes: ['DEGENERATE_TRIANGLE'], allowed: [] },
+    expected: mode === 'reject' ? { verdict: 'FAIL', codes: ['DEGENERATE_TRIANGLE'], allowed: [] } : { verdict: 'PASS', codes: ['DEGENERATE_TRIANGLE'], allowed: [], autofix: 'sound' },
     asset: { spec: { materials: [mat(rng)], nodes: [oneNode(g)] } },
   };
+}
+
+/** A triangle strip with a repeated index: a few degenerate triangles that cannot be pruned from a strip. */
+function unprunablePlan(rng: Rng, seed: number): Plan {
+  const pairs = rng.int(200, 500);
+  const length = rng.dyadic(0.5, 2, 64);
+  const g: G.Geometry = { pos: [], uv: [], idx: [] };
+  for (let i = 0; i < pairs; i++) {
+    const x = (length * i) / (pairs - 1);
+    const z = 0.1 * Math.sin(x * 6);
+    g.pos.push(x, 0, z, x, 0.2, z);
+    g.uv.push(i / pairs, 0, i / pairs, 1);
+  }
+  for (let i = 0; i < pairs * 2; i++) g.idx.push(i);
+  const at = rng.int(10, pairs * 2 - 10);
+  g.idx.splice(at, 0, g.idx[at]!); // the repeated index is what makes the strip degenerate here
+  return {
+    options: { tier: TIERS[seed % 2]!, class: 'prop', body: 'static' },
+    expected: { verdict: 'FAIL', codes: ['DEGENERATE_TRIANGLE'], allowed: ['OPEN_BOUNDARY'] },
+    asset: { spec: { materials: [mat(rng)], nodes: [{ parts: [{ geometry: g, material: 0, mode: 5 }] }] } },
+  };
+}
+
+/** A tiny closed shell inside the convex hull of the body: a decorative part, not debris. */
+function decorativeIslandsPlan(rng: Rng, seed: number): Plan {
+  const kind = rng.pick(['sphere', 'box', 'cylinder', 'rock'] as Kind[]);
+  const main = fitDims(closedShape(rng, kind, rng.int(300, 1500)), randomDims(rng, 0.5, 1.5));
+  const share = rng.int(5, 80) / 10_000;
+  const shardShape = seed % 2 === 0 ? G.box(1, 1, 1) : G.tetrahedron(1);
+  const target = (G.surfaceArea(main) * share) / (1 - share);
+  const k = Math.sqrt(target / G.surfaceArea(shardShape));
+  const b = G.bounds(main);
+  const at = [0, 1, 2].map((a) => ((b.min[a]! + b.max[a]!) / 2) + (rng.float() - 0.5) * 0.3 * (b.max[a]! - b.min[a]!));
+  const shard = G.transform(shardShape, [k, k, k], at as [number, number, number]);
+  const separate = seed % 3 === 0;
+  const spec: AssetSpec = separate
+    ? { materials: [mat(rng)], nodes: [{ parts: [{ geometry: main, material: 0 }, { geometry: shard, material: 0 }] }] }
+    : { materials: [mat(rng)], nodes: [oneNode(G.merge([main, shard]))] };
+  return { options: { tier: TIERS[seed % 2]!, class: 'prop', body: 'dynamic' }, expected: { verdict: 'PASS', codes: ['FLOATING_ISLANDS'], allowed: [] }, asset: { spec } };
 }
 
 function windingPlan(rng: Rng, seed: number): Plan {
@@ -443,6 +493,9 @@ export async function buildFixture(id: string): Promise<Fixture> {
     case 'MATERIAL_BUDGET': plan = materialPlan(rng, seed); break;
     case 'NONFINITE_POSITION': plan = nonFinitePlan(rng, seed); break;
     case 'DEGENERATE_TRIANGLE': plan = degeneratePlan(rng, seed); break;
+    case 'DEGENERATE_AUTOFIX': plan = degeneratePlan(rng, seed, 'autofix'); break;
+    case 'DEGENERATE_UNPRUNABLE': plan = unprunablePlan(rng, seed); break;
+    case 'FLOATING_ISLANDS_DECORATIVE': plan = decorativeIslandsPlan(rng, seed); break;
     case 'WINDING_INCONSISTENT': plan = windingPlan(rng, seed); break;
     default: throw new Error(`unknown fixture class ${klass}`);
   }

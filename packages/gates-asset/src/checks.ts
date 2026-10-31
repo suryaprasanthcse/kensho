@@ -1,5 +1,7 @@
+import { createHash } from 'node:crypto';
 import type { Document } from '@gltf-transform/core';
 import validator from 'gltf-validator';
+import { pruneDegenerate } from './autofix.ts';
 import { ImageUtils } from '@gltf-transform/core';
 import { makeDiagnostic, isJsonPointer, pointerFrom, type Diagnostic, type Severity } from '@kensho/diagnostics';
 import type { Json } from '@kensho/ir';
@@ -14,6 +16,8 @@ import {
   rawTriangleCount,
   readPositions,
   transformPoint,
+  triangleAreaM2,
+  triangleIsDegenerate,
   type AssetModel,
   type MeshModel,
 } from './model.ts';
@@ -30,6 +34,8 @@ interface MeshTopology {
   inconsistent: number;
   /** Surface area of each connected component, in square metres, in mesh-local space. */
   componentAreas: number[];
+  /** The component each welded vertex belongs to, or -1 when no kept triangle uses it. */
+  compOf: Int32Array;
 }
 
 export interface Ctx {
@@ -44,6 +50,12 @@ export interface Ctx {
   totalTriangles: number;
   meshModels: Map<number, MeshModel>;
   topo: Map<number, MeshTopology>;
+  /** Set by the degenerate check: a few degenerate triangles that the autofix may prune. */
+  autofixCandidate: boolean;
+  /** Everything the earlier checks produced, for the autofix to compare against. */
+  results: ReadonlyMap<CheckId, CheckOutput> | null;
+  /** Runs every check on other bytes, without test hooks. Set by the runner. */
+  recheck: ((bytes: Uint8Array) => Promise<Map<CheckId, CheckOutput>>) | null;
 }
 
 export function makeCtx(bytes: Uint8Array, options: AssetGateOptions): Ctx {
@@ -59,6 +71,9 @@ export function makeCtx(bytes: Uint8Array, options: AssetGateOptions): Ctx {
     totalTriangles: 0,
     meshModels: new Map(),
     topo: new Map(),
+    autofixCandidate: false,
+    results: null,
+    recheck: null,
   };
 }
 
@@ -88,18 +103,10 @@ function topologyOf(ctx: Ctx, index: number): MeshTopology {
   let firstDegenerateTri = -1;
   const areaOf: number[] = [];
   for (let t = 0; t < total; t++) {
-    const a = m.tris[t * 3]!, b = m.tris[t * 3 + 1]!, c = m.tris[t * 3 + 2]!;
-    let area2um = 0;
-    if (a !== b && b !== c && a !== c) {
-      const ux = m.pos[b * 3]! - m.pos[a * 3]!, uy = m.pos[b * 3 + 1]! - m.pos[a * 3 + 1]!, uz = m.pos[b * 3 + 2]! - m.pos[a * 3 + 2]!;
-      const vx = m.pos[c * 3]! - m.pos[a * 3]!, vy = m.pos[c * 3 + 1]! - m.pos[a * 3 + 1]!, vz = m.pos[c * 3 + 2]! - m.pos[a * 3 + 2]!;
-      const areaM2 = 0.5 * Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx);
-      area2um = areaM2 * 1e12;
-      if (area2um > THRESHOLDS.degenerateAreaUm2) {
-        keep.push(a, b, c);
-        areaOf.push(areaM2);
-        continue;
-      }
+    if (!triangleIsDegenerate(m, t)) {
+      keep.push(m.tris[t * 3]!, m.tris[t * 3 + 1]!, m.tris[t * 3 + 2]!);
+      areaOf.push(triangleAreaM2(m, t));
+      continue;
     }
     degenerate++;
     if (firstDegenerateTri < 0) firstDegenerateTri = t;
@@ -150,12 +157,21 @@ function topologyOf(ctx: Ctx, index: number): MeshTopology {
     const r = find(ra);
     if (rc !== r) parent[find(rc)] = r;
   }
-  const compArea = new Map<number, number>();
+  const compIndex = new Map<number, number>();
+  const componentAreas: number[] = [];
+  const compOf = new Int32Array(V).fill(-1);
   for (let t = 0; t < T; t++) {
     const r = find(nonDegenerate[t * 3]!);
-    compArea.set(r, (compArea.get(r) ?? 0) + areaOf[t]!);
+    let ci = compIndex.get(r);
+    if (ci === undefined) {
+      ci = componentAreas.length;
+      compIndex.set(r, ci);
+      componentAreas.push(0);
+    }
+    componentAreas[ci] = componentAreas[ci]! + areaOf[t]!;
+    for (let k = 0; k < 3; k++) compOf[nonDegenerate[t * 3 + k]!] = ci;
   }
-  const topo: MeshTopology = { nonDegenerate, degenerate, firstDegenerateTri, boundary, nonManifold, inconsistent, componentAreas: [...compArea.values()].sort((x, y) => x - y) };
+  const topo: MeshTopology = { nonDegenerate, degenerate, firstDegenerateTri, boundary, nonManifold, inconsistent, componentAreas, compOf };
   ctx.topo.set(index, topo);
   return topo;
 }
@@ -315,19 +331,32 @@ export const CHECKS: Record<CheckId, CheckFn> = {
 
   degenerate(ctx) {
     if (ctx.nonFinite) return notChecked('non-finite positions');
-    let total = 0, firstMesh = -1, firstPrim = 0;
+    let total = 0, all = 0, firstMesh = -1, firstPrim = 0;
     for (const mi of meshIndices(ctx)) {
       const t = topologyOf(ctx, mi);
+      for (const p of ctx.model!.meshes[mi]!.listPrimitives()) all += rawTriangleCount(p);
       if (t.degenerate && firstMesh < 0) {
         firstMesh = mi;
         firstPrim = primitiveOfTriangle(meshOf(ctx, mi), t.firstDegenerateTri);
       }
       total += t.degenerate;
     }
+    const ratioPpm = all ? Math.round((total * 1_000_000) / all) : 0;
+    // a few degenerate triangles are pruned by the autofix and only warned about; many are a rejection
+    ctx.autofixCandidate = total > 0 && ratioPpm <= THRESHOLDS.degenerateAutofixPpm;
     const diagnostics = total
-      ? [makeDiagnostic('DEGENERATE_TRIANGLE', { pointer: pointerFrom('meshes', firstMesh, 'primitives', firstPrim), message: `${total} degenerate triangle(s)`, evidence: { triangles: total } })]
+      ? [
+          makeDiagnostic('DEGENERATE_TRIANGLE', {
+            pointer: pointerFrom('meshes', firstMesh, 'primitives', firstPrim),
+            severity: ctx.autofixCandidate ? 'warning' : 'error',
+            message: ctx.autofixCandidate
+              ? `${total} degenerate triangle(s), ${ratioPpm / 10_000}% of ${all}: within the pruning threshold of ${THRESHOLDS.degenerateAutofixPpm / 10_000}%`
+              : `${total} degenerate triangle(s), ${ratioPpm / 10_000}% of ${all}: above the pruning threshold of ${THRESHOLDS.degenerateAutofixPpm / 10_000}%`,
+            evidence: { triangles: total, of_triangles: all, ratio_ppm: ratioPpm, threshold_ppm: THRESHOLDS.degenerateAutofixPpm, autofix: ctx.autofixCandidate ? 'prune_degenerate' : 'none' },
+          }),
+        ]
       : [];
-    return ran(diagnostics, { degenerate_triangles: total });
+    return ran(diagnostics, { degenerate_triangles: total, degenerate_ratio_ppm: ratioPpm });
   },
 
   winding(ctx) {
@@ -374,25 +403,91 @@ export const CHECKS: Record<CheckId, CheckFn> = {
 
   islands(ctx) {
     if (ctx.nonFinite) return notChecked('non-finite positions');
-    const areas: number[] = [];
-    for (const inst of ctx.model!.instances) {
+    interface Comp { area: number; inst: number; mesh: number; comp: number }
+    const comps: Comp[] = [];
+    ctx.model!.instances.forEach((inst, ii) => {
       const s = Math.cbrt(Math.abs(det3(inst.world)));
-      for (const a of topologyOf(ctx, inst.meshIndex).componentAreas) areas.push(a * s * s);
+      topologyOf(ctx, inst.meshIndex).componentAreas.forEach((a, c) => comps.push({ area: a * s * s, inst: ii, mesh: inst.meshIndex, comp: c }));
+    });
+    // largest first; ties fall back to position in the file, so the order never depends on node order
+    comps.sort((x, y) => y.area - x.area || x.mesh - y.mesh || x.comp - y.comp);
+    const total = comps.reduce((n, c) => n + c.area, 0);
+    if (!(total > 0)) return ran([], { islands: comps.length, floating_islands: 0 });
+    const shareOf = (c: Comp) => (c.area / total) * 1_000_000;
+    const main = comps[0]!;
+    const minor = comps.filter((c) => c !== main && shareOf(c) < THRESHOLDS.islandSharePpm);
+    const smallestPpm = Math.round(shareOf(comps[comps.length - 1]!));
+
+    // a minor shell is judged against the convex hull of the largest body in its own mesh, else of the largest body overall
+    const worldVerts = (c: Comp): Float64Array => {
+      const inst = ctx.model!.instances[c.inst]!;
+      const m = meshOf(ctx, c.mesh);
+      const of = topologyOf(ctx, c.mesh).compOf;
+      const out: number[] = [];
+      for (let v = 0; v < m.vertexCount; v++) if (of[v] === c.comp) out.push(...transformPoint(inst.world, m.pos[v * 3]!, m.pos[v * 3 + 1]!, m.pos[v * 3 + 2]!));
+      return Float64Array.from(out);
+    };
+    interface Body { planes: { n: [number, number, number]; d: number }[]; extent: number }
+    const bodies = new Map<string, Body | null>();
+    const bodyOf = (c: Comp): Body | null => {
+      const key = `${c.inst}:${c.comp}`;
+      if (bodies.has(key)) return bodies.get(key)!;
+      const P = worldVerts(c);
+      const hull = convexHull(P);
+      let body: Body | null = null;
+      if (hull) {
+        const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+        for (let i = 0; i < P.length; i += 3) for (let k = 0; k < 3; k++) { lo[k] = Math.min(lo[k]!, P[i + k]!); hi[k] = Math.max(hi[k]!, P[i + k]!); }
+        const planes = hull.faces.map(([a, b, c2]) => {
+          const ux = P[b * 3]! - P[a * 3]!, uy = P[b * 3 + 1]! - P[a * 3 + 1]!, uz = P[b * 3 + 2]! - P[a * 3 + 2]!;
+          const vx = P[c2 * 3]! - P[a * 3]!, vy = P[c2 * 3 + 1]! - P[a * 3 + 1]!, vz = P[c2 * 3 + 2]! - P[a * 3 + 2]!;
+          const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+          const l = Math.hypot(nx, ny, nz) || 1;
+          const n: [number, number, number] = [nx / l, ny / l, nz / l];
+          return { n, d: n[0] * P[a * 3]! + n[1] * P[a * 3 + 1]! + n[2] * P[a * 3 + 2]! };
+        });
+        body = { planes, extent: Math.max(hi[0]! - lo[0]!, hi[1]! - lo[1]!, hi[2]! - lo[2]!) };
+      }
+      bodies.set(key, body);
+      return body;
+    };
+    const referenceFor = (c: Comp): Comp => {
+      let best: Comp | undefined;
+      for (const x of comps) if (x.inst === c.inst && (!best || x.area > best.area)) best = x;
+      return best && best !== c && shareOf(best) >= THRESHOLDS.islandSharePpm ? best : main;
+    };
+
+    let inside = 0, outside = 0, worstOutsidePpm = 0, noHull = 0;
+    for (const c of minor) {
+      const ref = referenceFor(c);
+      const body = bodyOf(ref);
+      if (!body) {
+        outside++;
+        noHull++;
+        continue;
+      }
+      const P = worldVerts(c);
+      // a vertex is inside a convex hull only if it is behind every plane, so take the maximum over planes per
+      // vertex, then the worst vertex
+      let outsideBy = 0;
+      for (let i = 0; i < P.length; i += 3) {
+        let planeMax = -Infinity;
+        for (const pl of body.planes) planeMax = Math.max(planeMax, pl.n[0] * P[i]! + pl.n[1] * P[i + 1]! + pl.n[2] * P[i + 2]! - pl.d);
+        outsideBy = Math.max(outsideBy, planeMax);
+      }
+      const ppm = Math.round((Math.max(0, outsideBy) / body.extent) * 1_000_000);
+      worstOutsidePpm = Math.max(worstOutsidePpm, ppm);
+      if (ppm <= THRESHOLDS.islandHullTolerancePpm) inside++;
+      else outside++;
     }
-    areas.sort((x, y) => x - y); // a fixed order, so the sum does not depend on node order
-    const total = areas.reduce((x, y) => x + y, 0);
-    if (!(total > 0)) return ran([], { islands: areas.length, floating_islands: 0 });
-    let floating = 0, smallest = Infinity;
-    for (const a of areas) {
-      const share = (a / total) * 1_000_000;
-      if (share < smallest) smallest = share;
-      if (share < THRESHOLDS.islandSharePpm) floating++;
-    }
-    const smallestPpm = Math.round(smallest);
-    const diagnostics = floating
-      ? [makeDiagnostic('FLOATING_ISLANDS', { pointer: '/meshes', message: `${floating} detached component(s) hold under ${THRESHOLDS.islandSharePpm / 10_000}% of the surface area each`, evidence: { floating, islands: areas.length, smallest_share_ppm: smallestPpm, threshold_ppm: THRESHOLDS.islandSharePpm } })]
-      : [];
-    return ran(diagnostics, { islands: areas.length, floating_islands: floating, smallest_island_share_ppm: smallestPpm });
+
+    const evidence = { minor: minor.length, islands: comps.length, smallest_share_ppm: smallestPpm, threshold_ppm: THRESHOLDS.islandSharePpm, max_outside_hull_ppm: worstOutsidePpm };
+    const diagnostics: Diagnostic[] = [];
+    if (outside)
+      diagnostics.push(makeDiagnostic('FLOATING_ISLANDS', { pointer: '/meshes', message: `${outside} detached component(s) under ${THRESHOLDS.islandSharePpm / 10_000}% of the surface area lie outside the convex hull of the body${noHull ? ' (it has no hull to test against)' : ''}`, evidence: { ...evidence, outside_hull: outside, decorative: inside } }));
+    if (inside)
+      diagnostics.push(makeDiagnostic('FLOATING_ISLANDS', { pointer: '/meshes', severity: 'warning', message: `${inside} minor shell(s) under ${THRESHOLDS.islandSharePpm / 10_000}% of the surface area sit inside the convex hull of the body: treated as decorative`, evidence: { ...evidence, outside_hull: outside, decorative: inside } }));
+    return ran(diagnostics, { islands: comps.length, floating_islands: minor.length, floating_outside_hull: outside, decorative_shells: inside, smallest_island_share_ppm: smallestPpm, floating_max_outside_hull_ppm: worstOutsidePpm });
   },
 
   bbox(ctx) {
@@ -475,6 +570,45 @@ export const CHECKS: Record<CheckId, CheckFn> = {
         hull_vertices: capped.hull.vertices.length,
         hull_vertex_budget: ctx.budgets.hullVertices,
         volume_kept_ppm: Math.round((capped.hull.volume / hull.volume) * 1_000_000),
+      },
+    });
+  },
+
+  /**
+   * Applies the prune autofix to a few degenerate triangles and proves it sound: the repaired file must have
+   * none left, no error code the original lacked, and unchanged topology. A fix that cannot be applied or
+   * proven becomes a rejection, so "pruned" is never claimed without evidence.
+   */
+  async autofix(ctx) {
+    if (!ctx.autofixCandidate) return notChecked(ctx.nonFinite ? 'non-finite positions' : 'no degenerate triangles within the pruning threshold');
+    const fail = (why: string, measures: { [k: string]: Json } = {}): CheckOutput => ({
+      record: { status: 'ran' },
+      diagnostics: [makeDiagnostic('DEGENERATE_TRIANGLE', { pointer: '/meshes', message: `the degenerate triangles cannot be pruned safely: ${why}`, evidence: { autofix: 'failed' } })],
+      measures: { autofix: { applied: 0, sound: 0, reason: why.slice(0, 160), ...measures } },
+    });
+    const fixed = await pruneDegenerate(ctx.bytes);
+    if (fixed.unprunable > 0 || fixed.removed === 0) return fail(fixed.reason ?? 'nothing could be removed');
+    const again = await ctx.recheck!(fixed.bytes);
+    const errorCodes = (r: ReadonlyMap<CheckId, CheckOutput>) => new Set([...r.entries()].filter(([id]) => id !== 'autofix').flatMap(([, o]) => o.diagnostics.filter((d) => d.severity === 'error').map((d) => d.code)));
+    const before = errorCodes(ctx.results!);
+    const after = errorCodes(again);
+    const introduced = [...after].filter((c) => !before.has(c));
+    const left = (again.get('degenerate')?.measures.degenerate_triangles as number | undefined) ?? -1;
+    const abstained = [...again.entries()].filter(([, o]) => o.record.status === 'abstained').map(([id]) => id);
+    const topology = [['boundary', 'boundary_edges'], ['nonmanifold', 'nonmanifold_edges'], ['winding', 'inconsistent_edges'], ['islands', 'islands']] as const;
+    const changed = topology.filter(([id, k]) => again.get(id)?.measures[k] !== ctx.results!.get(id)?.measures[k]).map(([, k]) => k);
+    if (introduced.length) return fail(`the repaired file would add ${introduced.join(', ')}`);
+    if (left !== 0) return fail(`${left} degenerate triangles remain after pruning`);
+    if (abstained.length) return fail(`the repaired file could not be fully checked (${abstained.join(', ')})`);
+    if (changed.length) return fail(`pruning changed ${changed.join(', ')}`);
+    return ran([], {
+      autofix: {
+        applied: 1,
+        sound: 1,
+        removed_triangles: fixed.removed,
+        input_triangles: fixed.inputTriangles,
+        output_triangles: fixed.outputTriangles,
+        output_sha256: createHash('sha256').update(fixed.bytes).digest('hex'),
       },
     });
   },

@@ -4,6 +4,8 @@ export interface ExpectedLabel {
   verdict: 'PASS' | 'FAIL';
   codes: string[];
   allowed: string[];
+  /** The prune autofix must have run and been proven sound. */
+  autofix?: 'sound';
 }
 
 export interface Evaluation {
@@ -31,6 +33,10 @@ export function evaluateReport(report: AssetGateReport, expected: ExpectedLabel,
   if (unexpected.length) problems.push(`unexpected ${unexpected.join(',')}`);
   const abstained = Object.entries(report.checks).filter(([, c]) => c.status === 'abstained').map(([id]) => id);
   if (abstained.length) problems.push(`abstained: ${abstained.join(',')}`);
+  if (expected.autofix === 'sound') {
+    const fix = report.measures.autofix as { applied?: number; sound?: number } | undefined;
+    if (fix?.applied !== 1 || fix?.sound !== 1) problems.push('the prune autofix did not run soundly');
+  }
   if (isControl && expected.verdict === 'PASS') {
     const collider = report.measures.collider as { kind?: string } | undefined;
     if (!collider?.kind) problems.push('no collider derived');

@@ -1,7 +1,8 @@
-import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import { EXIT_CODES, exitCodeFor } from '@kensho/diagnostics';
-import { DEFAULT_TIMEOUT_MS, runAssetGate, type AssetClass, type Body, type Tier } from '@kensho/gates-asset';
+import { DEFAULT_TIMEOUT_MS, pruneDegenerate, runAssetGate, type AssetClass, type Body, type Tier } from '@kensho/gates-asset';
 
 export interface Io {
   stdout: (text: string) => void;
@@ -10,7 +11,7 @@ export interface Io {
 
 const USAGE = `usage:
   kensho asset-gate <file.glb> --tier mobile|desktop [--class hero|prop|background] [--body dynamic|static]
-                    [--box-um x,y,z] [--timeout-ms n]
+                    [--box-um x,y,z] [--timeout-ms n] [--write-fixed repaired.glb]
   kensho smoke <bundle-dir> --tier mobile|desktop [--timeout-ms n]
 
 exit codes: 0 PASS, 1 FAIL, 2 ABSTAIN, 3 usage`;
@@ -53,9 +54,11 @@ export async function main(argv: string[], io: Io, env: NodeJS.ProcessEnv = proc
           body: { type: 'string' },
           'box-um': { type: 'string' },
           'timeout-ms': { type: 'string' },
+          'write-fixed': { type: 'string' },
         },
       });
       if (positionals.length !== 1) throw new UsageError('asset-gate takes exactly one <file.glb>');
+      if (values['write-fixed'] !== undefined && !values['write-fixed']) throw new UsageError('--write-fixed needs a path');
       const tier = oneOf<Tier>('tier', values.tier, ['mobile', 'desktop']);
       const assetClass = oneOf<AssetClass>('class', values.class, ['hero', 'prop', 'background'], 'prop');
       const body = oneOf<Body>('body', values.body, ['dynamic', 'static'], 'dynamic');
@@ -68,6 +71,19 @@ export async function main(argv: string[], io: Io, env: NodeJS.ProcessEnv = proc
         throw new UsageError(`cannot read ${positionals[0]}: ${(e as Error).message}`);
       }
       const report = await runAssetGate(bytes, { tier, assetClass, body, ...(boxUm ? { boxUm } : {}) }, { timeoutMs });
+      const fix = report.measures.autofix as { applied?: number; sound?: number; output_sha256?: string } | undefined;
+      if (values['write-fixed'] !== undefined) {
+        // the repaired file is written only when the gate proved the prune sound, and must be the file it described
+        if (fix?.applied === 1 && fix.sound === 1) {
+          const pruned = await pruneDegenerate(bytes);
+          const sha = createHash('sha256').update(pruned.bytes).digest('hex');
+          if (sha !== fix.output_sha256) throw new Error('the repaired file does not match the hash the gate reported');
+          writeFileSync(values['write-fixed'], pruned.bytes);
+          io.stderr(`kensho: wrote ${values['write-fixed']} (${pruned.removed} degenerate triangle(s) pruned, sha256 ${sha})\n`);
+        } else {
+          io.stderr('kensho: nothing to write: no verified autofix was applied\n');
+        }
+      }
       io.stdout(JSON.stringify(report, null, 2) + '\n');
       return exitCodeFor(report.verdict);
     }

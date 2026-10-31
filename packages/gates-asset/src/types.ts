@@ -36,6 +36,7 @@ export const CHECK_IDS = [
   'bbox',
   'hull_complexity',
   'collider',
+  'autofix',
 ] as const;
 export type CheckId = (typeof CHECK_IDS)[number];
 

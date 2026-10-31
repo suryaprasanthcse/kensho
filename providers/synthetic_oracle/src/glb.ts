@@ -18,6 +18,8 @@ export interface MaterialSpec {
 export interface PartSpec {
   geometry: Geometry;
   material: number;
+  /** glTF primitive mode. Defaults to triangles (4); 5 builds a strip from the index list. */
+  mode?: number;
 }
 
 export interface NodeSpec {
@@ -65,6 +67,7 @@ export async function buildGlb(spec: AssetSpec): Promise<Uint8Array> {
       prim.setAttribute('TEXCOORD_0', doc.createAccessor().setType('VEC2').setArray(new Float32Array(g.uv)).setBuffer(buffer));
       prim.setIndices(doc.createAccessor().setType('SCALAR').setArray(new Uint32Array(g.idx)).setBuffer(buffer));
       prim.setMaterial(materials[part.material]!);
+      if (part.mode !== undefined) prim.setMode(part.mode as never);
       mesh.addPrimitive(prim);
     }
     const node = doc.createNode(`node_${ni}`).setMesh(mesh);

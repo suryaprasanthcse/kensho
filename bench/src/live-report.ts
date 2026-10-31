@@ -104,8 +104,19 @@ w();
 // ---- gate on the downloads ----
 w('## The downloads through `asset-gate` (class prop, dynamic)');
 w();
-w('| Job | Prompt purpose | Tris | Degenerate tris | Textures | Mobile | Desktop | Mobile errors | Floating shells |');
-w('|---|---|---:|---:|---|---|---|---|---:|');
+w('The "previous rules" columns are recomputed from the same measures under the rules in force before the calibration: any degenerate triangle was an error, and any island under 1% of the area was an error.');
+w();
+w('| Job | Prompt purpose | Tris | Degenerate tris | Textures | Mobile | Desktop | Mobile errors | Minor shells (outside hull) | Mobile, previous rules | Desktop, previous rules |');
+w('|---|---|---:|---:|---|---|---|---|---|---|---|');
+const summaryRows: Record<string, unknown>[] = [];
+const bboxSummary: Record<string, unknown>[] = [];
+const errorCodes = (r: AssetGateReport) => r.diagnostics.filter((d) => d.severity === 'error').map((d) => d.code);
+/** What the verdict would have been before the calibration, from the same measures. */
+const previous = (r: AssetGateReport): string => {
+  const ms = r.measures as Record<string, number>;
+  const other = errorCodes(r).filter((c) => c !== 'DEGENERATE_TRIANGLE' && c !== 'FLOATING_ISLANDS');
+  return other.length || ms.degenerate_triangles! > 0 || ms.floating_islands! > 0 ? 'FAIL' : 'PASS';
+};
 const BOX: Record<string, [number, number, number]> = { j03_crate_bbox_200_100_50: [200, 100, 50], j04_crate_bbox_50_100_200: [50, 100, 200], j05_crate_bbox_100_200_50: [100, 200, 50] };
 const bboxRows: string[] = [];
 const dims: Record<string, number[]> = {};
@@ -115,14 +126,20 @@ for (const j of jobs.filter((x) => x.glb)) {
   const d = await gate(file, 'desktop');
   const ms = m.measures as Record<string, number | number[]>;
   dims[j.id] = ms.bbox_um as number[];
-  w(`| ${j.id} | ${j.purpose} | ${ms.triangles} | ${ms.degenerate_triangles} | ${ms.images}×${ms.texture_max_dim} px, ${((ms.texture_gpu_bytes as number) / 1048576).toFixed(0)} MiB | ${m.verdict} | ${d.verdict} | ${codes(m)} | ${ms.floating_islands} |`);
+  w(`| ${j.id} | ${j.purpose} | ${ms.triangles} | ${ms.degenerate_triangles} | ${ms.images}×${ms.texture_max_dim} px, ${((ms.texture_gpu_bytes as number) / 1048576).toFixed(0)} MiB | ${m.verdict} | ${d.verdict} | ${codes(m)} | ${ms.floating_islands} (${ms.floating_outside_hull}) | ${previous(m)} | ${previous(d)} |`);
+  summaryRows.push({ id: j.id, triangles: ms.triangles, degenerate: ms.degenerate_triangles, degenerate_ratio_ppm: ms.degenerate_ratio_ppm, minor_shells: ms.floating_islands, outside_hull: ms.floating_outside_hull, max_outside_hull_ppm: ms.floating_max_outside_hull_ppm, texture_images: ms.images, texture_max_dim: ms.texture_max_dim, texture_gpu_bytes: ms.texture_gpu_bytes, mobile: m.verdict, desktop: d.verdict, mobile_errors: errorCodes(m), desktop_errors: errorCodes(d), mobile_previous: previous(m), desktop_previous: previous(d), autofix: ms.autofix ?? null, total_ms: j.total_ms, polls: j.polls?.length, consumed: j.consumed });
   if (BOX[j.id]) {
     const req = BOX[j.id]!;
     const got = ms.bbox_um as number[];
     const rep = await gate(file, 'mobile', req.map((v) => v * 5000).join(','));
+    bboxSummary.push({ id: j.id, requested: req, measured_um: got, deviation_ppm: rep.measures.box_aspect_deviation_ppm });
     bboxRows.push(`| ${j.id} | ${req.join(', ')} | ${got.map((v) => (v / 1e6).toFixed(3)).join(' × ')} | ${(got[0]! / got[1]!).toFixed(2)} : ${(got[1]! / got[2]!).toFixed(2)} (asked ${(req[0]! / req[1]!).toFixed(2)} : ${(req[1]! / req[2]!).toFixed(2)}) | ${rep.measures.box_aspect_deviation_ppm} | ${rep.checks.bbox!.status} |`);
   }
 }
+const rate = (xs: unknown[], key: string) => xs.filter((r) => (r as Record<string, unknown>)[key] === 'PASS').length;
+w();
+w(`Pass rate over the ${summaryRows.length} downloads, **mobile**: ${rate(summaryRows, 'mobile_previous')} of ${summaryRows.length} under the previous rules, **${rate(summaryRows, 'mobile')}** now. **Desktop**: ${rate(summaryRows, 'desktop_previous')} before, **${rate(summaryRows, 'desktop')}** now. These are the same ten files that motivated the calibration, so this is an in-sample figure, not a held-out measurement.`);
+writeFileSync(join(LIVE, 'summary.json'), JSON.stringify({ spent_credits: spent, accepted: accepted.length, jobs: summaryRows, bbox: bboxSummary, wire: { submit_limit: lim('/api/v2/rodin'), status_limit: lim('/api/v2/status') } }, null, 2) + '\n');
 w();
 w('## `bbox_condition` axis order');
 w();

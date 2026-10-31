@@ -42,8 +42,19 @@ export const THRESHOLDS = {
   weldUm: 1,
   /** A triangle at or below this area is degenerate, in square micrometres (1e-10 m^2). */
   degenerateAreaUm2: 100,
-  /** A detached component below this share of total area is a floating island. */
+  /**
+   * Degenerate triangles up to this share of all triangles (0.5%) are pruned by the autofix and reported as a
+   * warning; above it, or when they cannot be pruned, the asset is rejected.
+   */
+  degenerateAutofixPpm: 5_000,
+  /** A detached component below this share of total area is a minor island. */
   islandSharePpm: 10_000,
+  /**
+   * A minor island whose vertices all lie inside the convex hull of the largest component, give or take this
+   * share of that component's extent, is a decorative shell (warning). Anything outside is debris (error).
+   * The tolerance only absorbs welding and floating-point noise; the distance outside is always reported.
+   */
+  islandHullTolerancePpm: 1_000,
   /** The declared-box aspect tolerance. */
   boxAspectPpm: 150_000,
   /** Collider sources above this many triangles are refused before any hull work. */

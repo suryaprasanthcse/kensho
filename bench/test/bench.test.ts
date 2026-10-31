@@ -56,7 +56,7 @@ describe('committed fixture labels', () => {
 
 describe('every shipped code has a fixture', () => {
   it('names a defect class in the labels or a smoke case that exists', async () => {
-    const classes = new Set(readLabels(LABELS_PATH).fixtures.flatMap((l) => l.expected.codes));
+    const classes = new Set(readLabels(LABELS_PATH).fixtures.map((l) => l.class));
     const smoke = new Set((await buildSmokeCases()).map((c) => c.fixture));
     for (const info of Object.values(REGISTRY)) {
       const ok = info.fixtures.every((f) => (info.gate === 'G4' ? classes.has(f) : smoke.has(f)));

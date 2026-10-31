@@ -75,6 +75,30 @@ describe('kensho asset-gate', () => {
   });
 });
 
+describe('kensho asset-gate --write-fixed', () => {
+  it('writes the pruned file only when the gate proved the prune sound, and says which hash', async () => {
+    const fx = await buildFixture('DEGENERATE_AUTOFIX-01');
+    const input = join(dir, 'autofix.glb');
+    const output = join(dir, 'autofix.fixed.glb');
+    writeFileSync(input, fx.bytes);
+    const r = await run({}, 'asset-gate', input, '--tier', fx.options.tier, '--write-fixed', output);
+    const report = JSON.parse(r.stdout);
+    expect(r.code).toBe(0);
+    expect(report.measures.autofix).toMatchObject({ applied: 1, sound: 1 });
+    expect(r.stderr).toContain(report.measures.autofix.output_sha256);
+    const again = await run({}, 'asset-gate', output, '--tier', fx.options.tier);
+    expect(JSON.parse(again.stdout).measures.degenerate_triangles).toBe(0);
+  });
+
+  it('writes nothing for a clean file or for a rejection', async () => {
+    const output = join(dir, 'never.glb');
+    const r = await run({}, 'asset-gate', files['CONTROL-02']!, '--tier', 'desktop', '--write-fixed', output);
+    expect(r.stderr).toContain('nothing to write');
+    const { existsSync } = await import('node:fs');
+    expect(existsSync(output)).toBe(false);
+  });
+});
+
 describe('kensho smoke', () => {
   let keyDir: string, bundle: string;
   beforeAll(() => {
