@@ -26,7 +26,7 @@ Integer millimetres, Y up. A solid ground plane at y = 0 is implicit. `pos_mm` i
 
 Entity kinds: `static`, `dynamic`, `door` (solid), `pickup`, `key` (not solid). A door has `requires` (a key id) and optional `guards[]` (ids behind the door).
 
-The zod schema is `src/schema.ts`. `schema/scene-gate-1.json` is its JSON Schema export, for structured-output requests; a test fails if the committed file drifts from the schema. Regenerate it with `pnpm --filter @kensho/scene-gate schema`.
+The zod schema is `src/schema.ts`. The JSON Schema exports are in `schema/`: `scene-gate-1.json` is the reference, and `scene-gate-1.claude.json` and `scene-gate-1.gemini.json` drop the keywords those providers' structured outputs reject (see DECISIONS.md). A test fails if a committed file drifts from the schema. Regenerate them with `pnpm --filter @kensho/scene-gate schema`.
 
 ## The codes
 
@@ -35,7 +35,7 @@ Thresholds: 5 mm overlap tolerance, 20 mm support tolerance (`src/thresholds.ts`
 | Code | Fails when | Pointer |
 |---|---|---|
 | `DUPLICATE_ID` | two entities, rules or objectives share an id | the later id |
-| `UNRESOLVED_REF` | a rule event, a door's `requires`/`guards`, or an objective target names a missing id | the reference |
+| `UNRESOLVED_REF` | a rule event, a door's `requires`/`guards`, or an objective target names a missing id or an entity of the wrong kind | the reference |
 | `OBJECTIVE_COUNT` | a collect objective needs more entities with its tag than exist | `/objectives/i/count` |
 | `RULE_CYCLE` | the `on` -> `emit` event graph has a cycle | the rule closing the cycle |
 | `PROGRESSION_CYCLE` | a key sits behind its own door, directly or via other doors | the door's `requires` |
@@ -51,7 +51,7 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 
 ## Repair
 
-`applyRepair(scene, patch)` applies an RFC 6902 patch to a copy of the scene and accepts it only if the multiset of error codes strictly shrinks and no new code appears. It refuses a patch that removes an objective or lowers a collect count (it also refuses changing an objective's tag, type or target). It returns the accepted scene with before and after diagnostics, or a refusal with a reason.
+`applyRepair(scene, patch)` applies an RFC 6902 patch to a copy of the scene and accepts it only if the multiset of error codes strictly shrinks and no new code appears. It refuses a patch that removes an objective or lowers a collect count, and one that changes an objective's tag or type. A reach or unlock objective may be retargeted to an existing entity of the right kind. It returns the accepted scene with before and after diagnostics, or a refusal with a reason.
 
 ## Running it
 

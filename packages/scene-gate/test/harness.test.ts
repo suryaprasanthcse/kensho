@@ -16,6 +16,8 @@ import {
   type GenerationRequest,
   type Tape,
 } from '../src/harness.ts';
+import { SEMANTIC_CODES } from '../src/diagnostic.ts';
+import { OVERLAP_TOLERANCE_MM, STEP_RADIUS_MM, SUPPORT_TOLERANCE_MM } from '../src/thresholds.ts';
 import { sha256Hex } from '../src/verdict.ts';
 import { EXAMPLE_SCENE, cleanScene } from './fixtures.ts';
 
@@ -110,6 +112,26 @@ describe('the draft prompts', () => {
 
   it('come with a system prompt that is also marked DRAFT', () => {
     expect(readFileSync(SYSTEM, 'utf8').startsWith('<!-- DRAFT')).toBe(true);
+  });
+
+  it('state the rules in plain words, without naming any diagnostic code', () => {
+    const text = readFileSync(SYSTEM, 'utf8');
+    for (const code of [...SEMANTIC_CODES, 'SCHEMA_INVALID']) expect(text).not.toContain(code);
+    expect(text).not.toMatch(/[A-Z]{3,}_[A-Z_]+/);
+  });
+
+  it('quote the thresholds the checks use', () => {
+    const text = readFileSync(SYSTEM, 'utf8');
+    expect(text).toContain(`${OVERLAP_TOLERANCE_MM} mm`);
+    expect(text).toContain(`${SUPPORT_TOLERANCE_MM} mm`);
+    expect(text).toContain(`${STEP_RADIUS_MM} mm`);
+  });
+
+  it('cover every rule the default checks enforce', () => {
+    const text = readFileSync(SYSTEM, 'utf8').toLowerCase();
+    for (const phrase of ['share an id', 'right kind of entity', 'never asks for more', 'loop', 'locked away', 'overlap each other', 'spawn point', 'resting on something', 'inside `bounds_mm`', 'jump_height_mm']) {
+      expect(text, phrase).toContain(phrase);
+    }
   });
 });
 

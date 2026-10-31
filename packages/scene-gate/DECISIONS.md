@@ -13,7 +13,11 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 - Coordinates and sizes are capped at 1 km (1,000,000 mm), sizes are at least 1 mm, and entities, rules and objectives are capped at 500, 200 and 50. The cap keeps every squared distance an exact integer, and the entity cap bounds the pairwise checks. A scene beyond a cap is `schema_invalid`.
 - Objects are closed (`additionalProperties: false`): an unknown key is `schema_invalid`. A door must have `requires`; no other kind may.
 - `bounds_mm` is not required to have min below max. Inverted bounds make everything `OUT_OF_BOUNDS`.
-- The JSON Schema uses `prefixItems` for tuples and `oneOf` for the kind and objective unions. Some structured-output providers accept only a subset of JSON Schema, so check the schema against the chosen providers before freezing.
+- There are three JSON Schema exports (`pnpm --filter @kensho/scene-gate schema`), all with fixed-length arrays as `items` plus equal `minItems`/`maxItems` (never `prefixItems`) and unions as `anyOf` (never `oneOf`):
+  - `schema/scene-gate-1.json` is the reference, with every constraint.
+  - `schema/scene-gate-1.claude.json` drops what Claude's structured outputs reject (integer ranges, string lengths, `maxItems`, `minItems` above 1) and the unverified `$schema`, `$id` and `title`.
+  - `schema/scene-gate-1.gemini.json` drops what Gemini's `responseJsonSchema` does not list (`pattern`, string lengths, `$schema`, `$id`) and writes `const` as a one-value `enum`.
+  Each dropped constraint is written into the node's description, and the zod schema still enforces all of them afterwards, so an array of the wrong length, or a number out of range, is `schema_invalid` rather than a provider error. Sources and the exact keyword lists are in `src/json-schema.ts` and pinned by tests. The documentation was read, not exercised: no request was sent to either API, so a keyword the docs do not mention could still be rejected.
 
 ## Arithmetic
 
@@ -22,7 +26,7 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 ## Checks
 
 - **DUPLICATE_ID**: entities, rules and objectives share one id namespace, in the order entities, rules, objectives. The looser reading is one namespace per list.
-- **UNRESOLVED_REF**: both `on` and `emit` events are resolved. `signal:` names are not resolved against anything. `requires` must name an existing **key** (`reason: "not_a_key"` otherwise), because the format defines it as "a key id". Other wrong-kind references (`collect:` of a crate, `unlock` of a non-door, a `guards` entry of any kind) are **not** diagnosed, since the specification says only "a missing id". That is a gap you may want a code for.
+- **UNRESOLVED_REF**: fires on a missing id and on an entity of the wrong kind, with evidence `{id, expected_kind, actual_kind}` (`actual_kind` is `"missing"` when no entity has the id). Both `on` and `emit` events are checked. `collect:` needs a pickup or key, `open:` a door, `enter:` any entity; a door's `requires` needs a key and its `guards` any entity; a `reach` target is any entity and an `unlock` target a door. `signal:` names are not ids and are not resolved. A `reach` target has no kind restriction because the format gives none, so a reach objective can be satisfied by pointing it at any entity. Duplicate ids resolve to the first entity.
 - **OBJECTIVE_COUNT**: only `pickup` and `key` entities count towards a tag. A tagged `static` does not.
 - **RULE_CYCLE**: depth-first search in rule order; every rule whose `emit` is already on the search stack is reported at `/rules/i`. Several cycles give several diagnostics. Which rule "closes" a cycle depends on that order, which is fixed.
 - **PROGRESSION_CYCLE**: "X needs door D open" when X is in `D.guards`; "D needs key K" when `D.requires` is K. A cycle in that graph is a deadlock. This also covers two doors that each guard the other, which no key can break. One diagnostic per cyclic strongly connected component, at the `requires` of its lowest-index door whose key lies inside the component. References that do not resolve are left out of the graph (UNRESOLVED_REF reports them).
@@ -46,7 +50,7 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 
 ## Repair
 
-- Beyond the specified refusals, a patch is also refused if it changes a collect objective's tag, or any objective's type or target, because each dodges a failing check as lowering a count does. A legitimate retarget (fixing a typo in a target id) is refused too; the fix then has to add the missing entity. Relax this in `weakenedObjective` if repair rates look artificially low.
+- A patch is refused if it removes an objective, lowers a collect count, changes a collect objective's tag, or changes any objective's type. A reach or unlock objective may be retargeted, but only to an entity that exists in the patched scene and has the right kind (a door for unlock, any entity for reach). The target is judged on the patched scene, so one patch can add an entity and retarget to it. A retarget is allowed even when the old target was valid, so a reach objective can be moved to an easier entity. That is a gap while reach targets have no kind restriction.
 - "No new code appears" is judged over all severities. "Strictly shrinks" means a proper sub-multiset: no code occurs more often than before and at least one occurs less. A patch that clears one error but adds another instance of an existing code is refused as `not_shrinking`.
 - A scene that is not schema-valid is not repairable, and a patch that leaves the scene schema-invalid is refused.
 
@@ -57,4 +61,4 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 
 ## Prompts
 
-- `system.md` describes the format and the meaning of each field, but does not state the rules the checks enforce (unique ids, crates resting on something, keys not behind their own doors). Stating them would measure instruction following rather than what a model produces unprompted. Whether to state them is your call before you freeze.
+- `system.md` states, in plain words and without diagnostic codes, every rule the default checks enforce, with their thresholds (5 mm, 20 mm, 1500 mm). It also states the optional height rule, which only matters if `--unreachable-height` is used in the study. A test pins that no code name appears in it and that every rule has a sentence. The study therefore measures whether a model follows stated rules, not whether it guesses them.

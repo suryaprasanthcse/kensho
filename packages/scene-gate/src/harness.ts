@@ -88,7 +88,7 @@ export interface GenerationRequest {
   readonly system: string;
   readonly prompt: { readonly id: string; readonly text: string };
   readonly sample: number;
-  /** The JSON Schema from schema/scene-gate-1.json, for providers that take a structured-output schema. */
+  /** The JSON Schema from schema/ (the profile that matches the provider), for providers that take a structured-output schema. */
   readonly jsonSchema: Record<string, unknown>;
 }
 
