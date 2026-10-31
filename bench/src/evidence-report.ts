@@ -94,7 +94,13 @@ const onlyTriangles = (r: RealRun) => r.diagnostics.filter((d) => d.severity ===
 const q5000 = live.jobs.filter((j) => j.id !== 'j01_chest_web20k');
 const j01 = live.jobs.find((j) => j.id === 'j01_chest_web20k')!;
 const highpack = live.jobs.find((j) => j.id === 'j10_chest_highpack')!;
-const times = live.jobs.map((j) => j.total_ms).sort((a, b) => a - b);
+// Time to done is only meaningful for jobs that were polled from submission to completion. The first job was
+// resumed after it had already finished, so its elapsed time is not a generation time. The burst is the seven
+// jobs submitted together (j02 to j08); the last two ran one after another.
+const BURST = /^j0[2-8]_/;
+const burst = live.jobs.filter((j) => BURST.test(j.id));
+const times = burst.map((j) => j.total_ms).sort((a, b) => a - b);
+const after = live.jobs.filter((j) => /^j(09|10)_/.test(j.id)).map((j) => `${(j.total_ms / 1000).toFixed(0)} s`);
 const emptyDownloads = count(wire, (e) => e.url.endsWith('/api/v2/download') && (e.response_body ?? '').includes('"list":[]'));
 const fanout = ledger.filter((e) => e.event === 'accepted' && e.job_uuids).map((e) => e.job_uuids!.length);
 const dev = live.bbox.map((b) => b.deviation_ppm);
@@ -120,7 +126,7 @@ const liveChest = live.jobs.find((j) => j.id.startsWith('j08'));
 const rawChest = raw.find((r) => r.id === 'chest' && r.tier === 'mobile');
 const envelope = THRESHOLDS.islandHullTolerancePpm / 10_000;
 const splitOutside = split.filter((r) => r.tier === 'mobile' && Number(r.measures.floating_outside_hull) > 0);
-w(`**The hull envelope.** A minor shell counts as decorative if it lies within the convex hull of the body dilated by ${envelope}% of its extent, to allow for relief hardware such as brackets and hinges. That value was chosen after measuring the chest: its bracket shells sit up to ${(Number(rawChest?.measures.floating_max_outside_hull_ppm) / 10_000).toFixed(2)}% outside the hull on the frozen chest and ${((liveChest?.max_outside_hull_ppm ?? 0) / 10_000).toFixed(2)}% on the live one, so it is fitted to those assets. With it, the frozen chest has ${rawChest?.measures.floating_outside_hull} minor shell(s) outside and ${rawChest?.measures.decorative_shells} decorative, and the live chest has ${liveChest?.outside_hull} of ${liveChest?.minor_shells} outside. It does not clear the split outputs${splitOutside.length ? ` (${splitOutside.map((r) => `${r.id} ${(Number(r.measures.floating_max_outside_hull_ppm) / 10_000).toFixed(1)}% outside`).join(', ')})` : ''}, where the cuts leave real fragments. The distance is reported in every diagnostic.`);
+w(`**The hull envelope.** A minor shell counts as decorative if it lies within the convex hull of the body dilated by ${envelope}% of its extent, to allow for relief hardware such as brackets and hinges. That value was chosen after measuring the chest: its bracket shells sit up to ${(Number(rawChest?.measures.floating_max_outside_hull_ppm) / 10_000).toFixed(2)}% outside the hull on the frozen chest and ${((liveChest?.max_outside_hull_ppm ?? 0) / 10_000).toFixed(2)}% on the live one, so it is fitted to those assets. With it, the frozen chest has ${rawChest?.measures.floating_outside_hull} minor shell(s) outside and ${rawChest?.measures.decorative_shells} decorative, and the live chest has ${liveChest?.outside_hull} of ${liveChest?.minor_shells} outside. It does not clear the split outputs${splitOutside.length ? ` (${splitOutside.map((r) => `${r.id} ${(Number(r.measures.floating_max_outside_hull_ppm) / 10_000).toFixed(1)}% outside`).join(', ')})` : ''}. The distance is reported in every diagnostic.`);
 w();
 w('## 2. The 50k triangle problem on mobile WebGL');
 w();
@@ -141,11 +147,11 @@ w();
 
 w('## 3. Wire ingestion and the sub-job fan-out vulnerability');
 w();
-w(`One submission is **${[...new Set(fanout)].join('/')} jobs**, not one: the submit response lists ${[...new Set(fanout)].join('/')} job ids, and the status call returns all of them. A client that treats the first \`Done\` (or any HTTP 201) as completion asks for the download early. The service answers HTTP 201 with an empty file list, not an error, while still charging for the job.`);
+w(`One submission is **${[...new Set(fanout)].join('/')} jobs**, not one: the submit response lists ${[...new Set(fanout)].join('/')} job ids, and the status call returns all of them. A client that treats the first \`Done\` (or any HTTP 201) as completion asks for the download early. The service answers HTTP 201 with an empty file list, not an error. Credits are charged when the job is submitted, so the client is left with no asset for credits already spent.`);
 w();
 w(`- This happened on the first live job: poll two showed one job Done and two still running; the download returned \`{"list":[]}\` (${emptyDownloads} empty download in the wire record). The client was changed to require every sub-job Done, and tests now cover a fan-out with staggered completion and a failed sub-job.`);
 w(`- Spend was ledgered at acceptance: ${live.accepted} accepted jobs, ${live.spent_credits.toFixed(1)} credits, each \`consumed\` equal to the documented price (${ledger.filter((e) => e.event === 'accepted' && e.consumed_mc === e.expected_mc).length} of ${live.accepted}), no halts. The submit response carries no tier field, so a silent downgrade is detectable only by price and by inspecting the asset.`);
-w(`- Time to done under a burst of seven: min ${(times[0]! / 1000).toFixed(0)} s, median ${(percentile(times, 0.5) / 1000).toFixed(0)} s, max ${(times[times.length - 1]! / 1000).toFixed(0)} s (n=${times.length}). Advertised limits: submit and download ${live.wire.submit_limit}, status ${live.wire.status_limit}.`);
+w(`- Time to done for the burst of ${times.length} jobs submitted together: min ${(times[0]! / 1000).toFixed(0)} s, median ${(percentile(times, 0.5) / 1000).toFixed(0)} s, max ${(times[times.length - 1]! / 1000).toFixed(0)} s; they finished in groups, not one by one. The two jobs run afterwards, one at a time, took ${after.join(' and ')}. The first job was resumed after it had finished, so it has no generation time. Advertised limits: submit and download ${live.wire.submit_limit}, status ${live.wire.status_limit}.`);
 w(`- A submit that times out may have been charged, so it is never retried; status and download are idempotent and are. Fault injection against a local mock covers each of these paths.`);
 w();
 
