@@ -415,6 +415,24 @@ describe('UNREACHABLE_HEIGHT (optional)', () => {
     expect(brief(checkUnreachableHeight(withCoinBottom(2000, [step(2000, 1000)])))).toEqual(['UNREACHABLE_HEIGHT /entities/0/pos_mm']);
   });
 
+  it('measures the 1.5 m to the footprint edge: 1500 mm counts, 1501 mm does not', () => {
+    // The coin is at z = 5000. A step whose nearest edge is at z = 3500 is 1500 mm away; at z = 3499 it is 1501 mm away.
+    expect(checkUnreachableHeight(withCoinBottom(2000, [step(3000, 1000)]))).toEqual([]);
+    expect(brief(checkUnreachableHeight(withCoinBottom(2000, [step(2999, 1000)])))).toEqual(['UNREACHABLE_HEIGHT /entities/0/pos_mm']);
+  });
+
+  it('measures straight-line distance, so a step 1200 mm away on both axes is out of range', () => {
+    const diagonal = box('step', 'static', [-1700, 500, 3300], [1000, 1000, 1000]);
+    expect(brief(checkUnreachableHeight(withCoinBottom(2000, [diagonal])))).toEqual(['UNREACHABLE_HEIGHT /entities/0/pos_mm']);
+    const near = box('step', 'static', [-1700, 500, 3600], [1000, 1000, 1000]);
+    expect(checkUnreachableHeight(withCoinBottom(2000, [near]))).toEqual([]);
+  });
+
+  it('ignores a solid top that is above the item, since the player cannot stand on it', () => {
+    const ceiling = box('ceiling', 'static', [0, 3500, 4000], [1000, 200, 1000]);
+    expect(brief(checkUnreachableHeight(withCoinBottom(2000, [ceiling])))).toEqual(['UNREACHABLE_HEIGHT /entities/0/pos_mm']);
+  });
+
   it('is the flag, not the function, that keeps it off by default', () => {
     const s = withCoinBottom(2000);
     expect(checkScene(s)).toEqual([]);
