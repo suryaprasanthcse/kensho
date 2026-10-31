@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it } from 'vitest';
 import { Hyper3dError, Ledger, VirtualClock, minimalGlb, type MockFault } from '../src/index.ts';
-import { codeOf, req, rig, type Rig } from './helpers.ts';
+import { codeOf, req, rig, untilDone, type Rig } from './helpers.ts';
 
 let r: Rig;
 afterEach(async () => {
@@ -15,7 +15,7 @@ describe('the happy path', () => {
     const job = await r.provider.submit(req(1));
     expect(ledgerEvents()).toEqual(['accepted']); // on disk before any poll
     expect(await r.provider.poll(job)).toEqual({ status: 'pending' });
-    expect(await r.provider.poll(job)).toEqual({ status: 'done' });
+    expect((await untilDone(r.provider, job)).status).toBe('done');
     const raw = await r.provider.fetch(job);
     expect(raw.consumed).toBe(0.5);
     expect(raw.providerId).toBe('hyper3d-rodin/gen-2.5');
@@ -173,6 +173,7 @@ describe('timeouts', () => {
   it('status polls are idempotent: a timeout and a 5xx are retried with backoff', async () => {
     r = await rig({
       pollsToDone: 1,
+      subJobs: 1,
       faults: { status: (n): MockFault | undefined => (n === 1 ? { kind: 'stall' } : n === 2 ? { kind: 'http', status: 502 } : undefined) },
     }, { requestTimeoutMs: 150 });
     const job = await r.provider.submit(req(1));
@@ -185,6 +186,37 @@ describe('timeouts', () => {
     r = await rig({ faults: { status: (): MockFault => ({ kind: 'stall' }) } }, { requestTimeoutMs: 60, maxRetries: 2 });
     const job = await r.provider.submit(req(1));
     expect(await codeOf(r.provider.poll(job))).toBe('TIMEOUT');
+  });
+});
+
+describe('one submission is several jobs', () => {
+  it('is done only when every sub-job is done: the first Done is not enough', async () => {
+    r = await rig({ pollsToDone: 1, subJobs: 3 });
+    const job = await r.provider.submit(req(1));
+    expect(await r.provider.poll(job)).toEqual({ status: 'pending' }); // first part done, the others waiting or generating
+    expect(await r.provider.poll(job)).toEqual({ status: 'pending' });
+    expect(await r.provider.poll(job)).toEqual({ status: 'done' });
+    expect(await codeOf(r.provider.fetch(job))).toBe('RESOLVED');
+  });
+
+  it('never asks for a download while any sub-job is unfinished', async () => {
+    r = await rig({ pollsToDone: 1, subJobs: 3 });
+    const job = await r.provider.submit(req(1));
+    expect(await codeOf(r.provider.fetch(job))).toBe('NOT_READY');
+    await r.provider.poll(job);
+    expect(r.mock.counts.download).toBe(0);
+  });
+
+  it('is failed as soon as any sub-job fails', async () => {
+    r = await rig({ pollsToDone: 1, subJobs: 3, failJobs: [1] });
+    const job = await r.provider.submit(req(1));
+    expect((await untilDone(r.provider, job)).status).toBe('failed');
+  });
+
+  it('records the sub-job ids in the ledger', async () => {
+    r = await rig({ subJobs: 3 });
+    await r.provider.submit(req(1));
+    expect(new Ledger(r.ledgerPath).entries()[0]!.job_uuids).toEqual(['job-1-part-1', 'job-1-part-2', 'job-1-part-3']);
   });
 });
 
@@ -296,7 +328,7 @@ describe('idempotency and resume', () => {
   });
 
   it('a new process resumes from the ledger without paying again', async () => {
-    r = await rig({ pollsToDone: 1 });
+    r = await rig({ pollsToDone: 1, subJobs: 1 });
     const job = await r.provider.submit(req(1));
     const { Hyper3dRodinProvider } = await import('../src/index.ts');
     const second = new Hyper3dRodinProvider({ apiKey: 'test-key', baseUrl: r.mock.baseUrl, maxCredits: 1000, ledgerPath: r.ledgerPath, clock: new VirtualClock(), random: () => 0.5 });

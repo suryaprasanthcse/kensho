@@ -14,7 +14,9 @@
     "test": "vitest run",
     "proof": "tsx bench/src/proof.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "real-assets": "tsx bench/src/real-assets.ts"
+    "real-assets": "tsx bench/src/real-assets.ts",
+    "live-calibration": "tsx bench/src/live-calibration.ts",
+    "live-report": "tsx bench/src/live-report.ts"
   },
   "devDependencies": {
     "@types/node": "26.6.6",

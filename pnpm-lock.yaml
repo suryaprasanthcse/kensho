@@ -202,6 +202,9 @@ importers:
       '@kensho/harness-render':
         specifier: workspace:*
         version: link:../packages/harness-render
+      '@kensho/hyper3d_rodin':
+        specifier: workspace:*
+        version: link:../providers/hyper3d_rodin
       '@kensho/ir':
         specifier: workspace:*
         version: link:../packages/ir

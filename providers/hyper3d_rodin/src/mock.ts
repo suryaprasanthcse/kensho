@@ -36,6 +36,8 @@ export interface MockOptions {
   echoTier?: boolean;
   /** The provider's own parallelism cap: submits beyond it answer API_PARALLELISM_LIMIT_REACHED. */
   parallelismCap?: number;
+  /** How many sub-jobs one submission fans out into (the live API returns three). */
+  subJobs?: number;
   /** Job numbers (1-based) that end in Failed. */
   failJobs?: number[];
   glb?: Uint8Array;
@@ -67,11 +69,11 @@ export interface MockServer {
 
 /** A local stand-in for the Rodin API. It never leaves loopback and spends nothing. */
 export async function startMockRodin(options: MockOptions = {}): Promise<MockServer> {
-  const o = { apiKey: 'test-key', pollsToDone: 2, consumed: 0.5, echoTier: true, glb: minimalGlb(), ...options };
+  const o = { apiKey: 'test-key', pollsToDone: 2, subJobs: 3, consumed: 0.5, echoTier: true, glb: minimalGlb(), ...options };
   const requests: RecordedRequest[] = [];
   const counts = { submit: 0, status: 0, download: 0, file: 0 };
   const held = new Set<ServerResponse>();
-  const jobs = new Map<string, { n: number; sub: string; polls: number; running: boolean }>();
+  const jobs = new Map<string, { n: number; sub: string; polls: number; running: boolean; complete: boolean }>();
   const subToUuid = new Map<string, string>();
   let running = 0;
   let peak = 0;
@@ -159,12 +161,12 @@ export async function startMockRodin(options: MockOptions = {}): Promise<MockSer
         acceptedCount++;
         const uuid = `job-${acceptedCount}`;
         const sub = `sub-${acceptedCount}`;
-        jobs.set(uuid, { n: acceptedCount, sub, polls: 0, running: true });
+        jobs.set(uuid, { n: acceptedCount, sub, polls: 0, running: true, complete: false });
         subToUuid.set(sub, uuid);
         running++;
         peak = Math.max(peak, running);
         const consumed = typeof o.consumed === 'function' ? o.consumed(Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, v[0]!]))) : o.consumed;
-        const body: Record<string, unknown> = { uuid, jobs: { uuids: [uuid], subscription_key: sub }, consumed, ...(o.echoTier ? { tier: fields.tier?.[0] } : {}) };
+        const body: Record<string, unknown> = { uuid, jobs: { uuids: Array.from({ length: o.subJobs }, (_, i) => `${uuid}-part-${i + 1}`), subscription_key: sub }, consumed, ...(o.echoTier ? { tier: fields.tier?.[0] } : {}) };
         return send(res, 201, handled && typeof handled === 'object' && handled.kind === 'patch' ? { ...body, ...handled.patch } : body);
       }
 
@@ -176,14 +178,19 @@ export async function startMockRodin(options: MockOptions = {}): Promise<MockSer
         const job = uuid ? jobs.get(uuid) : undefined;
         if (!uuid || !job) return send(res, 400, { error: 'API_OBJECT_NOT_FOUND' });
         job.polls++;
-        let status = 'Generating';
-        if (o.failJobs?.includes(job.n) && job.polls >= o.pollsToDone) status = 'Failed';
-        else if (job.polls >= o.pollsToDone) status = 'Done';
-        if (status !== 'Generating' && job.running) {
+        // the sub-jobs finish one after another, as they do on the live API
+        const parts = Array.from({ length: o.subJobs }, (_, i) => {
+          const failing = o.failJobs?.includes(job.n) && i === o.subJobs - 1 && job.polls >= o.pollsToDone + i;
+          const status = failing ? 'Failed' : job.polls >= o.pollsToDone + i ? 'Done' : job.polls >= i + 1 ? 'Generating' : 'Waiting';
+          return { uuid: `${uuid}-part-${i + 1}`, status };
+        });
+        const finished = parts.every((p) => p.status === 'Done' || p.status === 'Failed');
+        job.complete = parts.every((p) => p.status === 'Done');
+        if (finished && job.running) {
           job.running = false;
           running--;
         }
-        return send(res, 200, { jobs: [{ uuid, status }] });
+        return send(res, 201, { jobs: parts });
       }
 
       if (path === '/download' && req.method === 'POST') {
@@ -192,7 +199,8 @@ export async function startMockRodin(options: MockOptions = {}): Promise<MockSer
         if (handled === 'handled') return;
         const uuid = (JSON.parse(raw.toString('utf8')) as { task_uuid?: string }).task_uuid;
         if (!uuid || !jobs.has(uuid)) return send(res, 400, { error: 'API_OBJECT_NOT_FOUND' });
-        return send(res, 200, { list: [{ name: `${uuid}.glb`, url: `http://127.0.0.1:${(server.address() as { port: number }).port}/files/${uuid}.glb` }] });
+        if (!jobs.get(uuid)!.complete) return send(res, 201, { list: [] }); // the live API does not refuse an unfinished task
+        return send(res, 201, { list: [{ name: `${uuid}.glb`, url: `http://127.0.0.1:${(server.address() as { port: number }).port}/files/${uuid}.glb` }] });
       }
       return send(res, 404, { error: 'NOT_FOUND' });
     } catch (e) {

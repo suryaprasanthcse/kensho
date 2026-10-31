@@ -58,3 +58,12 @@ export const codeOf = async (p: Promise<unknown>): Promise<string> => {
     return (e as { code?: string }).code ?? `OTHER:${(e as Error).message}`;
   }
 };
+
+/** Polls until the job is done (or failed), returning the number of polls it took. */
+export async function untilDone(provider: Rig['provider'], job: Parameters<Rig['provider']['poll']>[0], max = 50): Promise<{ polls: number; status: string }> {
+  for (let i = 1; i <= max; i++) {
+    const s = await provider.poll(job);
+    if (s.status !== 'pending') return { polls: i, status: s.status };
+  }
+  throw new Error('still pending');
+}

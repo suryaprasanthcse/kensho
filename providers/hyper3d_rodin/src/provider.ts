@@ -137,15 +137,16 @@ export class Hyper3dRodinProvider implements AssetProvider {
     this.rejectIfError(body, 'status');
     const jobs = Array.isArray(body.jobs) ? (body.jobs as { uuid?: string; status?: string }[]) : null;
     if (!jobs || jobs.length === 0) throw new Hyper3dError('PROTOCOL', 'status response has no jobs');
-    const mine = jobs.find((j) => j.uuid === rec.uuid) ?? jobs[0]!;
-    const status = String(mine.status ?? '').toLowerCase();
+    // one submission fans out into several jobs (the live API returns three); it is done only when every one is
+    const states = jobs.map((j) => String(j.status ?? '').toLowerCase());
+    const status = states.some((x) => x === 'failed' || x === 'error') ? 'failed' : states.every((x) => x === 'done') ? 'done' : 'pending';
     if (status === 'done') {
       rec.done = true;
       this.releaseSlot(rec.key);
       return { status: 'done' };
     }
-    if (status === 'failed' || status === 'error') {
-      this.ledger.append(this.entry('failed', rec.key, { uuid: rec.uuid, note: 'provider reported the job failed' }));
+    if (status === 'failed') {
+      this.ledger.append(this.entry('failed', rec.key, { uuid: rec.uuid, note: 'provider reported a job failed' }));
       this.releaseSlot(rec.key);
       this.jobs.delete(rec.key); // a failed job is not resumed: the same request may be submitted again
       return { status: 'failed', detail: 'the provider reported the job failed' };
@@ -197,7 +198,7 @@ export class Hyper3dRodinProvider implements AssetProvider {
         throw new Hyper3dError('JOB_DEADLINE', `job ${rec.uuid} was not done after ${this.cfg.jobDeadlineMs} ms; it stays accepted in the ledger`);
       }
       await this.clock.sleep(interval);
-      interval = Math.min(interval * 1.5, 15_000);
+      interval = Math.min(interval * 1.5, 30_000 /* the documented polling ceiling */);
     }
     return this.fetch(job);
   }
@@ -339,7 +340,7 @@ export class Hyper3dRodinProvider implements AssetProvider {
       const sub = (body.jobs as { subscription_key?: unknown } | undefined)?.subscription_key;
       const consumed = typeof body.consumed === 'number' && Number.isFinite(body.consumed) ? Math.round(body.consumed * 1000) : undefined;
       const rec: JobRecord = { key: n.key, uuid: body.uuid, subscriptionKey: nonEmpty(sub) ? sub : undefined, params: n.params, consumedMc: consumed, digest: paramsDigest(n.params), done: false };
-      this.ledger.append(this.entry('accepted', n.key, { ...common, uuid: rec.uuid, ...(rec.subscriptionKey ? { subscription_key: rec.subscriptionKey } : {}), ...(consumed !== undefined ? { consumed_mc: consumed } : {}) }));
+      this.ledger.append(this.entry('accepted', n.key, { ...common, uuid: rec.uuid, ...(rec.subscriptionKey ? { subscription_key: rec.subscriptionKey } : {}), ...(Array.isArray((body.jobs as { uuids?: unknown } | undefined)?.uuids) ? { job_uuids: ((body.jobs as { uuids: unknown[] }).uuids).filter(nonEmpty) } : {}), ...(consumed !== undefined ? { consumed_mc: consumed } : {}) }));
       this.jobs.set(n.key, rec);
       const echoed = typeof body.tier === 'string' ? body.tier : undefined;
       if (echoed !== undefined && echoed !== n.params.tier) {

@@ -37,7 +37,7 @@ describe('token bucket', () => {
   });
 
   it('spaces real provider traffic at the configured rate (sequential, 6 per minute)', async () => {
-    r = await rig({ pollsToDone: 1 }, { rpm: 6 });
+    r = await rig({ pollsToDone: 1, subJobs: 1 }, { rpm: 6 });
     const start = r.clock.now();
     for (let i = 0; i < 10; i++) await r.provider.generate(req(i));
     // 30 requests: a burst of 6, then 24 more at one per ten seconds
@@ -86,7 +86,7 @@ describe('semaphore', () => {
   });
 
   it('a provider with ten slots keeps at most ten jobs running at the API, out of twenty-five', async () => {
-    r = await rig({ pollsToDone: 3 }, { maxConcurrent: 10, rpm: 100_000 });
+    r = await rig({ pollsToDone: 3 }, { maxConcurrent: 10, rpm: 100_000, jobDeadlineMs: 1e12 });
     const out = await Promise.all(Array.from({ length: 25 }, (_, i) => r!.provider.generate(req(i))));
     expect(out.length).toBe(25);
     expect(r.mock.peakRunning()).toBeLessThanOrEqual(10);

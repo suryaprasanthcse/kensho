@@ -12,4 +12,14 @@ Safety properties:
 
 The key is read from `process.env` (so Node's `--env-file=.env` works) or, when given an explicit path, parsed from an env file without loading it into the environment. Copy `.env.example` to `.env` at the repository root; `.env` is ignored by git.
 
-Everything here is tested against a local mock server in `src/mock.ts` that injects timeouts, 429s, errors inside HTTP 201 bodies, tier and price changes, parallelism limits and damaged downloads. The wire format for the status and download endpoints, the response field that reports the credits consumed, and the encoding of `bbox_condition` and `addons` are assumptions to confirm against the API specification before the first real job.
+The unit tests run against a local mock server in `src/mock.ts` that injects timeouts, 429s, errors inside HTTP 201 bodies, tier and price changes, parallelism limits, sub-jobs that finish one after another, and damaged downloads.
+
+The wire format was checked against the live service on 31 Oct 2026 with ten real jobs (`pnpm live-calibration`, then `pnpm live-report`, which write to `bench/out/live/`):
+
+- Status and download answer HTTP 201, not 200.
+- One submission fans out into three jobs; it is done only when every one is `Done`, and a download requested earlier returns an empty list instead of an error.
+- `consumed` is a top-level number on the submit response. The response does not echo the tier.
+- `bbox_condition` as three repeated form fields maps to `[x, y, z]` of the delivered GLB. `addons` as a repeated field is honoured.
+- The submit and download endpoints advertised 200 requests per minute and status 30 per second.
+
+Not established: whether `seed` makes output reproducible, how long download URLs live, and any rate or parallelism behaviour beyond one burst of seven.

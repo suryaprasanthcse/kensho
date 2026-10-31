@@ -12,6 +12,8 @@ export interface LedgerEntry {
   key: string;
   uuid?: string;
   subscription_key?: string;
+  /** The jobs one submission fans out into. */
+  job_uuids?: string[];
   seed?: number;
   tier?: string;
   params_digest?: string;
