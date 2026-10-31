@@ -66,7 +66,6 @@
       "additionalProperties": false
     },
     "entities": {
-      "maxItems": 500,
       "type": "array",
       "items": {
         "anyOf": [
@@ -106,12 +105,12 @@
                 "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
-                "maxItems": 16,
                 "type": "array",
                 "items": {
                   "type": "string",
                   "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
-                }
+                },
+                "description": "(at most 16 items)"
               }
             },
             "required": [
@@ -158,12 +157,12 @@
                 "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
-                "maxItems": 16,
                 "type": "array",
                 "items": {
                   "type": "string",
                   "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
-                }
+                },
+                "description": "(at most 16 items)"
               }
             },
             "required": [
@@ -192,12 +191,12 @@
                 "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
               },
               "guards": {
-                "maxItems": 64,
                 "type": "array",
                 "items": {
                   "type": "string",
                   "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
-                }
+                },
+                "description": "(at most 64 items)"
               },
               "box_mm": {
                 "type": "array",
@@ -222,12 +221,12 @@
                 "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
-                "maxItems": 16,
                 "type": "array",
                 "items": {
                   "type": "string",
                   "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
-                }
+                },
+                "description": "(at most 16 items)"
               }
             },
             "required": [
@@ -275,12 +274,12 @@
                 "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
-                "maxItems": 16,
                 "type": "array",
                 "items": {
                   "type": "string",
                   "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
-                }
+                },
+                "description": "(at most 16 items)"
               }
             },
             "required": [
@@ -327,12 +326,12 @@
                 "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
-                "maxItems": 16,
                 "type": "array",
                 "items": {
                   "type": "string",
                   "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
-                }
+                },
+                "description": "(at most 16 items)"
               }
             },
             "required": [
@@ -344,10 +343,10 @@
             "additionalProperties": false
           }
         ]
-      }
+      },
+      "description": "(at most 500 items)"
     },
     "rules": {
-      "maxItems": 200,
       "type": "array",
       "items": {
         "type": "object",
@@ -371,10 +370,10 @@
           "emit"
         ],
         "additionalProperties": false
-      }
+      },
+      "description": "(at most 200 items)"
     },
     "objectives": {
-      "maxItems": 50,
       "type": "array",
       "items": {
         "anyOf": [
@@ -460,7 +459,8 @@
             "additionalProperties": false
           }
         ]
-      }
+      },
+      "description": "(at most 50 items)"
     }
   },
   "required": [

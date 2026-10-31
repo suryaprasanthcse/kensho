@@ -87,8 +87,16 @@ function forClaude(node: Node): Node {
   return out;
 }
 
+/**
+ * Gemini compiles the schema into a grammar and rejects it with "too many states for serving" when it is too big; its
+ * docs name long array length limits, especially nested ones, as a typical cause. Fixed-length tuples (at most 6 items)
+ * keep their `minItems`/`maxItems`; the list caps (500 entities and so on) are dropped and stay enforced by zod.
+ */
+const GEMINI_MAX_ITEMS = 6;
+
 function forGemini(node: Node): Node {
-  const out = dropWithNote(node, ['pattern', 'minLength', 'maxLength']);
+  const longList = typeof node.maxItems === 'number' && node.maxItems > GEMINI_MAX_ITEMS;
+  const out = dropWithNote(node, ['pattern', 'minLength', 'maxLength', ...(longList ? ['maxItems'] : [])]);
   if ('const' in out) {
     out.enum = [out.const];
     delete out.const;

@@ -175,6 +175,13 @@ describe('the JSON Schema exports', () => {
     expect([...keywords(schemas.gemini)].filter((k) => !allowed.has(k))).toEqual([]);
   });
 
+  it('gemini: keeps the caps on fixed-length tuples but not on long lists, which make the grammar too big', () => {
+    for (const n of nodes(schemas.gemini).filter((x) => x.type === 'array')) expect(n.maxItems ?? 0).toBeLessThanOrEqual(6);
+    expect(schemas.gemini.properties.entities.maxItems).toBeUndefined();
+    expect(schemas.gemini.properties.entities.description).toContain('at most 500 items');
+    expect(schemas.full.properties.entities.maxItems).toBe(500);
+  });
+
   it('gemini: keeps fixed-length arrays and integer ranges, and turns const into a one-value enum', () => {
     expect(schemas.gemini.properties.bounds_mm).toMatchObject({ minItems: 6, maxItems: 6 });
     expect(schemas.gemini.properties.bounds_mm.items).toMatchObject({ type: 'integer', minimum: -1000000, maximum: 1000000 });

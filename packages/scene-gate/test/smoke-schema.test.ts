@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { sceneJsonSchema } from '../src/json-schema.ts';
-import { PROMPT, claudeRequest, claudeText, geminiRequest, geminiText, loadEnv, runSmoke, type Fetch } from '../scripts/smoke-schema.ts';
+import { PROMPT, claudeRequest, claudeText, findKey, geminiRequest, geminiText, loadEnv, runSmoke, type Fetch } from '../scripts/smoke-schema.ts';
 
 // These tests never touch the network or the real .env: fetch is injected and the .env is a temporary file.
 const SECRET_A = 'sk-test-SECRET-A-0123456789';
@@ -98,6 +98,37 @@ describe('the schema smoke test, offline', () => {
     expect(sent).toBe(1);
     expect(lines).toEqual(['claude: skipped, ANTHROPIC_API_KEY is not set', 'gemini: HTTP 200, reply parses: yes']);
     expect(ok).toBe(false);
+  });
+
+  it('accepts a Gemini key under an alias, preferring GEMINI_API_KEY, and names every alias when none is set', async () => {
+    const headers: string[] = [];
+    const take = async (url: string, init: { headers: Record<string, string> }) => (headers.push(init.headers['x-goog-api-key'] ?? ''), good(url));
+    await runSmoke({ GOOGLE_API_KEY: SECRET_B }, take, ['gemini']);
+    await runSmoke({ GOOGLE_API_KEY: 'other', GEMINI_API_KEY: SECRET_B }, take, ['gemini']);
+    expect(headers).toEqual([SECRET_B, SECRET_B]);
+    const { lines } = await runSmoke({}, take, ['gemini']);
+    expect(lines).toEqual(['gemini: skipped, none of GEMINI_API_KEY, GOOGLE_API_KEY, GOOGLE_GENERATIVE_AI_API_KEY, GEMINI_KEY is set']);
+  });
+
+  it('matches key names case-insensitively, so a lower-case name in .env still works', async () => {
+    const keys: string[] = [];
+    const take = async (url: string, init: { headers: Record<string, string> }) => (keys.push(init.headers['x-goog-api-key'] ?? ''), good(url));
+    await runSmoke({ gemini_api_key: SECRET_B }, take, ['gemini']);
+    expect(keys).toEqual([SECRET_B]);
+    expect(findKey({ Anthropic_Api_Key: SECRET_A }, ['ANTHROPIC_API_KEY'])).toBe(SECRET_A);
+    expect(findKey({ gemini_api_key: 'loose', GEMINI_API_KEY: 'exact' }, ['GEMINI_API_KEY'])).toBe('exact');
+    expect(findKey({ gemini_api_key: '' }, ['GEMINI_API_KEY'])).toBeUndefined();
+  });
+
+  it('parses a lower-case name with spaces around the equals sign, as written in a hand-edited .env', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'scene-gate-env-'));
+    try {
+      const file = join(dir, '.env');
+      writeFileSync(file, `HYPER3D_API_KEY=abc\r\ngemini_api_key = ${SECRET_B}\r\n`);
+      expect(findKey(loadEnv(file, {}), ['GEMINI_API_KEY'])).toBe(SECRET_B);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 
   it('honours a requested provider only, and a model override', async () => {
