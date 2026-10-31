@@ -105,6 +105,14 @@ describe('the draft prompts', () => {
     expect(file.prompts.filter((p) => p.category === 'structured')).toHaveLength(10);
   });
 
+  it('give the stacked-crates prompt an objective and the switch prompt a locked door, a key and a goal', () => {
+    const text = (id: string): string => file.prompts.find((p) => p.id === id)!.text;
+    expect(text('str-04')).toBe('A tower of three stacked crates standing beside a wall, with one coin on the floor next to the tower. The objective is to collect the coin.');
+    expect(text('str-08')).toBe(
+      'Two rooms joined by a locked door. The key is in the first room, along with a switch coin that emits a signal when collected. The goal marker in the second room must be reached.',
+    );
+  });
+
   it('have unique ids and distinct texts', () => {
     expect(new Set(file.prompts.map((p) => p.id)).size).toBe(20);
     expect(new Set(file.prompts.map((p) => p.text)).size).toBe(20);
@@ -120,16 +128,18 @@ describe('the draft prompts', () => {
     expect(text).not.toMatch(/[A-Z]{3,}_[A-Z_]+/);
   });
 
-  it('quote the thresholds the checks use', () => {
+  it('quote the thresholds of the default checks, and say nothing of the optional height check', () => {
     const text = readFileSync(SYSTEM, 'utf8');
     expect(text).toContain(`${OVERLAP_TOLERANCE_MM} mm`);
     expect(text).toContain(`${SUPPORT_TOLERANCE_MM} mm`);
-    expect(text).toContain(`${STEP_RADIUS_MM} mm`);
+    expect(text).not.toContain(`${STEP_RADIUS_MM}`);
+    expect(text).not.toContain('must collect or reach');
+    expect(text.trimEnd().endsWith('So does the player box at the spawn point.')).toBe(true);
   });
 
   it('cover every rule the default checks enforce', () => {
     const text = readFileSync(SYSTEM, 'utf8').toLowerCase();
-    for (const phrase of ['share an id', 'right kind of entity', 'never asks for more', 'loop', 'locked away', 'overlap each other', 'spawn point', 'resting on something', 'inside `bounds_mm`', 'jump_height_mm']) {
+    for (const phrase of ['share an id', 'right kind of entity', 'never asks for more', 'loop', 'locked away', 'overlap each other', 'spawn point', 'resting on something', 'inside `bounds_mm`']) {
       expect(text, phrase).toContain(phrase);
     }
   });

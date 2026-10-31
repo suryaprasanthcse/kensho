@@ -53,4 +53,3 @@ A scene is playable only if all of these hold.
 - The player box at the spawn point must not overlap any solid by more than 5 mm.
 - Every `dynamic` box must be resting on something: its bottom face is on the ground (y = 0) or on the top face of another solid box, within 20 mm. It cannot hang in the air. A crate stacked on a crate is fine so long as the lower one rests on something. A box that overlaps what is under it by 5 mm or less when seen from above is only touching its edge and is not resting on it.
 - Every box, including pickups and keys, lies fully inside `bounds_mm`. So does the player box at the spawn point.
-- Anything the player must collect or reach (the pickups of a `collect` objective, the target of a `reach` or `unlock` objective, and every key a door needs) must be within the player's `jump_height_mm` of the ground, or of the top of a solid box that is no more than 1500 mm away horizontally and not above it.

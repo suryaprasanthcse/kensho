@@ -15,11 +15,11 @@
     { "id": "str-01", "category": "structured", "text": "A room with a red key on the floor and a locked red door leading to a second room that holds three coins. The objective is to collect all three coins." },
     { "id": "str-02", "category": "structured", "text": "Two keys, red and blue, each opening its own door. The blue key is behind the red door, and the goal is beyond the blue door." },
     { "id": "str-03", "category": "structured", "text": "A large hall with seven coins spread across it. The objective is to collect all seven." },
-    { "id": "str-04", "category": "structured", "text": "A tower of three stacked crates standing beside a wall, with one coin on the floor next to the tower." },
+    { "id": "str-04", "category": "structured", "text": "A tower of three stacked crates standing beside a wall, with one coin on the floor next to the tower. The objective is to collect the coin." },
     { "id": "str-05", "category": "structured", "text": "A stack of four crates resting on the floor next to a doorway, plus two coins to collect." },
     { "id": "str-06", "category": "structured", "text": "Three rooms in a row joined by doors. The first door needs a green key found in room one, the second door needs a yellow key found in room two, and the goal is in room three." },
     { "id": "str-07", "category": "structured", "text": "A vault with a locked door. The key is in the entrance hall, and inside the vault are ten gold coins. The objective is to collect all ten." },
-    { "id": "str-08", "category": "structured", "text": "Two rooms joined by a door. Collecting a switch coin in the first room emits a signal that is meant to open that door, and the second room holds a goal marker to reach." },
+    { "id": "str-08", "category": "structured", "text": "Two rooms joined by a locked door. The key is in the first room, along with a switch coin that emits a signal when collected. The goal marker in the second room must be reached." },
     { "id": "str-09", "category": "structured", "text": "A courtyard with a pillar of two stacked crates and a locked gate. The objectives are to unlock the gate and to reach the exit marker behind it." },
     { "id": "str-10", "category": "structured", "text": "Four rooms arranged in a square, joined by open doorways, with one coin in each room. The objective is to collect all four coins." }
   ]

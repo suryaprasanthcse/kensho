@@ -50,7 +50,7 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 
 ## Repair
 
-- A patch is refused if it removes an objective, lowers a collect count, changes a collect objective's tag, or changes any objective's type. A reach or unlock objective may be retargeted, but only to an entity that exists in the patched scene and has the right kind (a door for unlock, any entity for reach). The target is judged on the patched scene, so one patch can add an entity and retarget to it. A retarget is allowed even when the old target was valid, so a reach objective can be moved to an easier entity. That is a gap while reach targets have no kind restriction.
+- A patch is refused if it removes an objective, lowers a collect count, changes a collect objective's tag, or changes any objective's type. A reach or unlock objective's target may change only if the old target was flagged `UNRESOLVED_REF` (missing or the wrong kind) in the scene as given, and only to an entity that exists in the patched scene and has the right kind (a door for unlock, any entity for reach). A valid target is never retargeted, even to an equally good entity, and even when the same patch fixes another objective. Whether a target was valid is judged before the patch, so a patch cannot break a target and then "repair" it. The new target is judged on the patched scene, so one patch can add an entity and retarget to it. A reach objective whose target is flagged can still be pointed at any entity, since reach has no kind restriction.
 - "No new code appears" is judged over all severities. "Strictly shrinks" means a proper sub-multiset: no code occurs more often than before and at least one occurs less. A patch that clears one error but adds another instance of an existing code is refused as `not_shrinking`.
 - A scene that is not schema-valid is not repairable, and a patch that leaves the scene schema-invalid is refused.
 
@@ -61,4 +61,4 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 
 ## Prompts
 
-- `system.md` states, in plain words and without diagnostic codes, every rule the default checks enforce, with their thresholds (5 mm, 20 mm, 1500 mm). It also states the optional height rule, which only matters if `--unreachable-height` is used in the study. A test pins that no code name appears in it and that every rule has a sentence. The study therefore measures whether a model follows stated rules, not whether it guesses them.
+- `system.md` states, in plain words and without diagnostic codes, every rule the default checks enforce, with their thresholds (5 mm and 20 mm). It does not mention the optional height rule, because that check is off by default; if a study run enables `--unreachable-height`, the prompt must be extended first. A test pins that no code name appears in it and that every default rule has a sentence. The study therefore measures whether a model follows stated rules, not whether it guesses them.
