@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { evaluateValue } from '../src/check.ts';
 import { applyRepair, type JsonPatch, type RepairResult } from '../src/repair.ts';
+import type { Scene } from '../src/schema.ts';
 import { EXAMPLE_SCENE, cleanScene } from './fixtures.ts';
 
 const chest = { id: 'chest_1', kind: 'static', box_mm: [600, 600, 600], pos_mm: [8000, 300, 3000] };
@@ -56,6 +57,59 @@ describe('accepted repairs', () => {
   });
 });
 
+/** The clean scene with a misspelt unlock target and a misspelt reach target: two errors a retarget can fix. */
+const brokenTargets = (): Scene => ({
+  ...cleanScene(),
+  objectives: [
+    { id: 'o1', type: 'collect', tag: 'coin', count: 3 },
+    { id: 'o2', type: 'unlock', target: 'door_redd' },
+    { id: 'o3', type: 'reach', target: 'goal_markr' },
+  ],
+});
+
+describe('retargeting an objective', () => {
+  it('is accepted when the new target exists and is a door, for unlock', () => {
+    const r = applyRepair(brokenTargets(), [{ op: 'replace', path: '/objectives/1/target', value: 'door_red' }]);
+    expect(r.status).toBe('accepted');
+    if (r.status === 'accepted') expect(r.after.map((d) => d.pointer)).toEqual(['/objectives/2/target']);
+  });
+
+  it('is accepted when the new target is any existing entity, for reach', () => {
+    for (const id of ['goal_marker', 'crate_1', 'coin_1', 'key_red', 'door_red']) {
+      expect(applyRepair(brokenTargets(), [{ op: 'replace', path: '/objectives/2/target', value: id }]).status, id).toBe('accepted');
+    }
+  });
+
+  it('is accepted when both are fixed at once, leaving the scene passing', () => {
+    const r = applyRepair(brokenTargets(), [
+      { op: 'replace', path: '/objectives/1/target', value: 'door_red' },
+      { op: 'replace', path: '/objectives/2/target', value: 'goal_marker' },
+    ]);
+    expect(r.status).toBe('accepted');
+    if (r.status === 'accepted') expect(r.after).toEqual([]);
+  });
+
+  it('is refused when the new target does not exist', () => {
+    const r = refusal(applyRepair(brokenTargets(), [{ op: 'replace', path: '/objectives/1/target', value: 'door_green' }]));
+    expect(r.reason).toBe('objective_weakened');
+    expect(r.detail).toContain('does not exist');
+  });
+
+  it('is refused when an unlock target is not a door', () => {
+    const r = refusal(applyRepair(brokenTargets(), [{ op: 'replace', path: '/objectives/1/target', value: 'crate_1' }]));
+    expect(r.reason).toBe('objective_weakened');
+    expect(r.detail).toContain('a dynamic, where a door is needed');
+  });
+
+  it('is judged on the patched scene, so a patch may add the entity it retargets to', () => {
+    const r = applyRepair(brokenTargets(), [
+      { op: 'add', path: '/entities/-', value: { id: 'exit_marker', kind: 'static', box_mm: [600, 100, 600], pos_mm: [-8000, 50, 8000] } },
+      { op: 'replace', path: '/objectives/2/target', value: 'exit_marker' },
+    ]);
+    expect(r.status).toBe('accepted');
+  });
+});
+
 describe('refused repairs', () => {
   it('refuses a patch that removes an objective, even though it would clear an error', () => {
     const r = refusal(applyRepair(example(), [addChest, { op: 'remove', path: '/objectives/0' }]));
@@ -68,10 +122,11 @@ describe('refused repairs', () => {
     expect(r.detail).toContain('lowered its count from 10 to 1');
   });
 
-  it('refuses to dodge a count by changing the objective tag, type or target', () => {
+  it('refuses to dodge a count by changing the objective tag or type', () => {
     expect(refusal(applyRepair(example(), [{ op: 'replace', path: '/objectives/0/tag', value: 'crate' }])).reason).toBe('objective_weakened');
-    expect(refusal(applyRepair(cleanScene(), [{ op: 'replace', path: '/objectives/2', value: { id: 'o3', type: 'reach', target: 'wall_n' } }])).reason).toBe('objective_weakened');
-    expect(refusal(applyRepair(cleanScene(), [{ op: 'replace', path: '/objectives/2', value: { id: 'o3', type: 'unlock', target: 'door_red' } }])).reason).toBe('objective_weakened');
+    expect(refusal(applyRepair(brokenTargets(), [{ op: 'replace', path: '/objectives/1', value: { id: 'o2', type: 'reach', target: 'door_red' } }])).reason).toBe('objective_weakened');
+    expect(refusal(applyRepair(brokenTargets(), [{ op: 'replace', path: '/objectives/2', value: { id: 'o3', type: 'unlock', target: 'door_red' } }])).reason).toBe('objective_weakened');
+    expect(refusal(applyRepair(example(), [addChest, { op: 'replace', path: '/objectives/0', value: { id: 'o1', type: 'reach', target: 'chest_1' } }])).reason).toBe('objective_weakened');
   });
 
   it('refuses a patch that empties the objectives list', () => {

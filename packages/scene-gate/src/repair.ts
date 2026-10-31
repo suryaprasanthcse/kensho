@@ -2,6 +2,7 @@ import { createRequire } from 'node:module';
 import type { Operation } from 'fast-json-patch';
 import { evaluateValue, type CheckOptions } from './check.ts';
 import type { Diagnostic } from './diagnostic.ts';
+import { kindMatches } from './geometry.ts';
 import type { Objective, Scene } from './schema.ts';
 
 // fast-json-patch is CommonJS without statically detectable named exports, so load it through require
@@ -33,19 +34,25 @@ const errorCodeCounts = (list: readonly Diagnostic[]): Map<string, number> => {
 
 /**
  * A patch may not make an objective easier. Objectives are matched by id. Each must survive with the same type; a
- * collect objective keeps its tag and may not lower its count; a reach or unlock objective keeps its target.
- * Changing a tag or a target is refused because it dodges a failing check just as lowering a count does.
+ * collect objective keeps its tag and may not lower its count. A reach or unlock objective may be pointed at a different
+ * target, but only at an entity that exists in the patched scene and has the right kind (a door for unlock, any entity
+ * for reach). Changing a tag or a type is refused because it dodges a failing check just as lowering a count does.
  */
-function weakenedObjective(before: readonly Objective[], after: readonly Objective[]): RepairResult | null {
+function weakenedObjective(before: readonly Objective[], after: Scene): RepairResult | null {
   for (const o of before) {
-    const n = after.find((x) => x.id === o.id);
+    const n = after.objectives.find((x) => x.id === o.id);
     if (!n) return refuse('objective_removed', `objective ${o.id} was removed`);
     if (n.type !== o.type) return refuse('objective_weakened', `objective ${o.id} changed type from ${o.type} to ${n.type}`);
     if (o.type === 'collect' && n.type === 'collect') {
       if (n.tag !== o.tag) return refuse('objective_weakened', `objective ${o.id} changed its tag from "${o.tag}" to "${n.tag}"`);
       if (n.count < o.count) return refuse('objective_weakened', `objective ${o.id} lowered its count from ${o.count} to ${n.count}`);
     } else if (o.type !== 'collect' && n.type !== 'collect' && n.target !== o.target) {
-      return refuse('objective_weakened', `objective ${o.id} changed its target from "${o.target}" to "${n.target}"`);
+      const target = after.entities.find((e) => e.id === n.target);
+      const expected = n.type === 'unlock' ? 'door' : 'any';
+      if (!target) return refuse('objective_weakened', `objective ${o.id} was retargeted to "${n.target}", which does not exist`);
+      if (!kindMatches(expected, target.kind)) {
+        return refuse('objective_weakened', `objective ${o.id} was retargeted to "${n.target}", a ${target.kind}, where a ${expected} is needed`);
+      }
     }
   }
   return null;
@@ -78,7 +85,7 @@ export function applyRepair(scene: unknown, patch: unknown, options: CheckOption
     return refuse('schema_invalid_after_patch', repaired.diagnostics[0]?.message ?? 'the patched scene is not schema-valid');
   }
 
-  const weakened = weakenedObjective(original.scene.objectives, repaired.scene.objectives);
+  const weakened = weakenedObjective(original.scene.objectives, repaired.scene);
   if (weakened) return weakened;
 
   const knownCodes = new Set(original.diagnostics.map((d) => d.code));
