@@ -77,6 +77,8 @@ pnpm --filter @kensho/scene-gate check-tapes <tapes-dir>
 
 `scripts/smoke-repair.ts` (`pnpm --filter @kensho/scene-gate smoke-repair <model>...`) sends one repair request per model for a fixture scene with a known error, built the way the study builds it, and prints one status line per model.
 
+`RESULTS.md` is generated from the tapes by `pnpm --filter @kensho/scene-gate results --tapes tapes --out RESULTS.md`: the pre-registered metrics first, then exploratory analyses labelled as not pre-registered. A test fails if it no longer matches the tapes. `AMENDMENT-1.md` is a draft, not frozen and not run, for finishing the `gemini-3.8-flash` generations that the 10% rule stopped.
+
 The mutation check disables each check in turn (its module is aliased to a no-op) and asserts the suite then fails. It exits non-zero if any check survives.
 
 `check-tapes` re-checks recorded tapes offline and prints a JSON report: per-model verdict counts, the unplayable rate and flip rate with Wilson 95% intervals, repair outcomes, and any tape that failed to read. Add `--unreachable-height` to enable the optional check, and `--prompts prompts/prompts.json --system prompts/system.md` to flag tapes whose prompt or system hash differs from the frozen files.
