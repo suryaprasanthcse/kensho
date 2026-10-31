@@ -5,3 +5,8 @@ bench/out/
 *.log
 .claude/
 .DS_Store
+
+# local secrets: never committed
+.env
+.env.*
+!.env.example

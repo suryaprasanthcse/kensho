@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -71,6 +71,28 @@ describe('repository hygiene', () => {
 
   maybe('commits no keys and no generated fixtures', () => {
     expect(files.filter((f) => /\.(glb|pem|key)$/.test(f) || f.startsWith('.dev-keys/') || f.startsWith('.generated/'))).toEqual([]);
+  });
+
+  maybe('keeps .env ignored and untracked, and .env.example a placeholder', () => {
+    const ignored = (path: string) => spawnSync('git', ['check-ignore', '-q', path], { cwd: ROOT }).status === 0;
+    expect(ignored('.env')).toBe(true);
+    expect(ignored('.env.local')).toBe(true);
+    expect(ignored('.env.example')).toBe(false);
+    expect(files).not.toContain('.env');
+    expect(files).toContain('.env.example');
+    expect(readFileSync(join(ROOT, '.env.example'), 'utf8')).toContain('HYPER3D_API_KEY=your_key_here');
+  });
+
+  maybe('commits no value for the API key anywhere but the placeholder', () => {
+    for (const f of files) {
+      if (!/\.(ts|js|json|md|yml|yaml|toml|example)$/.test(f) && f !== '.gitignore') continue;
+      const text = readFileSync(join(ROOT, f), 'utf8');
+      for (const m of text.matchAll(/HYPER3D_API_KEY\s*=\s*([^\s`'"\\]+)/g)) {
+        // unit tests use short throwaway strings; anything key-shaped, or anywhere else, must be the placeholder
+        if (f.includes('/test/')) expect(m[1]!.length, `${f}: ${m[1]}`).toBeLessThan(20);
+        else expect(m[1], f).toBe('your_key_here');
+      }
+    }
   });
 
   maybe('carries the Apache-2.0 text once, at the root', () => {
