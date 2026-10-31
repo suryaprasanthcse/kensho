@@ -57,3 +57,16 @@ export const parseEvent = (s: string): { kind: 'collect' | 'enter' | 'open' | 's
   if (kind !== 'collect' && kind !== 'enter' && kind !== 'open' && kind !== 'signal') return null;
   return { kind, name: s.slice(i + 1) };
 };
+
+/** What a reference must point at. `any` accepts every entity kind. */
+export type ExpectedKind = EntityKind | 'pickup|key' | 'any';
+
+/** The kind an event verb needs its id to have; `signal:` names are not ids. */
+export const EVENT_KIND: Readonly<Record<'collect' | 'enter' | 'open', ExpectedKind>> = {
+  collect: 'pickup|key',
+  enter: 'any',
+  open: 'door',
+};
+
+export const kindMatches = (expected: ExpectedKind, actual: EntityKind): boolean =>
+  expected === 'any' || (expected === 'pickup|key' ? actual === 'pickup' || actual === 'key' : expected === actual);

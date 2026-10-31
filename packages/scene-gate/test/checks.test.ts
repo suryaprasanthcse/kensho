@@ -54,12 +54,16 @@ describe('DUPLICATE_ID', () => {
 });
 
 describe('UNRESOLVED_REF', () => {
+  const evidence = (id: string, expected_kind: string, actual_kind: string) => ({ id, expected_kind, actual_kind });
+
   it('flags a rule event that names a missing id, on either side', () => {
     const s = edited((s) => {
       s.rules[0]!.on = 'collect:ghost';
       s.rules[2]!.emit = 'open:phantom';
     });
-    expect(brief(checkUnresolvedRef(s))).toEqual(['UNRESOLVED_REF /rules/0/on', 'UNRESOLVED_REF /rules/2/emit']);
+    const found = checkUnresolvedRef(s);
+    expect(brief(found)).toEqual(['UNRESOLVED_REF /rules/0/on', 'UNRESOLVED_REF /rules/2/emit']);
+    expect(found.map((d) => d.evidence)).toEqual([evidence('ghost', 'pickup|key', 'missing'), evidence('phantom', 'door', 'missing')]);
     expect(codes(s)).toEqual(['UNRESOLVED_REF']);
   });
 
@@ -68,23 +72,57 @@ describe('UNRESOLVED_REF', () => {
     expect(checkUnresolvedRef(s)).toEqual([]);
   });
 
+  it('flags collect: on anything that is not a pickup or key', () => {
+    const s = edited((s) => void (s.rules[0]!.on = 'collect:crate_1'));
+    const [d] = checkUnresolvedRef(s);
+    expect(brief([d!])).toEqual(['UNRESOLVED_REF /rules/0/on']);
+    expect(d!.evidence).toEqual(evidence('crate_1', 'pickup|key', 'dynamic'));
+    expect(codes(s)).toEqual(['UNRESOLVED_REF']);
+    for (const ok of ['coin_1', 'key_red']) {
+      expect(checkUnresolvedRef(edited((s) => void (s.rules[0]!.on = `collect:${ok}`)))).toEqual([]);
+    }
+  });
+
+  it('flags open: on anything that is not a door, on either side of the rule', () => {
+    const s = edited((s) => {
+      s.rules[0]!.emit = 'open:coin_1';
+      s.rules[2]!.on = 'open:wall_n';
+    });
+    const found = checkUnresolvedRef(s);
+    expect(brief(found)).toEqual(['UNRESOLVED_REF /rules/0/emit', 'UNRESOLVED_REF /rules/2/on']);
+    expect(found.map((d) => d.evidence)).toEqual([evidence('coin_1', 'door', 'pickup'), evidence('wall_n', 'door', 'static')]);
+    expect(checkUnresolvedRef(edited((s) => void (s.rules[0]!.emit = 'open:door_red')))).toEqual([]);
+  });
+
+  it('accepts enter: on an entity of any kind', () => {
+    for (const id of ['wall_n', 'crate_1', 'coin_1', 'key_red', 'door_red']) {
+      expect(checkUnresolvedRef(edited((s) => void (s.rules[2]!.on = `enter:${id}`))), id).toEqual([]);
+    }
+    expect(brief(checkUnresolvedRef(edited((s) => void (s.rules[2]!.on = 'enter:nowhere'))))).toEqual(['UNRESOLVED_REF /rules/2/on']);
+  });
+
   it('flags a door whose key is missing', () => {
     const s = edited((s) => void (door(s, E.door).requires = 'key_ghost'));
     const [d] = checkUnresolvedRef(s);
     expect(brief([d!])).toEqual(['UNRESOLVED_REF /entities/7/requires']);
-    expect(d!.evidence).toMatchObject({ reason: 'missing' });
+    expect(d!.evidence).toEqual(evidence('key_ghost', 'key', 'missing'));
   });
 
   it('flags a door whose requires names something that is not a key', () => {
     const s = edited((s) => void (door(s, E.door).requires = 'crate_1'));
     const [d] = checkUnresolvedRef(s);
     expect(brief([d!])).toEqual(['UNRESOLVED_REF /entities/7/requires']);
-    expect(d!.evidence).toMatchObject({ reason: 'not_a_key' });
+    expect(d!.evidence).toEqual(evidence('crate_1', 'key', 'dynamic'));
+    // A pickup is not a key either.
+    expect(checkUnresolvedRef(edited((s) => void (door(s, E.door).requires = 'coin_1')))[0]!.evidence).toEqual(evidence('coin_1', 'key', 'pickup'));
   });
 
-  it('flags each missing guard by its index', () => {
+  it('flags each missing guard by its index and accepts guards of any kind', () => {
     const s = edited((s) => void (door(s, E.door).guards = ['coin_3', 'chest_1', 'chest_2']));
-    expect(brief(checkUnresolvedRef(s))).toEqual(['UNRESOLVED_REF /entities/7/guards/1', 'UNRESOLVED_REF /entities/7/guards/2']);
+    const found = checkUnresolvedRef(s);
+    expect(brief(found)).toEqual(['UNRESOLVED_REF /entities/7/guards/1', 'UNRESOLVED_REF /entities/7/guards/2']);
+    expect(found[0]!.evidence).toEqual(evidence('chest_1', 'any', 'missing'));
+    expect(checkUnresolvedRef(edited((s) => void (door(s, E.door).guards = ['wall_n', 'crate_1', 'coin_3', 'key_red', 'door_red'])))).toEqual([]);
   });
 
   it('flags a reach or unlock target that is missing', () => {
@@ -92,7 +130,28 @@ describe('UNRESOLVED_REF', () => {
       s.objectives[1] = { id: 'o2', type: 'unlock', target: 'door_green' };
       s.objectives[2] = { id: 'o3', type: 'reach', target: 'flag' };
     });
-    expect(brief(checkUnresolvedRef(s))).toEqual(['UNRESOLVED_REF /objectives/1/target', 'UNRESOLVED_REF /objectives/2/target']);
+    const found = checkUnresolvedRef(s);
+    expect(brief(found)).toEqual(['UNRESOLVED_REF /objectives/1/target', 'UNRESOLVED_REF /objectives/2/target']);
+    expect(found.map((d) => d.evidence)).toEqual([evidence('door_green', 'door', 'missing'), evidence('flag', 'any', 'missing')]);
+  });
+
+  it('flags an unlock objective whose target is not a door, and accepts any entity as a reach target', () => {
+    const s = edited((s) => void (s.objectives[1] = { id: 'o2', type: 'unlock', target: 'crate_1' }));
+    const [d] = checkUnresolvedRef(s);
+    expect(brief([d!])).toEqual(['UNRESOLVED_REF /objectives/1/target']);
+    expect(d!.evidence).toEqual(evidence('crate_1', 'door', 'dynamic'));
+    expect(codes(s)).toEqual(['UNRESOLVED_REF']);
+    for (const id of ['wall_n', 'crate_1', 'coin_1', 'key_red', 'door_red']) {
+      expect(checkUnresolvedRef(edited((s) => void (s.objectives[2] = { id: 'o3', type: 'reach', target: id }))), id).toEqual([]);
+    }
+  });
+
+  it('resolves to the first entity when an id is duplicated', () => {
+    const s = edited((s) => {
+      s.entities[E.coin2]!.id = 'wall_n';
+      s.rules[0]!.on = 'collect:wall_n';
+    });
+    expect(brief(checkUnresolvedRef(s))).toEqual(['UNRESOLVED_REF /rules/0/on']);
   });
 });
 

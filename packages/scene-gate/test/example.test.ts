@@ -17,7 +17,7 @@ describe('the task example: schema-valid and unplayable', () => {
 
   it('explains both in evidence', () => {
     const [ref, count] = evaluation.diagnostics;
-    expect(ref!.evidence).toEqual({ ref: 'chest_1', reason: 'missing' });
+    expect(ref!.evidence).toEqual({ id: 'chest_1', expected_kind: 'any', actual_kind: 'missing' });
     expect(count!.evidence).toEqual({ tag: 'coin', needed: 10, available: 1 });
   });
 
