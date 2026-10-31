@@ -10,3 +10,6 @@ export * from './repair.ts';
 export * from './repair-request.ts';
 export * from './stats.ts';
 export * from './harness.ts';
+export * from './spend.ts';
+export * from './transport.ts';
+export * from './runner.ts';

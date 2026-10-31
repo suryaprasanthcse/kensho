@@ -271,3 +271,75 @@ describe('check-tapes', () => {
     expect(bad.stderr).toContain('usage:');
   });
 });
+
+describe('transport_failure tapes', () => {
+  const attempt = (n: number, over: Record<string, unknown> = {}) => ({
+    attempt: n, started: '2026-11-01T00:00:00.000Z', duration_ms: 180000, http_status: null, error: 'TimeoutError', usage: null, cost_micro_usd: 22_280, ...over,
+  });
+  const failure = (over: Partial<Tape> = {}): Tape => tape({ outcome: 'transport_failure', raw_output: '', finish_reason: undefined, attempts: [attempt(1), attempt(2)], ...over });
+
+  it('are valid only with empty output, no usage, and at least one attempt', () => {
+    expect(TapeSchema.safeParse(failure()).success).toBe(true);
+    expect(TapeSchema.safeParse(failure({ raw_output: '{}' })).success).toBe(false);
+    expect(TapeSchema.safeParse(failure({ attempts: [] })).success).toBe(false);
+    expect(TapeSchema.safeParse(failure({ attempts: undefined })).success).toBe(false);
+    expect(TapeSchema.safeParse(failure({ usage: { promptTokenCount: 1 } })).success).toBe(false);
+  });
+
+  it('log attempts in a strict shape: integers only, an ISO start, an error class and not a message', () => {
+    expect(TapeSchema.safeParse(failure({ attempts: [attempt(1, { cost_micro_usd: 1.5 })] })).success).toBe(false);
+    expect(TapeSchema.safeParse(failure({ attempts: [attempt(0)] })).success).toBe(false);
+    expect(TapeSchema.safeParse(failure({ attempts: [attempt(1, { started: 'soon' })] })).success).toBe(false);
+    expect(TapeSchema.safeParse(failure({ attempts: [{ ...attempt(1), message: 'x' } as never] })).success).toBe(false);
+  });
+
+  it('are reported apart from schema_invalid, stay in the tape count, and carry no verdict', () => {
+    writeTape(root, tape({ sample: 0 }));
+    writeTape(root, failure({ sample: 1 }));
+    writeTape(root, tape({ sample: 2, raw_output: '{"scene": ' }));
+    const report = checkTapes(root);
+    const m = report.summary.models['model-a']!;
+    expect(m.tapes).toBe(3);
+    expect(m.verdicts).toEqual({ pass: 1, fail: 0, schema_invalid: 1 });
+    expect(m.transport_failures).toBe(1);
+    expect(m.schema_invalid_reasons).toEqual({ truncated: 1 });
+    expect(m.unplayable).toMatchObject({ generations: 3, schemaValid: 1, schemaInvalid: 1, transportFailures: 1 });
+    const row = report.rows.find((r) => r.sample === 1)!;
+    expect(row).toMatchObject({ outcome: 'transport_failure', attempts: 2, spend_micro_usd: 44_560 });
+    expect(row.verdict).toBeUndefined();
+    expect(row.hash).toBeUndefined();
+  });
+
+  it('count in the flip rate as an outcome, and are shown excluded beside it', () => {
+    writeTape(root, tape({ sample: 0 }));
+    writeTape(root, tape({ sample: 1 }));
+    writeTape(root, failure({ sample: 2 }));
+    const flip = checkTapes(root).summary.models['model-a']!.flip;
+    expect(flip).toMatchObject({ triples: 1, flips: 1 });
+    expect(flip.excludingTransport).toMatchObject({ triples: 0, flips: 0 });
+  });
+
+  it('count every attempt of every tape toward the spend, per model and in total', () => {
+    writeTape(root, tape({ sample: 0, attempts: [attempt(1, { http_status: 200, error: null, cost_micro_usd: 5_300 })] }));
+    writeTape(root, failure({ sample: 1 }));
+    writeTape(root, failure({ kind: 'repair', sample: 1, attempts: [attempt(1, { cost_micro_usd: 1_000 })] }));
+    const report = checkTapes(root);
+    expect(report.summary.models['model-a']).toMatchObject({ attempts: 4, spend_micro_usd: 5_300 + 44_560 + 1_000 });
+    expect(report.summary.spend_micro_usd).toBe(50_860);
+  });
+
+  it('a failed repair request is a refusal that stays in the repair denominator', () => {
+    writeTape(root, tape({ sample: 1, raw_output: JSON.stringify(EXAMPLE_SCENE) }));
+    writeTape(root, failure({ kind: 'repair', sample: 1 }));
+    const report = checkTapes(root);
+    expect(report.summary.repair).toMatchObject({ attempted: 1, accepted: 0, refusals: { transport_failure: 1 } });
+    expect(report.summary.repair.ops.n).toBe(0);
+    expect(report.rows.find((r) => r.kind === 'repair')).toMatchObject({ outcome: 'transport_failure', repair: { status: 'refused', reason: 'transport_failure' } });
+  });
+
+  it('are kept apart from schema_invalid in the generation tape count of a model that has only failures', () => {
+    writeTape(root, failure({ sample: 0 }));
+    const m = checkTapes(root).summary.models['model-a']!;
+    expect(m).toMatchObject({ tapes: 1, transport_failures: 1, verdicts: { pass: 0, fail: 0, schema_invalid: 0 } });
+  });
+});

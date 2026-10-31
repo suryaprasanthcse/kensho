@@ -63,7 +63,7 @@ describe('the Wilson 95% interval', () => {
 });
 
 describe('flip rate', () => {
-  const s = (model: string, prompt_id: string, verdicts: ('pass' | 'fail' | 'schema_invalid')[]) => verdicts.map((verdict) => ({ model, prompt_id, verdict }));
+  const s = (model: string, prompt_id: string, verdicts: ('pass' | 'fail' | 'schema_invalid' | 'transport_failure')[]) => verdicts.map((verdict) => ({ model, prompt_id, verdict }));
 
   it('counts a triple as a flip unless all three verdicts match', () => {
     const r = flipRate([
@@ -87,7 +87,7 @@ describe('flip rate', () => {
   });
 
   it('has no interval when there is no triple', () => {
-    expect(flipRate([])).toEqual({ triples: 0, flips: 0, incomplete: 0, interval: null });
+    expect(flipRate([])).toEqual({ triples: 0, flips: 0, incomplete: 0, interval: null, excludingTransport: { triples: 0, flips: 0, interval: null } });
   });
 
   it('does not depend on sample order', () => {
@@ -105,5 +105,33 @@ describe('unplayable rate', () => {
 
   it('has no interval when nothing was schema-valid', () => {
     expect(unplayableRate(['schema_invalid']).interval).toBeNull();
+  });
+});
+
+describe('transport failures in the rates', () => {
+  const s = (prompt_id: string, verdicts: ('pass' | 'fail' | 'schema_invalid' | 'transport_failure')[]) => verdicts.map((verdict) => ({ model: 'm', prompt_id, verdict }));
+
+  it('count as an outcome in a triple, so a triple with one is a flip, and are also shown apart', () => {
+    const r = flipRate([...s('p1', ['pass', 'pass', 'transport_failure']), ...s('p2', ['pass', 'pass', 'pass']), ...s('p3', ['pass', 'fail', 'pass'])]);
+    expect(r).toMatchObject({ triples: 3, flips: 2 });
+    expect(r.excludingTransport).toMatchObject({ triples: 2, flips: 1 });
+    expect(r.excludingTransport.interval?.estimate).toBe(0.5);
+  });
+
+  it('three failures in one triple agree with each other and are not a flip', () => {
+    expect(flipRate(s('p1', ['transport_failure', 'transport_failure', 'transport_failure']))).toMatchObject({ triples: 1, flips: 0 });
+  });
+
+  it('stay out of the conditional unplayable rate and in the rate over every generation', () => {
+    const r = unplayableRate(['pass', 'fail', 'fail', 'schema_invalid', 'transport_failure', 'transport_failure', 'pass', 'pass']);
+    expect(r).toMatchObject({ schemaValid: 5, unplayable: 2, schemaInvalid: 1, transportFailures: 2, generations: 8 });
+    expect(r.interval?.estimate).toBe(0.4);
+    expect(r.intervalOfGenerations?.estimate).toBe(0.25);
+  });
+
+  it('are not counted as schema_invalid', () => {
+    const r = unplayableRate(['transport_failure', 'transport_failure']);
+    expect(r).toMatchObject({ schemaInvalid: 0, transportFailures: 2, schemaValid: 0, interval: null });
+    expect(r.intervalOfGenerations?.estimate).toBe(0);
   });
 });

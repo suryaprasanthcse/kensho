@@ -16,6 +16,8 @@ A scene you wrote for the request below was checked, and the checker found error
 
 Each error has a `code`, a JSON Pointer into the scene above (`pointer`), a `message`, and `evidence`.
 
+Do not change an objective's target unless that target appears in an UNRESOLVED_REF diagnostic below.
+
 ```json
 {{diagnostics}}
 ```

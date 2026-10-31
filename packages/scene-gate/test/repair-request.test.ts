@@ -26,6 +26,13 @@ describe('prompts/repair.md', () => {
     expect(body).toContain('Do not change the `tag` or the `type` of any objective.');
   });
 
+  it("tells the model not to move an objective's target unless an UNRESOLVED_REF diagnostic names it, and says it where \"below\" is true", () => {
+    const sentence = "Do not change an objective's target unless that target appears in an UNRESOLVED_REF diagnostic below.";
+    expect(TEMPLATE.split(sentence)).toHaveLength(2);
+    expect(TEMPLATE.indexOf(sentence)).toBeLessThan(TEMPLATE.indexOf('{{diagnostics}}'));
+    expect(TEMPLATE.indexOf('{{scene}}')).toBeLessThan(TEMPLATE.indexOf(sentence));
+  });
+
   it('names no check, threshold or rule of its own: those are in system.md and the findings', () => {
     expect(stripDraftHeader(TEMPLATE)).not.toMatch(/\bmm\b/);
   });

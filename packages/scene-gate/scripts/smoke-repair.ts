@@ -78,7 +78,7 @@ export async function runRepairSmoke(
   for (const model of models) {
     const request = geminiRepairRequest(model, input.system, message);
     try {
-      const response = await send(request.url, { method: 'POST', headers: request.headers(key), body: JSON.stringify(request.body), signal: AbortSignal.timeout(120_000) });
+      const response = await send(request.url, { method: 'POST', headers: request.headers(key), body: JSON.stringify(request.body), signal: AbortSignal.timeout(180_000) });
       if (!response.ok) {
         lines.push(`${model} repair: HTTP ${response.status}, reply parses: no reply read`);
         if (options.diagnose && response.text) lines.push(`  detail: ${errorDetail(await response.text().catch(() => ''), key)}`);
