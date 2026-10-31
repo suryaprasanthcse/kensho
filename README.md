@@ -38,4 +38,4 @@ Exit codes for both commands: 0 PASS, 1 FAIL, 2 ABSTAIN, 3 usage. A check that t
 
 ## Licence
 
-Unlicensed for now: every package is `private` and `UNLICENSED`, and no licence file is shipped until one is chosen.
+Apache License 2.0: see [LICENSE](LICENSE). Every package is still marked `private`, so nothing here can be published to a registry by accident.

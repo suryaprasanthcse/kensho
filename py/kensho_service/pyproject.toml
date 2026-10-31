@@ -7,7 +7,7 @@ name = "kensho_service"
 version = "0.0.0"
 description = "FastAPI service exposing /verify, /bundle/{hash} and /replay, with Celery tasks. Placeholder: nothing is installed or run."
 requires-python = ">=3.12"
-license = { text = "UNLICENSED" }
+license = { text = "Apache-2.0" }
 classifiers = ["Private :: Do Not Upload"]
 dependencies = []
 

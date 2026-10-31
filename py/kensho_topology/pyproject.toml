@@ -7,7 +7,7 @@ name = "kensho_topology"
 version = "0.0.0"
 description = "Trimesh checks, convex decomposition and a differential twin of the G4 topology checks. Placeholder: nothing is installed or run."
 requires-python = ">=3.12"
-license = { text = "UNLICENSED" }
+license = { text = "Apache-2.0" }
 classifiers = ["Private :: Do Not Upload"]
 dependencies = []
 

@@ -69,9 +69,17 @@ describe('repository hygiene', () => {
   const files = tracked();
   const maybe = files.length ? it : it.skip;
 
-  maybe('commits no keys, no generated fixtures and no licence file', () => {
+  maybe('commits no keys and no generated fixtures', () => {
     expect(files.filter((f) => /\.(glb|pem|key)$/.test(f) || f.startsWith('.dev-keys/') || f.startsWith('.generated/'))).toEqual([]);
-    expect(files.filter((f) => /^(LICENSE|LICENCE|COPYING)/i.test(f.split('/').pop()!))).toEqual([]);
+  });
+
+  maybe('carries the Apache-2.0 text once, at the root', () => {
+    const found = files.filter((f) => /^(LICENSE|LICENCE|COPYING)/i.test(f.split('/').pop()!));
+    expect(found).toEqual(['LICENSE']);
+    const text = readFileSync(join(ROOT, 'LICENSE'), 'utf8');
+    expect(text).toContain('Apache License');
+    expect(text).toContain('Version 2.0, January 2004');
+    expect(text).toContain('END OF TERMS AND CONDITIONS');
   });
 
   maybe('never names the private integration profile in any committed file', () => {
@@ -80,13 +88,13 @@ describe('repository hygiene', () => {
     expect(hits).toEqual([]);
   });
 
-  maybe('has private, unlicensed, exactly pinned packages', () => {
+  maybe('has private, Apache-2.0, exactly pinned packages', () => {
     const pkgs = files.filter((f) => f.endsWith('package.json'));
     expect(pkgs.length).toBeGreaterThan(18);
     for (const f of pkgs) {
       const pj = JSON.parse(readFileSync(join(ROOT, f), 'utf8')) as Record<string, unknown>;
       expect(pj.private, f).toBe(true);
-      expect(pj.license, f).toBe('UNLICENSED');
+      expect(pj.license, f).toBe('Apache-2.0');
       for (const field of ['dependencies', 'devDependencies']) {
         for (const [name, range] of Object.entries((pj[field] ?? {}) as Record<string, string>)) {
           expect(range, `${f} ${name}`).toMatch(/^(workspace:\*|\d+\.\d+\.\d+(-[0-9A-Za-z.]+)?)$/);
