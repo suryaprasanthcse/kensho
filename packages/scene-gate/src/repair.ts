@@ -34,12 +34,14 @@ const errorCodeCounts = (list: readonly Diagnostic[]): Map<string, number> => {
 
 /**
  * A patch may not make an objective easier. Objectives are matched by id. Each must survive with the same type; a
- * collect objective keeps its tag and may not lower its count. A reach or unlock objective may be pointed at a different
- * target, but only at an entity that exists in the patched scene and has the right kind (a door for unlock, any entity
- * for reach). Changing a tag or a type is refused because it dodges a failing check just as lowering a count does.
+ * collect objective keeps its tag and may not lower its count. A reach or unlock objective's target may change only if
+ * the old target was flagged UNRESOLVED_REF in the scene as given (it named a missing entity or one of the wrong kind),
+ * and only to an entity that exists in the patched scene and has the right kind (a door for unlock, any entity for
+ * reach). A valid target is never retargeted. Changing a tag or a type is refused because it dodges a failing check
+ * just as lowering a count does.
  */
-function weakenedObjective(before: readonly Objective[], after: Scene): RepairResult | null {
-  for (const o of before) {
+function weakenedObjective(before: readonly Objective[], flagged: ReadonlySet<number>, after: Scene): RepairResult | null {
+  for (const [index, o] of before.entries()) {
     const n = after.objectives.find((x) => x.id === o.id);
     if (!n) return refuse('objective_removed', `objective ${o.id} was removed`);
     if (n.type !== o.type) return refuse('objective_weakened', `objective ${o.id} changed type from ${o.type} to ${n.type}`);
@@ -47,6 +49,7 @@ function weakenedObjective(before: readonly Objective[], after: Scene): RepairRe
       if (n.tag !== o.tag) return refuse('objective_weakened', `objective ${o.id} changed its tag from "${o.tag}" to "${n.tag}"`);
       if (n.count < o.count) return refuse('objective_weakened', `objective ${o.id} lowered its count from ${o.count} to ${n.count}`);
     } else if (o.type !== 'collect' && n.type !== 'collect' && n.target !== o.target) {
+      if (!flagged.has(index)) return refuse('objective_weakened', `objective ${o.id} was retargeted from "${o.target}", which was a valid target`);
       const target = after.entities.find((e) => e.id === n.target);
       const expected = n.type === 'unlock' ? 'door' : 'any';
       if (!target) return refuse('objective_weakened', `objective ${o.id} was retargeted to "${n.target}", which does not exist`);
@@ -85,7 +88,13 @@ export function applyRepair(scene: unknown, patch: unknown, options: CheckOption
     return refuse('schema_invalid_after_patch', repaired.diagnostics[0]?.message ?? 'the patched scene is not schema-valid');
   }
 
-  const weakened = weakenedObjective(original.scene.objectives, repaired.scene);
+  const flaggedTargets = new Set(
+    original.diagnostics.flatMap((d) => {
+      const m = d.code === 'UNRESOLVED_REF' ? /^\/objectives\/(\d+)\/target$/.exec(d.pointer) : null;
+      return m ? [Number(m[1])] : [];
+    }),
+  );
+  const weakened = weakenedObjective(original.scene.objectives, flaggedTargets, repaired.scene);
   if (weakened) return weakened;
 
   const knownCodes = new Set(original.diagnostics.map((d) => d.code));
