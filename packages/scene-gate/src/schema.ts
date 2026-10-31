@@ -8,7 +8,9 @@ const Size = z.number().int().min(1).max(MM_LIMIT);
 
 const Vec3 = z.tuple([Mm, Mm, Mm]);
 const Size3 = z.tuple([Size, Size, Size]);
-const Bounds = z.tuple([Mm, Mm, Mm, Mm, Mm, Mm]);
+const Bounds = z.tuple([Mm, Mm, Mm, Mm, Mm, Mm]).describe('[minx, miny, minz, maxx, maxy, maxz] in integer millimetres');
+const Centre = Vec3.describe('centre of the box, [x, y, z] in integer millimetres, Y up');
+const Extent = Size3.describe('full size of the box, [x, y, z] in integer millimetres');
 
 const NAME = /^[A-Za-z0-9_.-]+$/;
 const EVENT = /^(collect|enter|open|signal):[A-Za-z0-9_.-]+$/;
@@ -18,7 +20,7 @@ const Tags = z.array(Id).max(16);
 const Event = z.string().regex(EVENT);
 
 const solid = <K extends 'static' | 'dynamic'>(kind: K) =>
-  z.strictObject({ id: Id, kind: z.literal(kind), box_mm: Size3, pos_mm: Vec3, tags: Tags.optional() });
+  z.strictObject({ id: Id, kind: z.literal(kind), box_mm: Extent, pos_mm: Centre, tags: Tags.optional() });
 
 const Static = solid('static');
 const Dynamic = solid('dynamic');
@@ -30,13 +32,13 @@ const Door = z.strictObject({
   requires: Id,
   /** Ids of the entities behind this door. */
   guards: z.array(Id).max(64).optional(),
-  box_mm: Size3,
-  pos_mm: Vec3,
+  box_mm: Extent,
+  pos_mm: Centre,
   tags: Tags.optional(),
 });
 
 const collectible = <K extends 'pickup' | 'key'>(kind: K) =>
-  z.strictObject({ id: Id, kind: z.literal(kind), box_mm: Size3, pos_mm: Vec3, tags: Tags.optional() });
+  z.strictObject({ id: Id, kind: z.literal(kind), box_mm: Extent, pos_mm: Centre, tags: Tags.optional() });
 
 const Pickup = collectible('pickup');
 const Key = collectible('key');
@@ -61,7 +63,7 @@ export const SceneSchema = z.strictObject({
     jump_height_mm: z.number().int().min(0).max(MM_LIMIT),
   }),
   /** `pos_mm` is the feet position of the player. */
-  spawn: z.strictObject({ pos_mm: Vec3 }),
+  spawn: z.strictObject({ pos_mm: Vec3.describe('feet position of the player, [x, y, z] in integer millimetres') }),
   entities: z.array(EntitySchema).max(500),
   rules: z.array(RuleSchema).max(200),
   objectives: z.array(ObjectiveSchema).max(50),
@@ -72,10 +74,3 @@ export type Entity = z.infer<typeof EntitySchema>;
 export type EntityKind = Entity['kind'];
 export type Rule = z.infer<typeof RuleSchema>;
 export type Objective = z.infer<typeof ObjectiveSchema>;
-
-/** The JSON Schema (draft 2020-12) that structured-output requests are given. */
-export const sceneJsonSchema = (): Record<string, unknown> => ({
-  $id: 'https://kensho.invalid/scene-gate-1.json',
-  title: 'scene-gate/1',
-  ...(z.toJSONSchema(SceneSchema, { target: 'draft-2020-12', io: 'input' }) as Record<string, unknown>),
-});

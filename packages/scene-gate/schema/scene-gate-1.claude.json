@@ -1,0 +1,436 @@
+{
+  "type": "object",
+  "properties": {
+    "scene": {
+      "type": "string",
+      "const": "scene-gate/1"
+    },
+    "bounds_mm": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "description": "(-1000000 to 1000000)"
+      },
+      "description": "[minx, miny, minz, maxx, maxy, maxz] in integer millimetres (exactly 6 items)"
+    },
+    "controller": {
+      "type": "object",
+      "properties": {
+        "height_mm": {
+          "type": "integer",
+          "description": "(1 to 1000000)"
+        },
+        "radius_mm": {
+          "type": "integer",
+          "description": "(1 to 1000000)"
+        },
+        "jump_height_mm": {
+          "type": "integer",
+          "description": "(0 to 1000000)"
+        }
+      },
+      "required": [
+        "height_mm",
+        "radius_mm",
+        "jump_height_mm"
+      ],
+      "additionalProperties": false
+    },
+    "spawn": {
+      "type": "object",
+      "properties": {
+        "pos_mm": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "description": "(-1000000 to 1000000)"
+          },
+          "description": "feet position of the player, [x, y, z] in integer millimetres (exactly 3 items)"
+        }
+      },
+      "required": [
+        "pos_mm"
+      ],
+      "additionalProperties": false
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "kind": {
+                "type": "string",
+                "const": "static"
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(1 to 1000000)"
+                },
+                "description": "full size of the box, [x, y, z] in integer millimetres (exactly 3 items)"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(-1000000 to 1000000)"
+                },
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up (exactly 3 items)"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "(1 to 64 characters)"
+                },
+                "description": "(at most 16 items)"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "kind": {
+                "type": "string",
+                "const": "dynamic"
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(1 to 1000000)"
+                },
+                "description": "full size of the box, [x, y, z] in integer millimetres (exactly 3 items)"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(-1000000 to 1000000)"
+                },
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up (exactly 3 items)"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "(1 to 64 characters)"
+                },
+                "description": "(at most 16 items)"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "kind": {
+                "type": "string",
+                "const": "door"
+              },
+              "requires": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "guards": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "(1 to 64 characters)"
+                },
+                "description": "(at most 64 items)"
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(1 to 1000000)"
+                },
+                "description": "full size of the box, [x, y, z] in integer millimetres (exactly 3 items)"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(-1000000 to 1000000)"
+                },
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up (exactly 3 items)"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "(1 to 64 characters)"
+                },
+                "description": "(at most 16 items)"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "requires",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "kind": {
+                "type": "string",
+                "const": "pickup"
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(1 to 1000000)"
+                },
+                "description": "full size of the box, [x, y, z] in integer millimetres (exactly 3 items)"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(-1000000 to 1000000)"
+                },
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up (exactly 3 items)"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "(1 to 64 characters)"
+                },
+                "description": "(at most 16 items)"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "kind": {
+                "type": "string",
+                "const": "key"
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(1 to 1000000)"
+                },
+                "description": "full size of the box, [x, y, z] in integer millimetres (exactly 3 items)"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "(-1000000 to 1000000)"
+                },
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up (exactly 3 items)"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+$",
+                  "description": "(1 to 64 characters)"
+                },
+                "description": "(at most 16 items)"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "description": "(at most 500 items)"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+$",
+            "description": "(1 to 64 characters)"
+          },
+          "on": {
+            "type": "string",
+            "pattern": "^(collect|enter|open|signal):[A-Za-z0-9_.-]+$"
+          },
+          "emit": {
+            "type": "string",
+            "pattern": "^(collect|enter|open|signal):[A-Za-z0-9_.-]+$"
+          }
+        },
+        "required": [
+          "id",
+          "on",
+          "emit"
+        ],
+        "additionalProperties": false
+      },
+      "description": "(at most 200 items)"
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "type": {
+                "type": "string",
+                "const": "collect"
+              },
+              "tag": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "count": {
+                "type": "integer",
+                "description": "(1 to 1000)"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "tag",
+              "count"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "type": {
+                "type": "string",
+                "const": "reach"
+              },
+              "target": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "target"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              },
+              "type": {
+                "type": "string",
+                "const": "unlock"
+              },
+              "target": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$",
+                "description": "(1 to 64 characters)"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "target"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "description": "(at most 50 items)"
+    }
+  },
+  "required": [
+    "scene",
+    "bounds_mm",
+    "controller",
+    "spawn",
+    "entities",
+    "rules",
+    "objectives"
+  ],
+  "additionalProperties": false
+}

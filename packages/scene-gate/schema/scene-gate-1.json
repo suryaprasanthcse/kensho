@@ -10,41 +10,14 @@
     },
     "bounds_mm": {
       "type": "array",
-      "prefixItems": [
-        {
-          "type": "integer",
-          "minimum": -1000000,
-          "maximum": 1000000
-        },
-        {
-          "type": "integer",
-          "minimum": -1000000,
-          "maximum": 1000000
-        },
-        {
-          "type": "integer",
-          "minimum": -1000000,
-          "maximum": 1000000
-        },
-        {
-          "type": "integer",
-          "minimum": -1000000,
-          "maximum": 1000000
-        },
-        {
-          "type": "integer",
-          "minimum": -1000000,
-          "maximum": 1000000
-        },
-        {
-          "type": "integer",
-          "minimum": -1000000,
-          "maximum": 1000000
-        }
-      ],
-      "items": false,
+      "items": {
+        "type": "integer",
+        "minimum": -1000000,
+        "maximum": 1000000
+      },
       "minItems": 6,
-      "maxItems": 6
+      "maxItems": 6,
+      "description": "[minx, miny, minz, maxx, maxy, maxz] in integer millimetres"
     },
     "controller": {
       "type": "object",
@@ -77,26 +50,14 @@
       "properties": {
         "pos_mm": {
           "type": "array",
-          "prefixItems": [
-            {
-              "type": "integer",
-              "minimum": -1000000,
-              "maximum": 1000000
-            },
-            {
-              "type": "integer",
-              "minimum": -1000000,
-              "maximum": 1000000
-            },
-            {
-              "type": "integer",
-              "minimum": -1000000,
-              "maximum": 1000000
-            }
-          ],
-          "items": false,
+          "items": {
+            "type": "integer",
+            "minimum": -1000000,
+            "maximum": 1000000
+          },
           "minItems": 3,
-          "maxItems": 3
+          "maxItems": 3,
+          "description": "feet position of the player, [x, y, z] in integer millimetres"
         }
       },
       "required": [
@@ -108,7 +69,7 @@
       "maxItems": 500,
       "type": "array",
       "items": {
-        "oneOf": [
+        "anyOf": [
           {
             "type": "object",
             "properties": {
@@ -124,49 +85,25 @@
               },
               "box_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
               },
               "pos_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
                 "maxItems": 16,
@@ -202,49 +139,25 @@
               },
               "box_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
               },
               "pos_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
                 "maxItems": 16,
@@ -296,49 +209,25 @@
               },
               "box_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
               },
               "pos_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
                 "maxItems": 16,
@@ -375,49 +264,25 @@
               },
               "box_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
               },
               "pos_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
                 "maxItems": 16,
@@ -453,49 +318,25 @@
               },
               "box_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
               },
               "pos_mm": {
                 "type": "array",
-                "prefixItems": [
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  },
-                  {
-                    "type": "integer",
-                    "minimum": -1000000,
-                    "maximum": 1000000
-                  }
-                ],
-                "items": false,
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
                 "minItems": 3,
-                "maxItems": 3
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
               },
               "tags": {
                 "maxItems": 16,
@@ -552,7 +393,7 @@
       "maxItems": 50,
       "type": "array",
       "items": {
-        "oneOf": [
+        "anyOf": [
           {
             "type": "object",
             "properties": {

@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { SCHEMA_PATH, renderSchemaFile } from '../src/write-schema.ts';
-import { SceneSchema, sceneJsonSchema } from '../src/schema.ts';
+import { SCHEMA_PROFILES, sceneJsonSchema, type SchemaProfile } from '../src/json-schema.ts';
+import { SceneSchema } from '../src/schema.ts';
+import { renderSchemaFile, schemaPath } from '../src/write-schema.ts';
 import { EXAMPLE_SCENE, cleanScene } from './fixtures.ts';
 
 const parses = (value: unknown): boolean => SceneSchema.safeParse(value).success;
@@ -78,18 +79,110 @@ describe('the scene schema', () => {
   });
 });
 
-describe('the JSON Schema export', () => {
-  const schema = sceneJsonSchema() as any;
+type Node = Record<string, any>;
 
-  it('describes the same closed object, with integers throughout', () => {
+/** Every schema keyword used anywhere in the export (property names are not keywords). */
+function keywords(node: unknown, found = new Set<string>()): Set<string> {
+  if (typeof node !== 'object' || node === null) return found;
+  if (Array.isArray(node)) {
+    node.forEach((n) => keywords(n, found));
+    return found;
+  }
+  for (const [key, value] of Object.entries(node)) {
+    if (key === 'properties') Object.values(value as Node).forEach((v) => keywords(v, found));
+    else if (key === 'enum' || key === 'required' || key === 'const') found.add(key);
+    else {
+      found.add(key);
+      if (key === 'items' || key === 'additionalProperties' || key === 'anyOf') keywords(value, found);
+    }
+  }
+  return found;
+}
+
+/** Every schema node, so each array node can be inspected. */
+function nodes(node: unknown, found: Node[] = []): Node[] {
+  if (typeof node !== 'object' || node === null) return found;
+  if (Array.isArray(node)) {
+    node.forEach((n) => nodes(n, found));
+    return found;
+  }
+  const n = node as Node;
+  found.push(n);
+  Object.values(n.properties ?? {}).forEach((v) => nodes(v, found));
+  nodes(n.items, found);
+  nodes(n.anyOf, found);
+  return found;
+}
+
+describe('the JSON Schema exports', () => {
+  const schemas = Object.fromEntries(SCHEMA_PROFILES.map((p) => [p, sceneJsonSchema(p) as Node])) as Record<SchemaProfile, Node>;
+
+  it.each(SCHEMA_PROFILES)('%s: is one closed object with integers throughout', (profile) => {
+    const schema = schemas[profile];
     expect(schema.type).toBe('object');
     expect(schema.additionalProperties).toBe(false);
-    expect(schema.properties.scene.const).toBe('scene-gate/1');
     expect(schema.required).toEqual(['scene', 'bounds_mm', 'controller', 'spawn', 'entities', 'rules', 'objectives']);
     expect(JSON.stringify(schema)).not.toContain('"type":"number"');
   });
 
-  it('matches the committed schema/scene-gate-1.json byte for byte', () => {
-    expect(readFileSync(SCHEMA_PATH, 'utf8')).toBe(renderSchemaFile());
+  it.each(SCHEMA_PROFILES)('%s: has no prefixItems and no oneOf', (profile) => {
+    const used = keywords(schemas[profile]);
+    expect(used.has('prefixItems')).toBe(false);
+    expect(used.has('oneOf')).toBe(false);
+    expect(used.has('anyOf')).toBe(true);
+  });
+
+  it('full: writes every fixed-length array as items plus equal minItems and maxItems', () => {
+    const arrays = nodes(schemas.full).filter((n) => n.type === 'array');
+    const fixed = arrays.filter((n) => n.minItems !== undefined);
+    expect(fixed.length).toBeGreaterThan(0);
+    for (const a of fixed) {
+      expect(a.items).toBeTypeOf('object');
+      expect(a.minItems).toBe(a.maxItems);
+    }
+    expect(schemas.full.properties.bounds_mm).toMatchObject({ type: 'array', minItems: 6, maxItems: 6, items: { type: 'integer' } });
+    expect(schemas.full.properties.spawn.properties.pos_mm).toMatchObject({ minItems: 3, maxItems: 3 });
+  });
+
+  it('full: keeps the unions discriminated by a constant', () => {
+    const kinds = schemas.full.properties.entities.items.anyOf.map((v: Node) => v.properties.kind.const);
+    expect(kinds).toEqual(['static', 'dynamic', 'door', 'pickup', 'key']);
+    const types = schemas.full.properties.objectives.items.anyOf.map((v: Node) => v.properties.type.const);
+    expect(types).toEqual(['collect', 'reach', 'unlock']);
+  });
+
+  // https://platform.claude.com/docs/en/build-with-claude/structured-outputs, read 2026-11-01: supported are basic types,
+  // enum, const, anyOf, $ref, default, required, additionalProperties false, string formats, minItems of 0 or 1, and
+  // simple regex patterns. Numerical constraints, string length constraints and array constraints beyond minItems 0/1
+  // return a 400. oneOf, prefixItems, maxItems, $schema, $id and title are not documented, so they are kept out.
+  it('claude: uses only keywords the Claude docs list as supported', () => {
+    const allowed = new Set(['type', 'properties', 'required', 'additionalProperties', 'items', 'anyOf', 'enum', 'const', 'pattern', 'description']);
+    expect([...keywords(schemas.claude)].filter((k) => !allowed.has(k))).toEqual([]);
+    for (const n of nodes(schemas.claude)) expect(n.minItems ?? 0).toBeLessThanOrEqual(1);
+  });
+
+  it('claude: states the removed constraints in the description so the model still sees them', () => {
+    expect(schemas.claude.properties.bounds_mm.description).toContain('exactly 6 items');
+    expect(schemas.claude.properties.bounds_mm.items.description).toBe('(-1000000 to 1000000)');
+    expect(schemas.claude.properties.entities.description).toContain('at most 500 items');
+  });
+
+  // https://googleapis.github.io/kotlin-genai/google-genai-kotlin/com.google.genai.kotlin.types/-generate-content-config/response-json-schema.html,
+  // read 2026-11-01: only $id, $defs, $ref, $anchor, type, format, title, description, enum, items, prefixItems, minItems,
+  // maxItems, minimum, maximum, anyOf, oneOf, properties, additionalProperties and required are supported.
+  it('gemini: uses only keywords the Gemini docs list as supported', () => {
+    const allowed = new Set(['$id', '$defs', '$ref', '$anchor', 'type', 'format', 'title', 'description', 'enum', 'items', 'prefixItems', 'minItems', 'maxItems', 'minimum', 'maximum', 'anyOf', 'oneOf', 'properties', 'additionalProperties', 'required']);
+    expect([...keywords(schemas.gemini)].filter((k) => !allowed.has(k))).toEqual([]);
+  });
+
+  it('gemini: keeps fixed-length arrays and integer ranges, and turns const into a one-value enum', () => {
+    expect(schemas.gemini.properties.bounds_mm).toMatchObject({ minItems: 6, maxItems: 6 });
+    expect(schemas.gemini.properties.bounds_mm.items).toMatchObject({ type: 'integer', minimum: -1000000, maximum: 1000000 });
+    expect(schemas.gemini.properties.scene).toEqual({ type: 'string', enum: ['scene-gate/1'] });
+    expect(schemas.gemini.properties.rules.items.properties.on.description).toContain('matches ^(collect|enter|open|signal):');
+  });
+
+  it.each(SCHEMA_PROFILES)('%s: matches the committed file byte for byte', (profile) => {
+    expect(readFileSync(schemaPath(profile), 'utf8')).toBe(renderSchemaFile(profile));
   });
 });

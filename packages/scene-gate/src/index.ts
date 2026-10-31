@@ -1,4 +1,5 @@
 export * from './schema.ts';
+export * from './json-schema.ts';
 export * from './diagnostic.ts';
 export * from './check.ts';
 export * from './parse.ts';

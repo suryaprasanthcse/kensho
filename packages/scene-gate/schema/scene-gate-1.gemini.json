@@ -1,0 +1,476 @@
+{
+  "title": "scene-gate/1",
+  "type": "object",
+  "properties": {
+    "scene": {
+      "type": "string",
+      "enum": [
+        "scene-gate/1"
+      ]
+    },
+    "bounds_mm": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": -1000000,
+        "maximum": 1000000
+      },
+      "minItems": 6,
+      "maxItems": 6,
+      "description": "[minx, miny, minz, maxx, maxy, maxz] in integer millimetres"
+    },
+    "controller": {
+      "type": "object",
+      "properties": {
+        "height_mm": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "radius_mm": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "jump_height_mm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "height_mm",
+        "radius_mm",
+        "jump_height_mm"
+      ],
+      "additionalProperties": false
+    },
+    "spawn": {
+      "type": "object",
+      "properties": {
+        "pos_mm": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -1000000,
+            "maximum": 1000000
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "feet position of the player, [x, y, z] in integer millimetres"
+        }
+      },
+      "required": [
+        "pos_mm"
+      ],
+      "additionalProperties": false
+    },
+    "entities": {
+      "maxItems": 500,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "static"
+                ]
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
+              },
+              "tags": {
+                "maxItems": 16,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "dynamic"
+                ]
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
+              },
+              "tags": {
+                "maxItems": 16,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "door"
+                ]
+              },
+              "requires": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "guards": {
+                "maxItems": 64,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+                }
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
+              },
+              "tags": {
+                "maxItems": 16,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "requires",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "pickup"
+                ]
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
+              },
+              "tags": {
+                "maxItems": 16,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "key"
+                ]
+              },
+              "box_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "full size of the box, [x, y, z] in integer millimetres"
+              },
+              "pos_mm": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 1000000
+                },
+                "minItems": 3,
+                "maxItems": 3,
+                "description": "centre of the box, [x, y, z] in integer millimetres, Y up"
+              },
+              "tags": {
+                "maxItems": 16,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "box_mm",
+              "pos_mm"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "rules": {
+      "maxItems": 200,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+          },
+          "on": {
+            "type": "string",
+            "description": "(matches ^(collect|enter|open|signal):[A-Za-z0-9_.-]+$)"
+          },
+          "emit": {
+            "type": "string",
+            "description": "(matches ^(collect|enter|open|signal):[A-Za-z0-9_.-]+$)"
+          }
+        },
+        "required": [
+          "id",
+          "on",
+          "emit"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "objectives": {
+      "maxItems": 50,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "collect"
+                ]
+              },
+              "tag": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "tag",
+              "count"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "reach"
+                ]
+              },
+              "target": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "target"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "unlock"
+                ]
+              },
+              "target": {
+                "type": "string",
+                "description": "(1 to 64 characters, matches ^[A-Za-z0-9_.-]+$)"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "target"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "scene",
+    "bounds_mm",
+    "controller",
+    "spawn",
+    "entities",
+    "rules",
+    "objectives"
+  ],
+  "additionalProperties": false
+}

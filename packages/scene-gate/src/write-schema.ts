@@ -1,13 +1,18 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { sceneJsonSchema } from './schema.ts';
+import { SCHEMA_PROFILES, sceneJsonSchema, type SchemaProfile } from './json-schema.ts';
 
-export const SCHEMA_PATH = resolve(import.meta.dirname, '../schema/scene-gate-1.json');
+/** `full` is `scene-gate-1.json`; the provider profiles are `scene-gate-1.<profile>.json`. */
+export const schemaPath = (profile: SchemaProfile): string =>
+  resolve(import.meta.dirname, '../schema', profile === 'full' ? 'scene-gate-1.json' : `scene-gate-1.${profile}.json`);
 
-export const renderSchemaFile = (): string => JSON.stringify(sceneJsonSchema(), null, 2) + '\n';
+export const renderSchemaFile = (profile: SchemaProfile): string => JSON.stringify(sceneJsonSchema(profile), null, 2) + '\n';
 
 if (import.meta.main) {
-  mkdirSync(dirname(SCHEMA_PATH), { recursive: true });
-  writeFileSync(SCHEMA_PATH, renderSchemaFile());
-  console.log(`wrote ${SCHEMA_PATH}`);
+  for (const profile of SCHEMA_PROFILES) {
+    const path = schemaPath(profile);
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, renderSchemaFile(profile));
+    console.log(`wrote ${path}`);
+  }
 }
