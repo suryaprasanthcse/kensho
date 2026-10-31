@@ -73,6 +73,8 @@ pnpm --filter @kensho/scene-gate schema
 pnpm --filter @kensho/scene-gate check-tapes <tapes-dir>
 ```
 
+`scripts/smoke-schema.ts` (`pnpm --filter @kensho/scene-gate smoke-schema`) is a one-off check that each provider accepts its schema profile. It sends one request per provider, reading `ANTHROPIC_API_KEY` and `GEMINI_API_KEY` from the repository `.env`, and prints only the HTTP status and whether the reply parses. It is not part of the study, writes no tapes, and has only been tested offline with an injected `fetch`.
+
 The mutation check disables each check in turn (its module is aliased to a no-op) and asserts the suite then fails. It exits non-zero if any check survives.
 
 `check-tapes` re-checks recorded tapes offline and prints a JSON report: per-model verdict counts, the unplayable rate and flip rate with Wilson 95% intervals, repair outcomes, and any tape that failed to read. Add `--unreachable-height` to enable the optional check, and `--prompts prompts/prompts.json --system prompts/system.md` to flag tapes whose prompt or system hash differs from the frozen files.

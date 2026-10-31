@@ -11,7 +11,8 @@
     "test": "vitest run --root ../.. packages/scene-gate",
     "schema": "tsx src/write-schema.ts",
     "check-tapes": "tsx src/bin.ts check-tapes",
-    "mutation": "tsx test/mutation/run.ts"
+    "mutation": "tsx test/mutation/run.ts",
+    "smoke-schema": "tsx scripts/smoke-schema.ts"
   },
   "dependencies": {
     "@kensho/diagnostics": "workspace:*",
