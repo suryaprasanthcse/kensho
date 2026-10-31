@@ -40,11 +40,11 @@ If a listed model is withdrawn before generation, the slot is re-decided by the 
 | Checks | the ten in `src/check.ts`; the optional `UNREACHABLE_HEIGHT` check is **off**, and `system.md` does not mention it |
 | Thresholds | 5 mm overlap, 20 mm support (`src/thresholds.ts`) |
 | Commit | `TBD` (the frozen commit hash) |
-| SHA-256 of `prompts.json` | `TBD` |
-| SHA-256 of `system.md` | `TBD` |
-| SHA-256 of `repair.md` | `TBD` |
+| SHA-256 of `prompts.json` | `73c60e6866201c61e75d73260d57f564eb34190b0a6d5ea2b40f4fe628ff1c47` |
+| SHA-256 of `system.md` | `a3382b10c15a139447e4739e7eda8862f9d0a35a8119905b59177718252e4d66` |
+| SHA-256 of `repair.md` | `e8d2c73f3249264db09696ebb101e5bd2ec85887565b1e0002908bbcb4ffd867` |
 
-Each tape records the SHA-256 of its prompt text and of `system.md`. `check-tapes --prompts prompts/prompts.json --system prompts/system.md` reports any tape that differs from the frozen files. (It does not check `repair.md`; its hash is recorded above.)
+Each tape records the SHA-256 of its prompt text and of `system.md`. `check-tapes --prompts prompts/prompts.json --system prompts/system.md` reports any tape that differs from the frozen files. (It does not check `repair.md`; its hash is recorded above.) The three hashes are of the files' bytes as committed (LF line endings), computed on 2026-11-01 over the DRAFT files. A test recomputes them, so any edit to one of the files before freeze fails the suite until the hash here is updated on purpose.
 
 ## 4. Design
 
@@ -52,7 +52,8 @@ Each tape records the SHA-256 of its prompt text and of `system.md`. `check-tape
 - Each run is an independent request: no earlier output is in its context, and nothing is cached or reused between runs.
 - Every run of a model uses identical parameters (section 5). The only thing that differs between the three runs of a prompt is sampling.
 - Requests go in a fixed order (prompt id, then sample), one at a time.
-- Every response is written to a tape (`src/harness.ts`) before anything is computed from it. All verdicts are recomputed offline from tapes with `check-tapes`.
+- Every response is written to a tape (`src/harness.ts`) before anything is computed from it. A request that gets no reply is written to a tape too (section 6). All verdicts are recomputed offline from tapes with `check-tapes`.
+- A request that already has a tape is never sent again, so a run that is interrupted and restarted continues where it stopped and never regenerates anything.
 
 ## 5. Parameters
 
@@ -68,9 +69,9 @@ Every parameter that is not listed as set below is **omitted from the request**,
 | `maxOutputTokens` | 8192 | The only generation limit that is set. With thinking at its default, thinking tokens may count against it (`TBD`: read the first tape's usage to confirm). A cut-off reply is not retried; it is `schema_invalid` with reason `truncated` |
 | System message | `prompts/system.md` | |
 | User message | generation: the prompt text, verbatim. Repair: `prompts/repair.md` rendered (section 6) | |
-| Request timeout | 120 s per attempt (`TBD`: the stand-alone schema smoke on `gemini-3.8-flash` timed out at 120 s once, while its repair smoke finished inside it) | A timeout is a transport error and follows the retry rule in section 6 |
+| Request timeout | 180 s per attempt | The stand-alone schema smoke on `gemini-3.8-flash` timed out at 120 s while its repair smoke finished inside 120 s. A timeout is a transport error and follows the policy in section 6 |
 
-**Usage is logged per tape.** Each tape's `usage` holds the token counts the provider reported (for Gemini `promptTokenCount`, `candidatesTokenCount`, `thoughtsTokenCount`, `totalTokenCount`). Usage is never used by a check or a metric, and it is what the spend cap (section 8) is computed from.
+**Usage is logged per tape.** Each tape's `usage` holds the token counts the provider reported (for Gemini `promptTokenCount`, `candidatesTokenCount`, `thoughtsTokenCount`, `totalTokenCount`). Usage is never used by a check or a metric, and it is what the spend cap (section 8) is computed from, together with the attempt log (section 6).
 
 ## 6. Procedure
 
@@ -87,7 +88,15 @@ Every parameter that is not listed as set below is **omitted from the request**,
 4. `schema_invalid` and `pass` scenes get no repair request.
 5. Compute the metrics in section 7 with `check-tapes` and publish all of them, including the ones that look bad.
 
-**Transport errors.** A request that fails with a network error, HTTP 429 or HTTP 5xx is repeated unchanged, at most 3 attempts in total, with increasing delays. A response with HTTP 200 is recorded whatever it says, including a refusal or a truncated reply, and is never re-rolled. Any other 4xx (a rejected schema, an invalid key, an unknown model) stops the run: it is a setup error, not a result.
+**Transport policy.** It is implemented in `src/transport.ts` and `src/runner.ts` and pinned by tests that use a fake provider client. There is no real client yet.
+
+- **Timeout:** 180 s per attempt.
+- **Retries:** up to 3 retries, so at most 4 attempts, after waits of 2 s, 4 s and 8 s (exponential, no jitter), and **only** after HTTP 503, HTTP 429, a timeout, or a network error. A 2xx reply whose body cannot be read is treated like a network error.
+- **Never retried:** any 4xx other than 429, and any reply that arrived. A reply with HTTP 200 is final whatever it says: a refusal, a truncated text and an empty text are results, not failures, and are never re-rolled. A 4xx other than 429 (a rejected schema, an invalid key, an unknown model) is a setup error and stops the run as `rejected`, with no tape.
+- **Other 5xx** (500, 502, 504) are not on the retry list, so they are not retried: the request is recorded as a `transport_failure` after its single attempt.
+- **Every attempt is logged on the tape** (`attempts`): its number, start time, duration, the HTTP status or the error class (never the error message), the usage the provider reported, and the cost it counted against the cap.
+- **After the retries**, a request with no reply is written as a tape with `outcome: transport_failure`, empty `raw_output` and its attempt log. A transport failure is **reported separately from `SCHEMA_INVALID`** (it is not a statement about the model's scene), **kept in every denominator** (section 7), and **never regenerated**.
+- **The 10% rule.** If the transport failures of a model's generations exceed 10% of its 60 planned generations (7 or more), that model stops and is reported **incomplete**. Its tapes are kept, and the other model carries on. On a restart the failures already on tapes still count, so a stopped model stays stopped. Transport failures of repair requests are recorded and counted as repairs that did not succeed, but they do not stop a model.
 
 ## 7. Metrics
 
@@ -95,14 +104,15 @@ Intervals are Wilson 95% intervals (`src/stats.ts`). No significance tests are r
 
 | Metric | Definition | Reported for |
 |---|---|---|
-| M1 Unplayable rate | `fail` / (`pass` + `fail`): schema-valid scenes that fail at least one check | each model; and each model by prompt category (ordinary, structured) |
-| M2 Schema-invalid rate | `schema_invalid` / all generations, with the count of each reason | each model |
-| M3 Flip rate | of (prompt, model) triples with exactly three verdicts, the share whose three verdicts are not all the same. The verdict is compared, not the diagnostic hash | each model |
-| M4 Repair acceptance | accepted repairs / failing scenes that were sent for repair | each model |
+| M1 Unplayable rate | `fail` / (`pass` + `fail`): schema-valid scenes that fail at least one check. Also reported as `fail` / all 60 generations, so that schema-invalid outputs and transport failures stay visible in the denominator | each model; and each model by prompt category (ordinary, structured) |
+| M2 Outcome shares | each of `pass`, `fail`, `schema_invalid` and `transport_failure` / all 60 generations, transport failures included, with the count of each `schema_invalid` reason | each model |
+| M3 Flip rate | of (prompt, model) triples with exactly three outcomes, the share whose three outcomes are not all the same. `transport_failure` counts as an outcome, so a triple with one is a flip; the rate over the triples that contain no transport failure is reported beside it. The outcome is compared, not the diagnostic hash | each model |
+| M4 Repair acceptance | accepted repairs / failing scenes that were sent for repair. A repair request that ended as a transport failure is in the denominator and is not accepted | each model |
 | M5 Repair success | accepted repairs whose scene then has no error (verdict `pass`) / the same denominator | each model |
 | M6 Repair size | operations in the patch computed from each repair reply: count, total, median and maximum, over all replies that were JSON objects and over accepted repairs only. A small patch means a local fix; a large one means the model rewrote the scene | each model |
 | D1 Codes | per check code, the number of scenes that have it | each model, descriptive only |
-| D2 Refusals | repair refusals by reason | each model, descriptive only |
+| D2 Refusals | repair refusals by reason, `transport_failure` and `unparseable_reply` included | each model, descriptive only |
+| D3 Attempts and spend | attempts made, and micro-dollars counted against the cap, by model and in total | each model, descriptive only |
 
 Three runs per prompt are too few for any claim about a single prompt. Per-prompt results are listed but not interpreted.
 
@@ -112,15 +122,17 @@ Three runs per prompt are too few for any claim about a single prompt. Per-promp
 - **Nothing changes after freeze:** prompts, system prompt, schema profiles, parameters, thresholds, checks. A scene is never regenerated because its outcome was disappointing.
 - **A checker bug found after freeze** is recorded in a dated changelog below, fixed in a new commit, and every tape is re-checked offline. Both the old and the new results are reported. No tape is regenerated, because the tapes are the evidence and the checks are recomputed from them.
 - **A defect in a prompt found after freeze** is recorded, not edited. Its results stay in the totals, and a second table excludes it, labelled as such.
-- **Abort** (stop and report, do not retry later with changes) if: the provider rejects the schema (HTTP 400), the key is rejected (401 or 403), or three requests in a row exhaust their transport retries. A run that aborts keeps its tapes and is reported as incomplete.
-- **Spend cap: $10, a hard stop.** The cap covers every study request of both models, generation and repair, summed. Spend is computed from each tape's logged `usage` and the prices on https://ai.google.dev/gemini-api/docs/pricing (page "Last updated 2026-10-30 UTC", read 2026-11-01). Those prices, per 1M tokens, with output prices including thinking tokens:
+- **Abort** (stop and report, do not retry later with changes) if a request is rejected with a 4xx other than 429 (a rejected schema is HTTP 400, a rejected key 401 or 403), or if a model's transport failures pass 10% of its generations (section 6). A run that aborts keeps its tapes and is reported as incomplete.
+- **Spend cap: $10, a hard stop.** The cap covers every study request of both models, generation and repair, **every attempt counted**: retries and failed attempts included. Prices are from https://ai.google.dev/gemini-api/docs/pricing (page "Last updated 2026-10-30 UTC", read 2026-11-01), per 1M tokens, output including thinking tokens:
 
   | Model | Input | Output |
   |---|---|---|
   | `gemini-3.5-flash-lite` | $0.30 | $2.50 |
   | `gemini-3.8-flash` | $0.75 through 2026-12-31, then $1.50 | $3.75 through 2026-12-31, then $7.50 |
 
-  Before each request the runner adds the worst-case cost of that request (6,000 input tokens and 8,192 output tokens at the model's price) to the spend so far, and stops without sending it if the sum would reach $10. A stop is final: the run is reported as incomplete with the tapes it has, and no further money is spent to finish it. At the prices above, the worst case for the whole study (120 requests per model) is about $2.67 for `gemini-3.5-flash-lite` and $4.23 for `gemini-3.8-flash`, about $6.90 together. **After 2027-01-01 the `gemini-3.8-flash` worst case alone is about $8.45 and the total about $11.13, over the cap**, so the runner could stop before the end; the study should run before then. The smoke checks are outside the study and outside the cap; their cost is a few requests. The runner that enforces the cap is not written yet.
+  An attempt that reported usage counts what its usage costs (prompt tokens at the input price, candidate plus thinking tokens at the output price). An attempt that got no reply or reported no usage (a 503, a timeout, a network error) counts at the worst case, because the provider may still have done the work. The worst case of one attempt is 6,000 input tokens and 8,192 output tokens at the model's price on the day: $0.02228 for `gemini-3.5-flash-lite` and $0.03522 for `gemini-3.8-flash`. Before each attempt, retries included, the runner adds that worst case to the spend so far and does not send the attempt if the sum would reach $10. A stop is final: the run is reported as incomplete with the tapes it has (attempts already made stay on a tape), and no further money is spent to finish it.
+
+  If every request were one attempt, the worst case for the whole study (120 requests per model: 60 generations and at most 60 repairs) is $2.67 for `gemini-3.5-flash-lite` and $4.23 for `gemini-3.8-flash`, $6.90 together. That figure assumes no retries; each failed attempt is counted at the worst case, so many retries can reach the cap. **After 2027-01-01 the `gemini-3.8-flash` price doubles and the worst case, even without retries, is $11.13 and over the cap**, so the runner could stop before the end; the study should run before then. The smoke checks are outside the study and outside the cap; their cost is a few requests. The accounting is in `src/spend.ts` and `src/transport.ts` and is tested offline; no provider client exists yet.
 
 ## 9. Limits stated in advance
 
@@ -128,6 +140,7 @@ Three runs per prompt are too few for any claim about a single prompt. Per-promp
 - The format is my own toy format, not a real game DSL; scenes are boxes, with no physics and no navmesh.
 - Sampling and thinking are the providers' defaults, which neither I nor this study controls.
 - Three runs per prompt cannot support a claim about a single prompt.
+- A `transport_failure` says nothing about a model's scenes. It is kept in the denominators so that a model that fails often does not look better for it, and it is reported apart so that it is not mistaken for a schema failure.
 
 ## 10. Changelog
 
@@ -135,3 +148,4 @@ Three runs per prompt are too few for any claim about a single prompt. Per-promp
 |---|---|
 | 2026-11-01 | Draft written. Models read from the Gemini models page. No generation has run. |
 | 2026-11-01 | Owner decisions: slot 2 is `gemini-3.8-flash`; temperature and thinking are the provider default; spend cap $10, hard stop; no human labelling. Repair redesigned: the model returns a full corrected scene and the patch is computed with `compare`; `prompts/repair.md` added; M6 added; usage logged per tape. Smoke checks run against the live endpoint (results in section 2). |
+| 2026-11-01 | Owner decisions: timeout 180 s; up to 3 retries with exponential backoff on 503, 429, timeout and network errors only; never retry a 4xx or a reply that arrived; every attempt logged on the tape and counted toward the $10 cap; `transport_failure` reported apart from `SCHEMA_INVALID`, kept in the denominator and never regenerated; a model whose transport failures pass 10% of its 60 generations stops and is reported incomplete. `repair.md` gained the rule about changing an objective's target. SHA-256 of `prompts.json`, `system.md` and `repair.md` recorded. |

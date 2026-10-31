@@ -3,6 +3,8 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadPrompts } from '../src/harness.ts';
 import { OVERLAP_TOLERANCE_MM, SUPPORT_TOLERANCE_MM } from '../src/thresholds.ts';
+import { TRANSPORT_POLICY, retryDelayMs } from '../src/transport.ts';
+import { sha256Hex } from '../src/verdict.ts';
 
 const PACKAGE = join(import.meta.dirname, '..');
 const text = readFileSync(join(PACKAGE, 'PREREGISTRATION.md'), 'utf8');
@@ -50,6 +52,36 @@ describe('the preregistration draft', () => {
     expect(text).toContain('20 prompts x 3 runs per model = 60 scene generations per model');
     expect(text).toContain('10 ordinary');
     expect(text).toContain('10 structured');
+  });
+
+  it('records the SHA-256 of prompts.json, system.md and repair.md, and they are the files as they are now', () => {
+    for (const [label, file] of [['prompts.json', 'prompts.json'], ['system.md', 'system.md'], ['repair.md', 'repair.md']] as const) {
+      const row = new RegExp(`\\| SHA-256 of \`${label.replace('.', '\\.')}\` \\| \`([0-9a-f]{64})\` \\|`).exec(text);
+      expect(row, label).not.toBeNull();
+      expect(row![1], `${label}: edit the file or the recorded hash on purpose, not by accident`).toBe(sha256Hex(readFileSync(join(PACKAGE, 'prompts', file), 'utf8')));
+    }
+  });
+
+  it('states the transport policy the code implements', () => {
+    expect(text).toContain(`**Timeout:** ${TRANSPORT_POLICY.timeoutMs / 1000} s per attempt.`);
+    expect(text).toContain(`up to ${TRANSPORT_POLICY.maxRetries} retries, so at most ${TRANSPORT_POLICY.maxRetries + 1} attempts`);
+    expect(text).toContain([0, 1, 2].map((n) => `${retryDelayMs(n) / 1000} s`).join(', ').replace(/, (\d+ s)$/, ' and $1'));
+    expect(text).toContain('**only** after HTTP 503, HTTP 429, a timeout, or a network error');
+    expect(text).toContain('**Never retried:** any 4xx other than 429, and any reply that arrived.');
+    expect(text).toContain('**Every attempt is logged on the tape**');
+    expect(text).toContain('`outcome: transport_failure`');
+    expect(text).toContain('**reported separately from `SCHEMA_INVALID`**');
+    expect(text).toContain('**kept in every denominator**');
+    expect(text).toContain('**never regenerated**');
+    expect(text).toContain('exceed 10% of its 60 planned generations (7 or more)');
+    expect(text).toContain('reported **incomplete**');
+  });
+
+  it('counts every attempt toward the cap, at the worst case when no usage came back', () => {
+    expect(text).toContain('**every attempt counted**');
+    expect(text).toContain('counts at the worst case');
+    expect(text).toContain('$0.02228');
+    expect(text).toContain('$0.03522');
   });
 
   it('quotes the thresholds the code uses and keeps the optional check off', () => {

@@ -95,7 +95,7 @@ A tape (`src/harness.ts`) records one model call: model id, parameters, prompt h
 
 `prompts/prompts.json` (20 prompts: 10 ordinary, 10 structured, none adversarial), `prompts/system.md` and `prompts/repair.md` (the user message of the repair request) are marked DRAFT until reviewed and frozen. `PREREGISTRATION.md` records the study design and is DRAFT too.
 
-No API client exists. `SceneGenerator` in `src/harness.ts` is the marked interface where one goes later.
+No API client exists. `ProviderClient` in `src/harness.ts` is the marked interface where one goes later. `src/transport.ts` (timeout, retries, backoff, attempt log), `src/spend.ts` (the $10 ledger) and `src/runner.ts` (the generation and repair loops, with the 10% transport-failure stop) drive it, with the client, the clock and `sleep` injected, and are tested offline with a fake client.
 
 ## Limits
 
