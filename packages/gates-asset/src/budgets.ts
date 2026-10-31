@@ -50,11 +50,13 @@ export const THRESHOLDS = {
   /** A detached component below this share of total area is a minor island. */
   islandSharePpm: 10_000,
   /**
-   * A minor island whose vertices all lie inside the convex hull of the largest component, give or take this
-   * share of that component's extent, is a decorative shell (warning). Anything outside is debris (error).
-   * The tolerance only absorbs welding and floating-point noise; the distance outside is always reported.
+   * A minor island whose vertices all lie inside the convex hull of the largest component, dilated by this
+   * share of that component's extent (1%), is a decorative shell (warning): relief hardware such as brackets
+   * and hinges stands just proud of the hull. Anything further out is debris (error). The distance outside is
+   * always reported. The value was set after seeing that the frozen chest's brackets sit 0.12% outside, and a
+   * freshly generated chest's up to 0.58%.
    */
-  islandHullTolerancePpm: 1_000,
+  islandHullTolerancePpm: 10_000,
   /** The declared-box aspect tolerance. */
   boxAspectPpm: 150_000,
   /** Collider sources above this many triangles are refused before any hull work. */

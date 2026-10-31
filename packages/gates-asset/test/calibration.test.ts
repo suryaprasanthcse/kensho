@@ -112,14 +112,15 @@ describe('minor islands: decorative inside the hull, debris outside', () => {
     expect(r.measures).toMatchObject({ floating_outside_hull: 1, decorative_shells: 0 });
   });
 
-  it('reports how far outside, and the tolerance is 0.1% of the body extent', async () => {
-    // the shell's far face reaches 0.0005 past the body's face (0.05% of a 1.0 extent): inside the tolerance
-    const near = await gateIslands([body(), shell([0.5 - 0.01 + 0.0005, 0, 0])]);
+  it('reports how far outside, and the envelope is 1% of the body extent', async () => {
+    // the shell's far face reaches 0.009 past the body's face (0.9% of a 1.0 extent): inside the envelope
+    const near = await gateIslands([body(), shell([0.5 - 0.01 + 0.009, 0, 0])]);
     expect(sev(near, 'FLOATING_ISLANDS')).toEqual(['warning']);
-    // 0.002 past (0.2%): outside
-    const far = await gateIslands([body(), shell([0.5 - 0.01 + 0.002, 0, 0])]);
+    expect(near.measures.floating_max_outside_hull_ppm).toBeLessThanOrEqual(10_000);
+    // 0.012 past (1.2%): outside
+    const far = await gateIslands([body(), shell([0.5 - 0.01 + 0.012, 0, 0])]);
     expect(sev(far, 'FLOATING_ISLANDS')).toEqual(['error']);
-    expect(far.measures.floating_max_outside_hull_ppm).toBeGreaterThan(1000);
+    expect(far.measures.floating_max_outside_hull_ppm).toBeGreaterThan(10_000);
   });
 
   it('mixed: the shell inside is a warning and the one outside is still an error', async () => {
