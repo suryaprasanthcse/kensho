@@ -1,0 +1,26 @@
+{
+  "status": "DRAFT",
+  "note": "DRAFT, not frozen. The repository owner reviews these 20 prompts and changes status to FROZEN before any generation run. Ten are ordinary scene requests and ten are structured (keys and doors, collect-N, stacked crates, multi-room). None is adversarial.",
+  "prompts": [
+    { "id": "ord-01", "category": "ordinary", "text": "A small arena with crates and five coins." },
+    { "id": "ord-02", "category": "ordinary", "text": "A flat courtyard with the player starting in the middle and three coins scattered around it." },
+    { "id": "ord-03", "category": "ordinary", "text": "A corridor ten metres long with a crate near the start and a coin at the far end." },
+    { "id": "ord-04", "category": "ordinary", "text": "A square walled room with a crate in each corner and one coin in the centre." },
+    { "id": "ord-05", "category": "ordinary", "text": "A playground with two low platforms made of boxes and four coins to collect." },
+    { "id": "ord-06", "category": "ordinary", "text": "A long straight track with six coins evenly spaced along it." },
+    { "id": "ord-07", "category": "ordinary", "text": "A small garden with a few benches made of boxes and two coins near the benches." },
+    { "id": "ord-08", "category": "ordinary", "text": "A plaza with a central pillar and three coins placed around the pillar." },
+    { "id": "ord-09", "category": "ordinary", "text": "A warehouse floor with ten crates arranged in two rows and two coins between the rows." },
+    { "id": "ord-10", "category": "ordinary", "text": "An open field with a few scattered crates and a goal marker that the player has to reach." },
+    { "id": "str-01", "category": "structured", "text": "A room with a red key on the floor and a locked red door leading to a second room that holds three coins. The objective is to collect all three coins." },
+    { "id": "str-02", "category": "structured", "text": "Two keys, red and blue, each opening its own door. The blue key is behind the red door, and the goal is beyond the blue door." },
+    { "id": "str-03", "category": "structured", "text": "A large hall with seven coins spread across it. The objective is to collect all seven." },
+    { "id": "str-04", "category": "structured", "text": "A tower of three stacked crates standing beside a wall, with one coin on the floor next to the tower." },
+    { "id": "str-05", "category": "structured", "text": "A stack of four crates resting on the floor next to a doorway, plus two coins to collect." },
+    { "id": "str-06", "category": "structured", "text": "Three rooms in a row joined by doors. The first door needs a green key found in room one, the second door needs a yellow key found in room two, and the goal is in room three." },
+    { "id": "str-07", "category": "structured", "text": "A vault with a locked door. The key is in the entrance hall, and inside the vault are ten gold coins. The objective is to collect all ten." },
+    { "id": "str-08", "category": "structured", "text": "Two rooms joined by a door. Collecting a switch coin in the first room emits a signal that is meant to open that door, and the second room holds a goal marker to reach." },
+    { "id": "str-09", "category": "structured", "text": "A courtyard with a pillar of two stacked crates and a locked gate. The objectives are to unlock the gate and to reach the exit marker behind it." },
+    { "id": "str-10", "category": "structured", "text": "Four rooms arranged in a square, joined by open doorways, with one coin in each room. The objective is to collect all four coins." }
+  ]
+}

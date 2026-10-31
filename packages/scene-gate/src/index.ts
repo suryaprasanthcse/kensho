@@ -5,3 +5,6 @@ export * from './parse.ts';
 export * from './verdict.ts';
 export * from './canonical.ts';
 export * from './thresholds.ts';
+export * from './repair.ts';
+export * from './stats.ts';
+export * from './harness.ts';
