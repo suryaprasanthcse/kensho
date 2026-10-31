@@ -14,7 +14,8 @@
     "mutation": "tsx test/mutation/run.ts",
     "smoke-schema": "tsx scripts/smoke-schema.ts",
     "smoke-repair": "tsx scripts/smoke-repair.ts",
-    "e2e": "tsx scripts/e2e-runner.ts"
+    "e2e": "tsx scripts/e2e-runner.ts",
+    "study": "tsx scripts/run-study.ts"
   },
   "dependencies": {
     "@kensho/diagnostics": "workspace:*",

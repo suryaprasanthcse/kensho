@@ -217,3 +217,25 @@ describe('the end-to-end script, offline', () => {
     }
   });
 });
+
+describe('the end-to-end script with tapes of two models in one directory', () => {
+  let out: string;
+  beforeEach(() => void (out = mkdtempSync(join(tmpdir(), 'scene-gate-e2e-'))));
+  afterEach(() => rmSync(out, { recursive: true, force: true }));
+
+  it('reports the tape of the model it ran, not the first tape in the directory', async () => {
+    const bad = cleanScene();
+    bad.entities[0]!.pos_mm = [0, 1500, -30000];
+    const fail = fakeFetch(() => ({ status: 200, json: () => Promise.resolve(body(JSON.stringify(bad))) }));
+    const pass = fakeFetch(() => ({ status: 200, json: () => Promise.resolve(body(JSON.stringify(cleanScene()))) }));
+    const opts = { out, apiKey: KEY, sleep: async () => {}, now: () => new Date('2026-11-01T00:00:00Z') };
+
+    // gemini-3.5-flash-lite sorts first and fails; gemini-3.8-flash is run second, into the same directory, and passes.
+    const first = await runE2e({ ...opts, model: 'gemini-3.5-flash-lite', fetch: fail.fetch });
+    expect(first.lines[1]).toContain('tape: fail (OUT_OF_BOUNDS)');
+    const second = await runE2e({ ...opts, model: 'gemini-3.8-flash', fetch: pass.fetch });
+    expect(second.lines[1]).toContain('tape: pass;');
+    expect(second.lines[1]).not.toContain('OUT_OF_BOUNDS');
+    expect(second.ok).toBe(true);
+  });
+});

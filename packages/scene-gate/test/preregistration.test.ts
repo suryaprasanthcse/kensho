@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { loadPrompts } from '../src/harness.ts';
 import { OVERLAP_TOLERANCE_MM, SUPPORT_TOLERANCE_MM } from '../src/thresholds.ts';
 import { TRANSPORT_POLICY, retryDelayMs } from '../src/transport.ts';
+import { recordedHashes } from '../src/study-run.ts';
 import { sha256Hex } from '../src/verdict.ts';
 
 const PACKAGE = join(import.meta.dirname, '..');
@@ -15,8 +16,9 @@ describe('the preregistration', () => {
     expect(text).toContain('**Status: FROZEN.**');
     expect(text).not.toMatch(/Status: DRAFT/);
     expect(text).not.toMatch(/\bTBD\b/);
-    expect(text.split('`scene-gate-prereg-v1`').length - 1).toBeGreaterThanOrEqual(2);
-    expect(text).toContain('| Commit | the commit tagged `scene-gate-prereg-v1` |');
+    expect(text.split('`scene-gate-prereg-v2`').length - 1).toBeGreaterThanOrEqual(3);
+    expect(text).toContain('| Commit | the commit tagged `scene-gate-prereg-v2` |');
+    expect(text).toContain('**Status: FROZEN.** This preregistration is frozen at the commit that carries the git tag `scene-gate-prereg-v2`');
   });
 
   it('records the models page, the date it was read, and no 1.5 model', () => {
@@ -100,5 +102,42 @@ describe('the preregistration', () => {
 
   it('carries the disclosure verbatim', () => {
     expect(text).toContain('I wrote the specification and set the thresholds; Claude Code wrote the code and tests under my direction.');
+  });
+});
+
+describe('the preregistration of the study driver', () => {
+  it('records the command, the tape path and the three conditions the command refuses without', () => {
+    expect(text).toContain('pnpm --filter @kensho/scene-gate study --tapes packages/scene-gate/tapes');
+    expect(text).toContain('packages/scene-gate/tapes/<model>/<prompt_id>/<sample>.{generate,repair}.json');
+    expect(text).toContain('equal the three recorded in section 3');
+    expect(text).toContain('the working tree is clean (the tapes directory aside');
+    expect(text).toContain('HEAD is the commit tagged `scene-gate-prereg-v2`');
+    expect(text).toContain('Every tape records the git commit it was made from.');
+  });
+
+  it('records the fixed order and the one shared ledger', () => {
+    expect(text).toContain('against **one** spend ledger for both models');
+    expect(text).toContain('generation for `gemini-3.5-flash-lite`, then for `gemini-3.8-flash`');
+    expect(text).toContain('then one repair round for each model in the same order');
+    expect(text).toContain('a request that already has a tape is skipped'.replace('a request', 'A request'));
+  });
+
+  it('records that v1 was tagged locally, superseded before publication and before any generation, and why', () => {
+    expect(text).toContain('`scene-gate-prereg-v1` was tagged locally on 1 November 2026 and superseded before publication and before any study generation');
+    expect(text).toContain('It had no study driver');
+    expect(text).toContain('The three SHA-256 in section 3 are unchanged from `scene-gate-prereg-v1`');
+  });
+
+  it('keeps the three prompt hashes exactly as they were in v1', () => {
+    expect(recordedHashes(text)).toEqual({
+      'prompts.json': 'd63407a796f967b402985665fb77f0f9c096916e147c34ae7ff288a3cedee26f',
+      'system.md': '09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a',
+      'repair.md': '1e9b2f37737e9a7a3a880a114b2a55cff7c4800d1ee46905db59293142a3fd9e',
+    });
+  });
+
+  it('states as a limit that the two models differ in default thinking', () => {
+    expect(text).toContain('**The two models differ in default thinking**');
+    expect(text).toContain('`gemini-3.5-flash-lite` defaults to minimal thinking and `gemini-3.8-flash` to thinking on');
   });
 });

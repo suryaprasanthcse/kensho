@@ -64,7 +64,8 @@ export async function runE2e(options: E2eOptions): Promise<{ lines: string[]; ok
   });
 
   const checked = checkTapes(resolve(options.out));
-  const row = checked.rows.find((r) => r.kind === 'generate');
+  // The directory may hold tapes of other models from earlier runs: the row is this run's model, not the first one found.
+  const row = checked.rows.find((r) => r.kind === 'generate' && r.model === options.model);
   const summary = checked.summary.models[options.model];
   const lines = [
     `e2e ${options.model}: run ${report.status}${report.stopped ? ` (stopped: ${report.stopped})` : ''}, ${report.written} tape written, ${report.transport_failures} transport failures, ${summary?.attempts ?? 0} attempts, ${dollars(report.spent_micro_usd)} counted against the cap`,

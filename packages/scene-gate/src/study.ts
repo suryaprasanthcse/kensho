@@ -14,3 +14,9 @@ export const SAMPLES_PER_PROMPT = 3;
  */
 export const STUDY_MAX_OUTPUT_TOKENS = 16_384;
 export const STUDY_PARAMETERS = { max_output_tokens: STUDY_MAX_OUTPUT_TOKENS } as const;
+
+/** The tag that names the frozen commit. A commit cannot contain its own hash, so PREREGISTRATION.md names the tag. */
+export const STUDY_TAG = 'scene-gate-prereg-v2';
+
+/** Where the study's tapes are written, relative to the repository root. */
+export const STUDY_TAPES_PATH = 'packages/scene-gate/tapes';

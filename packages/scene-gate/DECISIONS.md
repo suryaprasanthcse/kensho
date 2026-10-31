@@ -84,3 +84,13 @@ Where the specification was ambiguous I took the stricter reading and recorded i
 ## Prompts
 
 - `system.md` states, in plain words and without diagnostic codes, every rule the default checks enforce, with their thresholds (5 mm and 20 mm). It does not mention the optional height rule, because that check is off by default; if a study run enables `--unreachable-height`, the prompt must be extended first. A test pins that no code name appears in it and that every default rule has a sentence. The study therefore measures whether a model follows stated rules, not whether it guesses them.
+
+## The study driver
+
+- `scripts/run-study.ts` is a thin shell; its rules live in `src/study-run.ts` and are tested with a fake client and a fake (or temporary) git repository. No test starts the real study, and the one test that runs the script as a process only gives it a wrong `--tapes` path, which exits before any key is read.
+- The command takes `--tapes packages/scene-gate/tapes` and accepts nothing else. pnpm runs the script from the package directory and keeps the directory the command was typed in as `INIT_CWD`, so a relative path is resolved from there.
+- **The clean-tree check leaves out the tapes directory.** The study writes its tapes into the repository, so a check that counted them would refuse every restart after the first tape. Everything else must be clean: a modified, staged or untracked file anywhere else refuses the run.
+- HEAD must be the commit the tag `scene-gate-prereg-v2` names; a missing tag refuses too. The three prompt files must hash to what `PREREGISTRATION.md` records. All problems are listed together, and the check runs before the key is looked up and before a client is built.
+- The order is generation for both models, then repair for both. Putting every repair after every generation means a spend cap that bites late cuts the secondary measure and leaves the primary one whole. A model that the 10% rule stops gets no repair round, and the other model goes on; a spend-cap stop or a rejected request ends the whole study.
+- The commit hash is written into every tape (`commit`, optional in the schema so older tapes stay readable). `check-tapes` lists the distinct commits in `summary.commits`; more than one would mean a run spanned a change of code.
+- The e2e script now picks the tape of the model it ran. Before, it took the first generate tape in the directory, and with two models in one directory it showed the other model's verdict.

@@ -34,6 +34,8 @@ import { requestWithRetries, transportFailureLimitExceeded, type RequestOutcome,
 export interface RunnerDeps extends TransportDeps {
   readonly client: ProviderClient;
   readonly tapeRoot: string;
+  /** The git commit the run is made from; written into every tape. */
+  readonly commit?: string;
 }
 
 export type StopReason = 'spend_cap' | 'transport_failure_limit' | 'rejected';
@@ -87,15 +89,15 @@ async function perform(
   const stamp = deps.now().toISOString();
   switch (outcome.kind) {
     case 'response':
-      writeTape(deps.tapeRoot, toTape(kind, request, outcome.reply.response, stamp, outcome.attempts));
+      writeTape(deps.tapeRoot, toTape(kind, request, outcome.reply.response, stamp, outcome.attempts, deps.commit));
       return { stop: null, detail: null, written: true, failed: false };
     case 'transport_failure':
-      writeTape(deps.tapeRoot, toTransportFailureTape(kind, request, outcome.attempts, stamp));
+      writeTape(deps.tapeRoot, toTransportFailureTape(kind, request, outcome.attempts, stamp, deps.commit));
       return { stop: null, detail: null, written: true, failed: true };
     case 'spend_cap': {
       // Attempts already made were billed; keep them on a tape so the spend stays on the record.
       const wrote = outcome.attempts.length > 0;
-      if (wrote) writeTape(deps.tapeRoot, toTransportFailureTape(kind, request, outcome.attempts, stamp));
+      if (wrote) writeTape(deps.tapeRoot, toTransportFailureTape(kind, request, outcome.attempts, stamp, deps.commit));
       return { stop: 'spend_cap', detail: 'the next attempt could reach the spend cap', written: wrote, failed: wrote };
     }
     case 'abort':

@@ -1,6 +1,6 @@
 # Preregistration: scene-gate study
 
-**Status: FROZEN.** This preregistration is frozen at the commit that carries the git tag `scene-gate-prereg-v1`. A commit cannot contain its own hash, so the tag is what names it. From that tag on, nothing below changes except by a dated entry in the changelog at the end. Generation starts only after the tag has been pushed.
+**Status: FROZEN.** This preregistration is frozen at the commit that carries the git tag `scene-gate-prereg-v2`. A commit cannot contain its own hash, so the tag is what names it. From that tag on, nothing below changes except by a dated entry in the changelog at the end. Generation starts only after the tag has been pushed. An earlier tag, `scene-gate-prereg-v1`, was made locally on 1 November 2026 and superseded before it was published and before any study generation; it was deleted (see the changelog).
 
 > I wrote the specification and set the thresholds; Claude Code wrote the code and tests under my direction.
 
@@ -39,7 +39,7 @@ If a listed model is withdrawn before generation, the slot is re-decided by the 
 | Schema | `schema/scene-gate-1.gemini.json`, the reply schema of both generation and repair (both models are Gemini; `schema/scene-gate-1.claude.json` is not used) |
 | Checks | the ten in `src/check.ts`; the optional `UNREACHABLE_HEIGHT` check is **off**, and `system.md` does not mention it |
 | Thresholds | 5 mm overlap, 20 mm support (`src/thresholds.ts`) |
-| Commit | the commit tagged `scene-gate-prereg-v1` |
+| Commit | the commit tagged `scene-gate-prereg-v2` |
 | SHA-256 of `prompts.json` | `d63407a796f967b402985665fb77f0f9c096916e147c34ae7ff288a3cedee26f` |
 | SHA-256 of `system.md` | `09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a` |
 | SHA-256 of `repair.md` | `1e9b2f37737e9a7a3a880a114b2a55cff7c4800d1ee46905db59293142a3fd9e` |
@@ -52,6 +52,7 @@ Each tape records the SHA-256 of its prompt text and of `system.md`. `check-tape
 - Each run is an independent request: no earlier output is in its context, and nothing is cached or reused between runs.
 - Every run of a model uses identical parameters (section 5). The only thing that differs between the three runs of a prompt is sampling.
 - Requests go in a fixed order (prompt id, then sample), one at a time.
+- Every tape records the git commit it was made from.
 - Every response is written to a tape (`src/harness.ts`) before anything is computed from it. A request that gets no reply is written to a tape too (section 6). All verdicts are recomputed offline from tapes with `check-tapes`.
 - A request that already has a tape is never sent again, so a run that is interrupted and restarted continues where it stopped and never regenerates anything.
 
@@ -87,6 +88,19 @@ Every parameter that is not listed as set below is **omitted from the request**,
    - The number of operations in the computed patch is recorded for every repair (metric M6).
 4. `schema_invalid` and `pass` scenes get no repair request.
 5. Compute the metrics in section 7 with `check-tapes` and publish all of them, including the ones that look bad.
+
+**The command.** The study is run with
+
+```
+pnpm --filter @kensho/scene-gate study --tapes packages/scene-gate/tapes
+```
+
+from the repository root, at the commit tagged `scene-gate-prereg-v2`, and nowhere else: it takes no other tapes directory. Tapes are written to `packages/scene-gate/tapes/<model>/<prompt_id>/<sample>.{generate,repair}.json`, each with the commit hash. The command refuses to start, and says which condition fails, unless **all** of these hold: the SHA-256 of `prompts/prompts.json`, `prompts/system.md` and `prompts/repair.md` equal the three recorded in section 3; the working tree is clean (the tapes directory aside, because the study writes into it); and HEAD is the commit tagged `scene-gate-prereg-v2`. It then runs, in this fixed order and against **one** spend ledger for both models:
+
+1. generation for `gemini-3.5-flash-lite`, then for `gemini-3.8-flash` (20 prompts x 3 samples each, 60 per model);
+2. then one repair round for each model in the same order, for every generation whose verdict is `fail`.
+
+Generation for both models comes before any repair, so that a cap that bites cuts the repairs and not the generations. A model stopped by the 10% rule (below) gets no repair round; the other model goes on. A spend-cap stop or a rejected request ends the whole study. A request that already has a tape is skipped, so a run that is interrupted is started again with the same command and continues where it stopped. The command is tested with a fake client only, including a 240-request run, a restart, a cap stop and each refusal; the real study has not been run.
 
 **Transport policy.** It is implemented in `src/transport.ts` and `src/runner.ts` and pinned by tests that use a fake provider client. There is no real client yet.
 
@@ -139,6 +153,7 @@ Three runs per prompt are too few for any claim about a single prompt. Per-promp
 - **No human labelling.** No human-labelled sample is made. The checks are mine, so agreement between them and my own idea of "playable" proves nothing, and only a human-labelled sample could test whether a `pass` or a `fail` means anything. Every result is therefore a statement about these static checks on boxes, not about whether a scene can be played.
 - The format is my own toy format, not a real game DSL; scenes are boxes, with no physics and no navmesh.
 - Sampling and thinking are the providers' defaults, which neither I nor this study controls.
+- **The two models differ in default thinking**: `gemini-3.5-flash-lite` defaults to minimal thinking and `gemini-3.8-flash` to thinking on (medium). Thinking is left at the default for both, so a difference between the models mixes tier and thinking, and this study cannot separate them. (In the one fixture run of each, `gemini-3.5-flash-lite` reported no thinking tokens and `gemini-3.8-flash` reported 1,034.)
 - Three runs per prompt cannot support a claim about a single prompt.
 - A `transport_failure` says nothing about a model's scenes. It is kept in the denominators so that a model that fails often does not look better for it, and it is reported apart so that it is not mistaken for a schema failure.
 
@@ -150,3 +165,4 @@ Three runs per prompt are too few for any claim about a single prompt. Per-promp
 | 2026-11-01 | Owner decisions: slot 2 is `gemini-3.8-flash`; temperature and thinking are the provider default; spend cap $10, hard stop; no human labelling. Repair redesigned: the model returns a full corrected scene and the patch is computed with `compare`; `prompts/repair.md` added; M6 added; usage logged per tape. Smoke checks run against the live endpoint (results in section 2). |
 | 2026-11-01 | Owner decisions: timeout 180 s; up to 3 retries with exponential backoff on 503, 429, timeout and network errors only; never retry a 4xx or a reply that arrived; every attempt logged on the tape and counted toward the $10 cap; `transport_failure` reported apart from `SCHEMA_INVALID`, kept in the denominator and never regenerated; a model whose transport failures pass 10% of its 60 generations stops and is reported incomplete. `repair.md` gained the rule about changing an objective's target. SHA-256 of `prompts.json`, `system.md` and `repair.md` recorded. |
 | 2026-11-01 | Frozen. Changes since the draft: the retry list is HTTP 429, 500, 502, 503 and 504, a timeout and a network error; `maxOutputTokens` is 16384, because Gemini counts thinking tokens against it (https://ai.google.dev/gemini-api/docs/thinking, read 2026-11-01), which also raises the worst case of one attempt to 16,384 output tokens; the DRAFT and status markers are removed from `prompts.json`, `system.md` and `repair.md` (the last two are sent to the model), so status lives only here; the three SHA-256 above are of the final files. The Gemini client was wired to `ProviderClient` and run once, end to end, through the real runner, on one fixture prompt that is not a study prompt (`gemini-3.5-flash-lite`: one attempt, HTTP 200, a tape whose usage adds up and which `check-tapes` reads; its verdict was `fail`, `OUT_OF_BOUNDS`). That run wrote its tape outside the repository and is not part of the study. `gemini-3.8-flash` has not been through the runner. |
+| 2026-11-01 | `scene-gate-prereg-v1` was tagged locally on 1 November 2026 and superseded before publication and before any study generation. It had no study driver, and the end-to-end script showed the verdict of the first tape in its directory instead of the tape of the model it had just run. The tag was deleted and the freeze is redone as `scene-gate-prereg-v2`. The three SHA-256 in section 3 are unchanged from `scene-gate-prereg-v1`. Added since: the study command and its tapes path (section 6); the commit hash in every tape; the end-to-end script's fix. The end-to-end script has now run once for each model on one fixture prompt that is not a study prompt: `gemini-3.5-flash-lite` gave a tape with verdict `fail` (`OUT_OF_BOUNDS`), `gemini-3.8-flash` a tape with verdict `pass`, each in one attempt with usage that adds up and tapes that `check-tapes` reads. Those tapes are outside the repository and not part of the study. |

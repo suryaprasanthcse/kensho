@@ -55,6 +55,8 @@ export const TapeSchema = z
     usage: z.record(z.string(), z.number().int().nullable()).optional(),
     /** Every attempt made for this request, in order, failed ones included. Each counted against the spend cap. */
     attempts: z.array(AttemptSchema).optional(),
+    /** The git commit the run was made from, when the runner knew it. The study driver always records it. */
+    commit: z.string().regex(/^[0-9a-f]{40}$/).optional(),
     /** ISO 8601 UTC, written by the recorder. The checks never read it. */
     timestamp: z.iso.datetime(),
   })
@@ -142,19 +144,20 @@ const tapeFields = (kind: TapeKind, request: GenerationRequest, timestamp: strin
 });
 
 /** Builds a tape from a response. The timestamp is passed in so this stays a pure function. */
-export function toTape(kind: TapeKind, request: GenerationRequest, response: ModelResponse, timestamp: string, attempts?: readonly Attempt[]): Tape {
+export function toTape(kind: TapeKind, request: GenerationRequest, response: ModelResponse, timestamp: string, attempts?: readonly Attempt[], commit?: string): Tape {
   return {
     ...tapeFields(kind, request, timestamp),
     raw_output: response.rawOutput,
     finish_reason: response.finishReason,
     ...(response.usage ? { usage: { ...response.usage } } : {}),
     ...(attempts ? { attempts: [...attempts] } : {}),
+    ...(commit ? { commit } : {}),
   };
 }
 
 /** The tape of a request that got no reply after the retries. It is kept in every denominator and never regenerated. */
-export function toTransportFailureTape(kind: TapeKind, request: GenerationRequest, attempts: readonly Attempt[], timestamp: string): Tape {
-  return { ...tapeFields(kind, request, timestamp), outcome: 'transport_failure', raw_output: '', attempts: [...attempts] };
+export function toTransportFailureTape(kind: TapeKind, request: GenerationRequest, attempts: readonly Attempt[], timestamp: string, commit?: string): Tape {
+  return { ...tapeFields(kind, request, timestamp), outcome: 'transport_failure', raw_output: '', attempts: [...attempts], ...(commit ? { commit } : {}) };
 }
 
 /* ------------------------------------------------------------------------------------------------------------------
@@ -181,6 +184,8 @@ export interface TapeRow {
   readonly invalid_reason?: string;
   /** Attempts made, when the tape logged them. */
   readonly attempts?: number;
+  /** The commit the tape was made from, when it says. */
+  readonly commit?: string;
   /** Micro-dollars this tape's attempts counted against the cap. */
   readonly spend_micro_usd?: number;
   /** For repair tapes: what the acceptance rule decided, and the size of the patch from the original to the reply. */
@@ -244,6 +249,8 @@ export interface TapeReport {
     };
     /** Everything counted against the cap, all models, in micro-dollars. */
     readonly spend_micro_usd: number;
+    /** The distinct commits the tapes say they were made from, sorted. More than one means a run spanned a change of code. */
+    readonly commits: readonly string[];
     readonly drift: number;
     readonly errors: number;
   };
@@ -269,6 +276,7 @@ export function checkTapes(root: string, options: CheckTapesOptions = {}): TapeR
   const repairs: { rel: string; tape: Tape }[] = [];
   const spendByModel = new Map<string, number>();
   const attemptsByModel = new Map<string, number>();
+  const commitSet = new Set<string>();
   const key = (t: Pick<Tape, 'model' | 'prompt_id' | 'sample'>): string => JSON.stringify([t.model, t.prompt_id, t.sample]);
 
   const drift = (tape: Tape): TapeRow['drift'] => {
@@ -299,7 +307,9 @@ export function checkTapes(root: string, options: CheckTapesOptions = {}): TapeR
       kind: tape.kind,
       drift: drift(tape),
       ...(tape.attempts ? { attempts: tape.attempts.length, spend_micro_usd: spend } : {}),
+      ...(tape.commit ? { commit: tape.commit } : {}),
     };
+    if (tape.commit) commitSet.add(tape.commit);
     if (tape.kind === 'repair') {
       repairs.push({ rel, tape });
       continue;
@@ -336,6 +346,7 @@ export function checkTapes(root: string, options: CheckTapesOptions = {}): TapeR
       kind: tape.kind,
       drift: drift(tape),
       ...(tape.attempts ? { attempts: tape.attempts.length, spend_micro_usd: spend } : {}),
+      ...(tape.commit ? { commit: tape.commit } : {}),
     };
     const parent = generated.get(key(tape));
     if (!parent) {
@@ -416,6 +427,7 @@ export function checkTapes(root: string, options: CheckTapesOptions = {}): TapeR
         ops_accepted: summariseOps(opsAccepted),
       },
       spend_micro_usd: [...spendByModel.values()].reduce((a, b) => a + b, 0),
+      commits: [...commitSet].sort(),
       drift: rows.filter((r) => r.drift).length,
       errors: rows.filter((r) => r.error).length,
     },
