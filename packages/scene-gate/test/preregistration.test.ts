@@ -10,10 +10,13 @@ const PACKAGE = join(import.meta.dirname, '..');
 const text = readFileSync(join(PACKAGE, 'PREREGISTRATION.md'), 'utf8');
 const prompts = loadPrompts(join(PACKAGE, 'prompts', 'prompts.json'));
 
-describe('the preregistration draft', () => {
-  it('is marked DRAFT and not frozen', () => {
-    expect(text).toContain('**Status: DRAFT. Not frozen.**');
-    expect(text).not.toMatch(/Status: FROZEN/);
+describe('the preregistration', () => {
+  it('is frozen, names the tag of the frozen commit, and has no open slot left', () => {
+    expect(text).toContain('**Status: FROZEN.**');
+    expect(text).not.toMatch(/Status: DRAFT/);
+    expect(text).not.toMatch(/\bTBD\b/);
+    expect(text.split('`scene-gate-prereg-v1`').length - 1).toBeGreaterThanOrEqual(2);
+    expect(text).toContain('| Commit | the commit tagged `scene-gate-prereg-v1` |');
   });
 
   it('records the models page, the date it was read, and no 1.5 model', () => {
@@ -23,7 +26,7 @@ describe('the preregistration draft', () => {
     for (const id of text.match(/`gemini-[a-z0-9.-]+`/g) ?? []) expect(id).not.toMatch(/gemini-1\./);
   });
 
-  it('records both models and leaves slots only for what freezing fills in', () => {
+  it('records both models and the frozen commit, and the hash of each prompt file', () => {
     expect(text).toMatch(/\| 1 \| `gemini-3\.5-flash-lite` \|/);
     expect(text).toMatch(/\| 2 \| `gemini-3\.8-flash` \|/);
     for (const slot of ['Commit', 'SHA-256 of `prompts.json`', 'SHA-256 of `system.md`', 'SHA-256 of `repair.md`']) expect(text, slot).toContain(slot);
