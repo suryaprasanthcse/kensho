@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { evaluateValue } from '../src/check.ts';
-import { REPAIR_PLACEHOLDERS, diagnosticsForModel, renderRepairMessage, sceneForModel, stripDraftHeader } from '../src/repair-request.ts';
+import { REPAIR_PLACEHOLDERS, diagnosticsForModel, renderRepairMessage, sceneForModel } from '../src/repair-request.ts';
 import { SceneSchema } from '../src/schema.ts';
 import { EXAMPLE_SCENE } from './fixtures.ts';
 
@@ -12,13 +12,14 @@ const diagnostics = evaluateValue(EXAMPLE_SCENE).diagnostics;
 const PROMPT = 'A small arena with crates and five coins.';
 
 describe('prompts/repair.md', () => {
-  it('is marked DRAFT and has each placeholder exactly once', () => {
-    expect(TEMPLATE.startsWith('<!-- DRAFT')).toBe(true);
+  it('has no draft or status marker, starts with the instruction itself, and has each placeholder exactly once', () => {
+    expect(TEMPLATE).not.toMatch(/DRAFT|FROZEN|<!--/);
+    expect(TEMPLATE.startsWith('A scene you wrote')).toBe(true);
     for (const placeholder of REPAIR_PLACEHOLDERS) expect(TEMPLATE.split(placeholder), placeholder).toHaveLength(2);
   });
 
   it('asks for the complete corrected scene, not a patch, and states the three objective rules', () => {
-    const body = stripDraftHeader(TEMPLATE);
+    const body = TEMPLATE;
     expect(body).toContain('the complete JSON object, not a patch');
     expect(body).toContain('Fix every error listed above');
     expect(body).toContain('Do not remove any objective.');
@@ -34,7 +35,7 @@ describe('prompts/repair.md', () => {
   });
 
   it('names no check, threshold or rule of its own: those are in system.md and the findings', () => {
-    expect(stripDraftHeader(TEMPLATE)).not.toMatch(/\bmm\b/);
+    expect(TEMPLATE).not.toMatch(/\bmm\b/);
   });
 });
 
@@ -46,7 +47,7 @@ describe('the rendered repair message', () => {
     expect(message).toContain(sceneForModel(scene));
     expect(message).toContain(diagnosticsForModel(diagnostics));
     expect(message).not.toMatch(/\{\{|\}\}/);
-    expect(message).not.toContain('DRAFT');
+    expect(message).toBe(TEMPLATE.replace('{{prompt}}', () => PROMPT).replace('{{scene}}', () => sceneForModel(scene)).replace('{{diagnostics}}', () => diagnosticsForModel(diagnostics)));
     expect(message.startsWith('A scene you wrote')).toBe(true);
   });
 

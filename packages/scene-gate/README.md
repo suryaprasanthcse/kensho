@@ -93,7 +93,7 @@ const record = verdictRecord(evaluateRaw(modelText)); // { verdict, hash, codes 
 
 A tape (`src/harness.ts`) records one model call: model id, parameters, prompt hash, system hash, raw output, finish reason, token usage and timestamp. Tapes live at `<root>/<model>/<prompt_id>/<sample>.<kind>.json`, are written once and never overwritten, and everything else is derived from them. A `repair` tape holds the model's corrected full scene for the `generate` tape with the same model, prompt and sample; the patch is computed from it with `compare`.
 
-`prompts/prompts.json` (20 prompts: 10 ordinary, 10 structured, none adversarial), `prompts/system.md` and `prompts/repair.md` (the user message of the repair request) are marked DRAFT until reviewed and frozen. `PREREGISTRATION.md` records the study design and is DRAFT too.
+`prompts/prompts.json` (20 prompts: 10 ordinary, 10 structured, none adversarial), `prompts/system.md` and `prompts/repair.md` (the user message of the repair request) are the study's inputs. They carry no status marker, because the last two are sent to the model; whether they are draft or frozen is recorded only in `PREREGISTRATION.md`, together with their SHA-256.
 
 No API client exists. `ProviderClient` in `src/harness.ts` is the marked interface where one goes later. `src/transport.ts` (timeout, retries, backoff, attempt log), `src/spend.ts` (the $10 ledger) and `src/runner.ts` (the generation and repair loops, with the 10% transport-failure stop) drive it, with the client, the clock and `sleep` injected, and are tested offline with a fake client.
 

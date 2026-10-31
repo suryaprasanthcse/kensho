@@ -19,9 +19,6 @@ export const diagnosticsForModel = (diagnostics: readonly Diagnostic[]): string 
 /** The scene as the model sees it: its own content, two-space indented so that every pointer can be followed by eye. */
 export const sceneForModel = (scene: Scene): string => JSON.stringify(scene, null, 2);
 
-/** Drops the leading `<!-- DRAFT ... -->` comment, which is for reviewers and is never sent to a model. */
-export const stripDraftHeader = (template: string): string => template.replace(/^<!--[\s\S]*?-->\s*/, '');
-
 export interface RepairInput {
   /** The original prompt text, verbatim. */
   readonly prompt: string;
@@ -36,5 +33,5 @@ export function renderRepairMessage(template: string, input: RepairInput): strin
     scene: sceneForModel(input.scene),
     diagnostics: diagnosticsForModel(input.diagnostics),
   };
-  return stripDraftHeader(template).replace(/\{\{(prompt|scene|diagnostics)\}\}/g, (_match, key: string) => values[key]!);
+  return template.replace(/\{\{(prompt|scene|diagnostics)\}\}/g, (_match, key: string) => values[key]!);
 }

@@ -1,6 +1,4 @@
 {
-  "status": "DRAFT",
-  "note": "DRAFT, not frozen. The repository owner reviews these 20 prompts and changes status to FROZEN before any generation run. Ten are ordinary scene requests and ten are structured (keys and doors, collect-N, stacked crates, multi-room). None is adversarial.",
   "prompts": [
     { "id": "ord-01", "category": "ordinary", "text": "A small arena with crates and five coins." },
     { "id": "ord-02", "category": "ordinary", "text": "A flat courtyard with the player starting in the middle and three coins scattered around it." },

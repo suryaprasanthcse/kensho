@@ -40,9 +40,9 @@ If a listed model is withdrawn before generation, the slot is re-decided by the 
 | Checks | the ten in `src/check.ts`; the optional `UNREACHABLE_HEIGHT` check is **off**, and `system.md` does not mention it |
 | Thresholds | 5 mm overlap, 20 mm support (`src/thresholds.ts`) |
 | Commit | `TBD` (the frozen commit hash) |
-| SHA-256 of `prompts.json` | `73c60e6866201c61e75d73260d57f564eb34190b0a6d5ea2b40f4fe628ff1c47` |
-| SHA-256 of `system.md` | `a3382b10c15a139447e4739e7eda8862f9d0a35a8119905b59177718252e4d66` |
-| SHA-256 of `repair.md` | `e8d2c73f3249264db09696ebb101e5bd2ec85887565b1e0002908bbcb4ffd867` |
+| SHA-256 of `prompts.json` | `d63407a796f967b402985665fb77f0f9c096916e147c34ae7ff288a3cedee26f` |
+| SHA-256 of `system.md` | `09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a` |
+| SHA-256 of `repair.md` | `1e9b2f37737e9a7a3a880a114b2a55cff7c4800d1ee46905db59293142a3fd9e` |
 
 Each tape records the SHA-256 of its prompt text and of `system.md`. `check-tapes --prompts prompts/prompts.json --system prompts/system.md` reports any tape that differs from the frozen files. (It does not check `repair.md`; its hash is recorded above.) The three hashes are of the files' bytes as committed (LF line endings), computed on 2026-11-01 over the DRAFT files. A test recomputes them, so any edit to one of the files before freeze fails the suite until the hash here is updated on purpose.
 

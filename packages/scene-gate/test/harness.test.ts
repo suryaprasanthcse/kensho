@@ -113,9 +113,7 @@ describe('tapes', () => {
 describe('the draft prompts', () => {
   const file = loadPrompts(PROMPTS);
 
-  it('are marked DRAFT, twenty in number, ten ordinary and ten structured', () => {
-    expect(file.status).toBe('DRAFT');
-    expect(file.note).toContain('DRAFT');
+  it('are twenty in number, ten ordinary and ten structured', () => {
     expect(file.prompts).toHaveLength(20);
     expect(file.prompts.filter((p) => p.category === 'ordinary')).toHaveLength(10);
     expect(file.prompts.filter((p) => p.category === 'structured')).toHaveLength(10);
@@ -134,8 +132,13 @@ describe('the draft prompts', () => {
     expect(new Set(file.prompts.map((p) => p.text)).size).toBe(20);
   });
 
-  it('come with a system prompt that is also marked DRAFT', () => {
-    expect(readFileSync(SYSTEM, 'utf8').startsWith('<!-- DRAFT')).toBe(true);
+  it('carry no status or draft marker in any of the three files, because system.md and repair.md are sent to the model', () => {
+    for (const name of ['prompts.json', 'system.md', 'repair.md']) {
+      const text = readFileSync(join(PACKAGE, 'prompts', name), 'utf8');
+      expect(text, name).not.toMatch(/DRAFT|FROZEN|<!--|-->/);
+    }
+    expect(Object.keys(JSON.parse(readFileSync(PROMPTS, 'utf8')))).toEqual(['prompts']);
+    expect(readFileSync(SYSTEM, 'utf8').startsWith('You write game scenes')).toBe(true);
   });
 
   it('state the rules in plain words, without naming any diagnostic code', () => {

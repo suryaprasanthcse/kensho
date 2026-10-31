@@ -86,8 +86,6 @@ export const readTape = (path: string): Tape => TapeSchema.parse(JSON.parse(read
  * ---------------------------------------------------------------------------------------------------------------- */
 
 export const PromptsFileSchema = z.strictObject({
-  status: z.enum(['DRAFT', 'FROZEN']),
-  note: z.string(),
   prompts: z.array(z.strictObject({ id: z.string().regex(/^[A-Za-z0-9_-]+$/), category: z.enum(['ordinary', 'structured']), text: z.string().min(1) })),
 });
 export type PromptsFile = z.infer<typeof PromptsFileSchema>;

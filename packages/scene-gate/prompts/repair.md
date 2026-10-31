@@ -1,5 +1,3 @@
-<!-- DRAFT: not frozen. This is the user message of the repair request; the system message is prompts/system.md. The repository owner reviews this file and freezes it, together with prompts.json and system.md, before any generation run. The three {{placeholders}} are filled in by src/repair-request.ts. -->
-
 A scene you wrote for the request below was checked, and the checker found errors in it. Correct the scene.
 
 ## The original request

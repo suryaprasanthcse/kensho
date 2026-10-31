@@ -181,7 +181,7 @@ describe('the generation loop', () => {
 });
 
 describe('the repair loop', () => {
-  const TEMPLATE = '<!-- DRAFT -->\nREPAIR {{prompt}}\n{{scene}}\n{{diagnostics}}\n';
+  const TEMPLATE = 'REPAIR {{prompt}}\n{{scene}}\n{{diagnostics}}\n';
   const FIXED = JSON.stringify({ ...EXAMPLE_SCENE, entities: [...EXAMPLE_SCENE.entities, { id: 'chest_1', kind: 'static', box_mm: [600, 600, 600], pos_mm: [8000, 300, 3000] }, ...Array.from({ length: 9 }, (_, i) => ({ id: `c${i}`, kind: 'pickup', tags: ['coin'], box_mm: [300, 300, 60], pos_mm: [-2000 - 400 * i, 600, 3000] }))] });
 
   const seedGenerations = async () => {
@@ -215,7 +215,7 @@ describe('the repair loop', () => {
     expect(first.message.startsWith('REPAIR prompt number 1\n')).toBe(true);
     expect(first.message).toContain('"id": "door_red"');
     expect(first.message).toContain('"code": "UNRESOLVED_REF"');
-    expect(first.message).not.toContain('DRAFT');
+    expect(first.message).not.toMatch(/\{\{|<!--/);
     expect(first.jsonSchema).toEqual({ type: 'object' });
   });
 

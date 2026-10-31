@@ -1,5 +1,3 @@
-<!-- DRAFT: not frozen. The repository owner reviews this file and freezes it, together with prompts.json, before any generation run. -->
-
 You write game scenes in a small JSON format called `scene-gate/1`. Reply with one JSON object and nothing else: no prose, no code fences. The object must match the JSON Schema you are given.
 
 ## Units and axes
