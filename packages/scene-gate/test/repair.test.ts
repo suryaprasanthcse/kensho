@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { evaluateValue } from '../src/check.ts';
-import { applyRepair, type JsonPatch, type RepairResult } from '../src/repair.ts';
+import { applyRepair, repairFromScene, type JsonPatch, type RepairResult } from '../src/repair.ts';
 import type { Scene } from '../src/schema.ts';
 import { EXAMPLE_SCENE, cleanScene } from './fixtures.ts';
 
@@ -233,5 +233,76 @@ describe('refused repairs', () => {
   it('refuses a patch to a scene that has nothing to repair', () => {
     const r = refusal(applyRepair(cleanScene(), [{ op: 'add', path: '/entities/-', value: chest }]));
     expect(r.reason).toBe('not_shrinking');
+  });
+});
+
+describe('repair by corrected scene', () => {
+  const withChest = (): Record<string, unknown> => ({ ...(example() as Record<string, any>), entities: [...(EXAMPLE_SCENE.entities as readonly unknown[]), chest] });
+  const withChestAndCoins = (): Record<string, unknown> => ({
+    ...(example() as Record<string, any>),
+    entities: [...(EXAMPLE_SCENE.entities as readonly unknown[]), chest, ...nineCoins.map((op) => (op as { value: unknown }).value)],
+  });
+
+  it('computes the patch with compare and accepts the same repairs applyRepair would', () => {
+    const r = repairFromScene(example(), withChest());
+    expect(r.status).toBe('accepted');
+    expect(r.ops).toBe(1);
+    if (r.status === 'accepted') expect(r.after.map((d) => d.code)).toEqual(['OBJECTIVE_COUNT']);
+    expect(applyRepair(example(), [addChest]).status).toBe('accepted');
+  });
+
+  it('counts one operation per added entity, and accepts a full fix', () => {
+    const r = repairFromScene(example(), withChestAndCoins());
+    expect(r.ops).toBe(10);
+    expect(r.status).toBe('accepted');
+    if (r.status === 'accepted') expect(r.after).toEqual([]);
+  });
+
+  it('counts zero operations for a reply that equals the original, which fixes nothing', () => {
+    const r = repairFromScene(example(), example());
+    expect(r.ops).toBe(0);
+    expect(refusal(r).reason).toBe('not_shrinking');
+  });
+
+  it('does not count key order, which is not a change', () => {
+    const reordered = Object.fromEntries(Object.entries(example() as Record<string, unknown>).reverse());
+    expect(repairFromScene(example(), reordered).ops).toBe(0);
+  });
+
+  it('applies the objective rules to the reply: no removal, no lowered count, no changed tag or type', () => {
+    const base = withChestAndCoins() as Record<string, any>;
+    const removed = refusal(repairFromScene(example(), { ...base, objectives: [] }));
+    expect(removed.reason).toBe('objective_removed');
+    const lowered = refusal(repairFromScene(example(), { ...base, objectives: [{ id: 'o1', type: 'collect', tag: 'coin', count: 1 }] }));
+    expect(lowered.reason).toBe('objective_weakened');
+    const retagged = refusal(repairFromScene(example(), { ...base, objectives: [{ id: 'o1', type: 'collect', tag: 'chest', count: 10 }] }));
+    expect(retagged.reason).toBe('objective_weakened');
+    const retyped = refusal(repairFromScene(example(), { ...base, objectives: [{ id: 'o1', type: 'reach', target: 'chest_1' }] }));
+    expect(retyped.reason).toBe('objective_weakened');
+  });
+
+  it('refuses a reply that introduces a new error code, and one that is not schema-valid', () => {
+    const overlapping = { ...(withChest() as Record<string, any>) };
+    overlapping.entities = [...overlapping.entities, { ...chest, id: 'chest_2', pos_mm: [8100, 300, 3000] }];
+    expect(refusal(repairFromScene(example(), overlapping)).reason).toBe('new_code');
+    const broken = { ...(withChest() as Record<string, any>), bounds_mm: [1.5, 0, 0, 1, 1, 1] };
+    expect(refusal(repairFromScene(example(), broken)).reason).toBe('schema_invalid_after_patch');
+  });
+
+  it('refuses a reply that is not a JSON object, with no operation count', () => {
+    for (const reply of [null, 42, 'a scene', [1, 2]]) {
+      const r = repairFromScene(example(), reply);
+      expect(refusal(r).reason, JSON.stringify(reply)).toBe('unparseable_reply');
+      expect(r.ops).toBeNull();
+    }
+  });
+
+  it('refuses to repair an original that is not a scene, and never modifies its inputs', () => {
+    expect(refusal(repairFromScene(null, withChest())).reason).toBe('original_schema_invalid');
+    const original = example();
+    const corrected = withChestAndCoins();
+    const snapshot = [structuredClone(original), structuredClone(corrected)];
+    repairFromScene(original, corrected);
+    expect([original, corrected]).toEqual(snapshot);
   });
 });

@@ -6,12 +6,13 @@ import { kindMatches } from './geometry.ts';
 import type { Objective, Scene } from './schema.ts';
 
 // fast-json-patch is CommonJS without statically detectable named exports, so load it through require
-const { applyPatch, validate } = createRequire(import.meta.url)('fast-json-patch') as typeof import('fast-json-patch');
+const { applyPatch, compare, validate } = createRequire(import.meta.url)('fast-json-patch') as typeof import('fast-json-patch');
 
 export type JsonPatch = Operation[];
 
 export type RefusalReason =
   | 'original_schema_invalid'
+  | 'unparseable_reply'
   | 'invalid_patch'
   | 'patch_failed'
   | 'schema_invalid_after_patch'
@@ -109,4 +110,23 @@ export function applyRepair(scene: unknown, patch: unknown, options: CheckOption
   if (total(after) >= total(before)) return refuse('not_shrinking', 'the error codes did not strictly shrink');
 
   return { status: 'accepted', scene: repaired.scene, before: original.diagnostics, after: repaired.diagnostics };
+}
+
+export type CorrectedSceneResult = RepairResult & {
+  /** Number of RFC 6902 operations in the patch that turns the original scene into the corrected one; null when none could be computed. */
+  readonly ops: number | null;
+};
+
+const isPlainObject = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
+
+/**
+ * Repair by corrected scene: the model replies with a full scene, the RFC 6902 patch from the original to it is
+ * computed here with fast-json-patch's `compare`, and the patch goes through `applyRepair` unchanged, so the acceptance
+ * rule is the same whichever way a repair arrives. `ops` is the number of operations in that patch.
+ */
+export function repairFromScene(original: unknown, corrected: unknown, options: CheckOptions = {}): CorrectedSceneResult {
+  if (!isPlainObject(original)) return { ...refuse('original_schema_invalid', 'only a schema-valid scene can be repaired'), ops: null };
+  if (!isPlainObject(corrected)) return { ...refuse('unparseable_reply', 'the reply is not a JSON object'), ops: null };
+  const patch = compare(original, corrected);
+  return { ...applyRepair(original, patch, options), ops: patch.length };
 }

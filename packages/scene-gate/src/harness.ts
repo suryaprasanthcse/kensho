@@ -3,7 +3,7 @@ import { dirname, join, sep } from 'node:path';
 import { z } from 'zod';
 import { evaluateRaw, evaluateValue, type CheckOptions } from './check.ts';
 import { parseRawOutput } from './parse.ts';
-import { applyRepair } from './repair.ts';
+import { repairFromScene } from './repair.ts';
 import { flipRate, unplayableRate, wilson, type FlipRate, type Interval, type UnplayableRate } from './stats.ts';
 import { sha256Hex, verdictRecord, type Verdict } from './verdict.ts';
 import { compareCodeUnits } from './canonical.ts';
@@ -16,8 +16,8 @@ import { compareCodeUnits } from './canonical.ts';
  *
  * Layout:  <root>/<model-slug>/<prompt_id>/<sample>.<kind>.json
  *   kind "generate": raw_output is the model's scene text.
- *   kind "repair":   raw_output is the model's RFC 6902 patch for the generate tape with the same model, prompt and
- *                    sample.
+ *   kind "repair":   raw_output is the model's corrected full scene for the generate tape with the same model, prompt
+ *                    and sample. The RFC 6902 patch is computed from it offline with `compare`, so it can be recomputed.
  * ---------------------------------------------------------------------------------------------------------------- */
 
 export const TAPE_VERSION = 'scene-gate-tape/1';
@@ -41,6 +41,12 @@ export const TapeSchema = z.strictObject({
   raw_output: z.string(),
   /** The provider's stop reason, when it gave one. Only consulted when raw_output does not parse. */
   finish_reason: z.string().nullable().optional(),
+  /**
+   * Token usage as the provider reported it (for Gemini: promptTokenCount, candidatesTokenCount, thoughtsTokenCount,
+   * totalTokenCount). Parameters such as temperature and thinking are left at the provider default, so this is the only
+   * record of what a call cost. Never read by the checks.
+   */
+  usage: z.record(z.string(), z.number().int().nullable()).optional(),
   /** ISO 8601 UTC, written by the recorder. The checks never read it. */
   timestamp: z.iso.datetime(),
 });
@@ -92,22 +98,26 @@ export interface GenerationRequest {
   readonly jsonSchema: Record<string, unknown>;
 }
 
+/**
+ * A repair request carries the same system text and schema profile as a generation. Its user message is built by
+ * `renderRepairMessage` (src/repair-request.ts) from prompts/repair.md, the original prompt, the scene and its
+ * diagnostics, and the reply is a corrected full scene.
+ */
 export interface RepairRequest extends GenerationRequest {
-  /** The failing scene, as recorded. */
-  readonly sceneText: string;
-  /** The diagnostics the repair round is told about. */
-  readonly diagnostics: readonly unknown[];
+  /** The user message for the repair, already rendered. */
+  readonly message: string;
 }
 
 export interface ModelResponse {
   readonly rawOutput: string;
   readonly finishReason: string | null;
+  readonly usage?: Tape['usage'];
 }
 
 export interface SceneGenerator {
   /** Returns the model's scene text. */
   generate(request: GenerationRequest): Promise<ModelResponse>;
-  /** Returns the model's RFC 6902 patch as text. */
+  /** Returns the model's corrected full scene as text. */
   repair(request: RepairRequest): Promise<ModelResponse>;
 }
 
@@ -124,6 +134,7 @@ export function toTape(kind: TapeKind, request: GenerationRequest, response: Mod
     sample: request.sample,
     raw_output: response.rawOutput,
     finish_reason: response.finishReason,
+    ...(response.usage ? { usage: response.usage } : {}),
     timestamp,
   };
 }
@@ -148,8 +159,14 @@ export interface TapeRow {
   readonly codes?: readonly string[];
   /** For schema_invalid generate tapes: why. */
   readonly invalid_reason?: string;
-  /** For repair tapes: what the acceptance rule decided. */
-  readonly repair?: { readonly status: 'accepted' | 'refused'; readonly reason?: string; readonly fully_fixed?: boolean };
+  /** For repair tapes: what the acceptance rule decided, and the size of the patch from the original to the reply. */
+  readonly repair?: {
+    readonly status: 'accepted' | 'refused';
+    readonly reason?: string;
+    readonly fully_fixed?: boolean;
+    /** RFC 6902 operations in the computed patch; absent when the reply was not a JSON object. */
+    readonly ops?: number;
+  };
   /** Set when the tape differs from the frozen prompts or system text. */
   readonly drift?: 'unknown_prompt' | 'prompt_hash' | 'system_hash';
   /** Set when the tape could not be used. */
@@ -165,6 +182,20 @@ export interface ModelSummary {
   readonly flip: FlipRate;
 }
 
+export interface OpsSummary {
+  readonly n: number;
+  readonly total: number;
+  readonly median: number | null;
+  readonly max: number | null;
+}
+
+const summariseOps = (counts: readonly number[]): OpsSummary => {
+  const sorted = [...counts].sort((a, b) => a - b);
+  const mid = sorted.length >> 1;
+  const median = sorted.length === 0 ? null : sorted.length % 2 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
+  return { n: sorted.length, total: sorted.reduce((a, b) => a + b, 0), median, max: sorted.at(-1) ?? null };
+};
+
 export interface TapeReport {
   readonly rows: readonly TapeRow[];
   readonly summary: {
@@ -175,6 +206,10 @@ export interface TapeReport {
       readonly fully_fixed: number;
       readonly refusals: Readonly<Record<string, number>>;
       readonly accepted_interval: Interval | null;
+      /** Operations per repair, over the replies that were JSON objects. */
+      readonly ops: OpsSummary;
+      /** The same, over accepted repairs only. */
+      readonly ops_accepted: OpsSummary;
     };
     readonly drift: number;
     readonly errors: number;
@@ -236,6 +271,8 @@ export function checkTapes(root: string, options: CheckTapesOptions = {}): TapeR
   const refusals = new Map<string, number>();
   let accepted = 0;
   let fullyFixed = 0;
+  const opsAll: number[] = [];
+  const opsAccepted: number[] = [];
   for (const { rel, tape } of repairs) {
     const base = { path: rel, model: tape.model, prompt_id: tape.prompt_id, sample: tape.sample, kind: tape.kind, drift: drift(tape) };
     const parent = generated.get(key(tape));
@@ -243,18 +280,24 @@ export function checkTapes(root: string, options: CheckTapesOptions = {}): TapeR
       rows.push({ ...base, error: 'no generate tape for this repair' });
       continue;
     }
-    const patch = parseRawOutput(tape.raw_output, tape.finish_reason);
-    const result = applyRepair(parent.scene, patch.ok ? patch.value : null, options);
+    const reply = parseRawOutput(tape.raw_output, tape.finish_reason);
+    if (!reply.ok) {
+      bump(refusals, 'unparseable_reply');
+      rows.push({ ...base, repair: { status: 'refused', reason: 'unparseable_reply' } });
+      continue;
+    }
+    const result = repairFromScene(parent.scene, reply.value, options);
+    if (result.ops !== null) opsAll.push(result.ops);
     if (result.status === 'accepted') {
       accepted++;
+      if (result.ops !== null) opsAccepted.push(result.ops);
       const fixed = !result.after.some((d) => d.severity === 'error');
       if (fixed) fullyFixed++;
       const after = verdictRecord(evaluateValue(result.scene, options));
-      rows.push({ ...base, verdict: after.verdict, hash: after.hash, repair: { status: 'accepted', fully_fixed: fixed } });
+      rows.push({ ...base, verdict: after.verdict, hash: after.hash, repair: { status: 'accepted', fully_fixed: fixed, ...(result.ops !== null ? { ops: result.ops } : {}) } });
     } else {
-      const reason = patch.ok ? result.reason : 'invalid_patch';
-      bump(refusals, reason);
-      rows.push({ ...base, repair: { status: 'refused', reason } });
+      bump(refusals, result.reason);
+      rows.push({ ...base, repair: { status: 'refused', reason: result.reason, ...(result.ops !== null ? { ops: result.ops } : {}) } });
     }
   }
   rows.sort((a, b) => compareCodeUnits(a.path, b.path));
@@ -296,6 +339,8 @@ export function checkTapes(root: string, options: CheckTapesOptions = {}): TapeR
         fully_fixed: fullyFixed,
         refusals: sortedRecord(refusals),
         accepted_interval: repairs.length ? wilson(accepted, repairs.length) : null,
+        ops: summariseOps(opsAll),
+        ops_accepted: summariseOps(opsAccepted),
       },
       drift: rows.filter((r) => r.drift).length,
       errors: rows.filter((r) => r.error).length,

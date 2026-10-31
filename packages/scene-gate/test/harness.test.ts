@@ -44,14 +44,15 @@ const tape = (over: Partial<Tape> = {}): Tape => ({
   ...over,
 });
 
-const FIX_EXAMPLE = JSON.stringify([
-  { op: 'add', path: '/entities/-', value: { id: 'chest_1', kind: 'static', box_mm: [600, 600, 600], pos_mm: [8000, 300, 3000] } },
-  ...Array.from({ length: 9 }, (_, i) => ({
-    op: 'add',
-    path: '/entities/-',
-    value: { id: `coin_x${i}`, kind: 'pickup', tags: ['coin'], box_mm: [300, 300, 60], pos_mm: [-2000 - 400 * i, 600, 3000] },
-  })),
-]);
+/** The example scene with its missing guard target and nine missing coins added: the corrected scene a repair reply holds. */
+const FIXED_EXAMPLE = JSON.stringify({
+  ...EXAMPLE_SCENE,
+  entities: [
+    ...EXAMPLE_SCENE.entities,
+    { id: 'chest_1', kind: 'static', box_mm: [600, 600, 600], pos_mm: [8000, 300, 3000] },
+    ...Array.from({ length: 9 }, (_, i) => ({ id: `coin_x${i}`, kind: 'pickup', tags: ['coin'], box_mm: [300, 300, 60], pos_mm: [-2000 - 400 * i, 600, 3000] })),
+  ],
+});
 
 describe('tapes', () => {
   it('require every recorded field', () => {
@@ -71,6 +72,19 @@ describe('tapes', () => {
     expect(tapePath('r', tape({ model: '..' }))).toBe(join('r', '_', 'ord-01', '0.generate.json'));
   });
 
+  it('record provider usage, which must be integers or null, and never use it for a verdict', () => {
+    const usage = { promptTokenCount: 1200, candidatesTokenCount: 900, thoughtsTokenCount: null, totalTokenCount: 2100 };
+    expect(TapeSchema.safeParse({ ...tape(), usage }).success).toBe(true);
+    expect(TapeSchema.safeParse({ ...tape(), usage: { promptTokenCount: 1.5 } }).success).toBe(false);
+    expect(TapeSchema.safeParse({ ...tape(), usage: { promptTokenCount: '12' } }).success).toBe(false);
+    const path = writeTape(root, tape({ usage }));
+    expect(readTape(path).usage).toEqual(usage);
+    const withUsage = checkTapes(root).rows[0]!;
+    rmSync(path);
+    writeTape(root, tape());
+    expect(checkTapes(root).rows[0]).toEqual(withUsage);
+  });
+
   it('are written once and read back unchanged', () => {
     const path = writeTape(root, tape());
     expect(existsSync(path)).toBe(true);
@@ -88,8 +102,10 @@ describe('tapes', () => {
       sample: 1,
       jsonSchema: {},
     };
-    const built = toTape('generate', request, { rawOutput: '{}', finishReason: 'stop' }, '2026-11-01T12:00:00.000Z');
-    expect(built).toMatchObject({ prompt_hash: sha256Hex('hello'), system_hash: sha256Hex('sys'), sample: 1, timestamp: '2026-11-01T12:00:00.000Z' });
+    const usage = { promptTokenCount: 10, candidatesTokenCount: 20 };
+    const built = toTape('generate', request, { rawOutput: '{}', finishReason: 'stop', usage }, '2026-11-01T12:00:00.000Z');
+    expect(built).toMatchObject({ prompt_hash: sha256Hex('hello'), system_hash: sha256Hex('sys'), sample: 1, timestamp: '2026-11-01T12:00:00.000Z', usage });
+    expect(toTape('generate', request, { rawOutput: '{}', finishReason: null }, '2026-11-01T12:00:00.000Z')).not.toHaveProperty('usage');
     expect(TapeSchema.safeParse(built).success).toBe(true);
   });
 });
@@ -157,7 +173,7 @@ describe('check-tapes', () => {
     for (let sample = 0; sample < 3; sample++) {
       writeTape(root, tape({ prompt_id: 'ord-02', sample, raw_output: JSON.stringify(cleanScene()).slice(0, 300), finish_reason: 'length' }));
     }
-    writeTape(root, tape({ kind: 'repair', sample: 1, raw_output: FIX_EXAMPLE }));
+    writeTape(root, tape({ kind: 'repair', sample: 1, raw_output: FIXED_EXAMPLE }));
   };
 
   it('re-checks every tape and summarises per model', () => {
@@ -185,15 +201,29 @@ describe('check-tapes', () => {
     seed();
     const report = checkTapes(root);
     expect(report.summary.repair).toMatchObject({ attempted: 1, accepted: 1, fully_fixed: 1, refusals: {} });
-    expect(report.rows.find((r) => r.kind === 'repair')).toMatchObject({ verdict: 'pass', repair: { status: 'accepted', fully_fixed: true } });
+    expect(report.rows.find((r) => r.kind === 'repair')).toMatchObject({ verdict: 'pass', repair: { status: 'accepted', fully_fixed: true, ops: 10 } });
+    expect(report.summary.repair.ops).toEqual({ n: 1, total: 10, median: 10, max: 10 });
+    expect(report.summary.repair.ops_accepted).toEqual({ n: 1, total: 10, median: 10, max: 10 });
   });
 
-  it('counts a repair tape whose patch is not JSON, or is refused, as a refusal', () => {
+  it('counts a repair reply that is not a JSON object, or that fixes nothing, as a refusal, and counts the operations', () => {
     seed();
     writeTape(root, tape({ kind: 'repair', sample: 0, raw_output: 'sorry' }));
-    writeTape(root, tape({ kind: 'repair', sample: 2, raw_output: '[]' }));
+    writeTape(root, tape({ kind: 'repair', sample: 2, raw_output: JSON.stringify(cleanScene()) }));
     const report = checkTapes(root);
-    expect(report.summary.repair).toMatchObject({ attempted: 3, accepted: 1, refusals: { invalid_patch: 1, not_shrinking: 1 } });
+    expect(report.summary.repair).toMatchObject({ attempted: 3, accepted: 1, refusals: { unparseable_reply: 1, not_shrinking: 1 } });
+    expect(report.summary.repair.ops).toEqual({ n: 2, total: 10, median: 5, max: 10 });
+    expect(report.summary.repair.ops_accepted).toEqual({ n: 1, total: 10, median: 10, max: 10 });
+    const rows = Object.fromEntries(report.rows.filter((r) => r.kind === 'repair').map((r) => [r.sample, r.repair]));
+    expect(rows[0]).toEqual({ status: 'refused', reason: 'unparseable_reply' });
+    expect(rows[2]).toEqual({ status: 'refused', reason: 'not_shrinking', ops: 0 });
+  });
+
+  it('computes the patch from the reply itself, so the operations can be recounted from the tape', () => {
+    seed();
+    const first = checkTapes(root).rows.find((r) => r.kind === 'repair');
+    const second = checkTapes(root).rows.find((r) => r.kind === 'repair');
+    expect(second).toEqual(first);
   });
 
   it('is deterministic: two runs give identical reports, in path order', () => {
