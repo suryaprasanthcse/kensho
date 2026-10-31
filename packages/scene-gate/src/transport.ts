@@ -4,7 +4,8 @@ import { SpendLedger, attemptCostMicroUsd, priceFor, worstCaseMicroUsd, type Usa
 /**
  * Transport policy: how a request that did not get a usable reply is handled. It is deliberately dull.
  * - Timeout 180 s per attempt.
- * - Up to 3 retries (4 attempts), after 2 s, 4 s and 8 s, and only for HTTP 503, HTTP 429, a timeout, or a network error.
+ * - Up to 3 retries (4 attempts), after 2 s, 4 s and 8 s, and only for HTTP 429, 500, 502, 503 or 504, a timeout, or a
+ *   network error.
  * - Never retry any other 4xx, and never retry a reply that arrived: a 200 is final whatever it says (a refusal and a
  *   truncated reply are results, not failures).
  * - Every attempt is logged on the tape and counted against the spend cap.
@@ -48,14 +49,14 @@ export type Disposition = 'response' | 'retry' | 'transport_failure' | 'abort';
 
 /**
  * - 2xx: a reply, final.
- * - 429 and 503: retry.
- * - any other 5xx: a transport failure that is not retried (the policy names only 503).
+ * - 429, 500, 502, 503 and 504: retry.
+ * - any other 5xx (501, 505 and up): a transport failure that is not retried, because it is not on the retry list.
  * - any other status, which includes every other 4xx: abort the run, because it is a setup error (a rejected schema, an
  *   invalid key, an unknown model) that retrying cannot fix.
  */
 export function classifyStatus(status: number): Disposition {
   if (status >= 200 && status < 300) return 'response';
-  if (status === 429 || status === 503) return 'retry';
+  if (status === 429 || status === 500 || status === 502 || status === 503 || status === 504) return 'retry';
   if (status >= 500 && status < 600) return 'transport_failure';
   return 'abort';
 }

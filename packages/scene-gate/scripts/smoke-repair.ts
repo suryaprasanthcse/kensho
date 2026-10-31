@@ -18,6 +18,7 @@ import { parseRawOutput } from '../src/parse.ts';
 import { repairFromScene } from '../src/repair.ts';
 import { renderRepairMessage } from '../src/repair-request.ts';
 import { SceneSchema, type Scene } from '../src/schema.ts';
+import { STUDY_MAX_OUTPUT_TOKENS } from '../src/study.ts';
 import { KEY_VARIABLES, errorDetail, findKey, geminiText, loadEnv, type Fetch } from './smoke-schema.ts';
 
 const PACKAGE = resolve(import.meta.dirname, '..');
@@ -52,7 +53,7 @@ export function geminiRepairRequest(model: string, system: string, message: stri
     body: {
       systemInstruction: { parts: [{ text: system }] },
       contents: [{ role: 'user', parts: [{ text: message }] }],
-      generationConfig: { responseMimeType: 'application/json', responseJsonSchema: sceneJsonSchema('gemini'), maxOutputTokens: 8192 },
+      generationConfig: { responseMimeType: 'application/json', responseJsonSchema: sceneJsonSchema('gemini'), maxOutputTokens: STUDY_MAX_OUTPUT_TOKENS },
     },
   };
 }

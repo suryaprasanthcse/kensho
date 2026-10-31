@@ -66,7 +66,7 @@ describe('the preregistration draft', () => {
     expect(text).toContain(`**Timeout:** ${TRANSPORT_POLICY.timeoutMs / 1000} s per attempt.`);
     expect(text).toContain(`up to ${TRANSPORT_POLICY.maxRetries} retries, so at most ${TRANSPORT_POLICY.maxRetries + 1} attempts`);
     expect(text).toContain([0, 1, 2].map((n) => `${retryDelayMs(n) / 1000} s`).join(', ').replace(/, (\d+ s)$/, ' and $1'));
-    expect(text).toContain('**only** after HTTP 503, HTTP 429, a timeout, or a network error');
+    expect(text).toContain('**only** after HTTP 429, 500, 502, 503 or 504, a timeout, or a network error');
     expect(text).toContain('**Never retried:** any 4xx other than 429, and any reply that arrived.');
     expect(text).toContain('**Every attempt is logged on the tape**');
     expect(text).toContain('`outcome: transport_failure`');
@@ -80,8 +80,8 @@ describe('the preregistration draft', () => {
   it('counts every attempt toward the cap, at the worst case when no usage came back', () => {
     expect(text).toContain('**every attempt counted**');
     expect(text).toContain('counts at the worst case');
-    expect(text).toContain('$0.02228');
-    expect(text).toContain('$0.03522');
+    expect(text).toContain('$0.04276');
+    expect(text).toContain('$0.06594');
   });
 
   it('quotes the thresholds the code uses and keeps the optional check off', () => {

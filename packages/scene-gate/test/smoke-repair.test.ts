@@ -43,7 +43,7 @@ describe('the repair smoke request, offline', () => {
     expect(r.body).toEqual({
       systemInstruction: { parts: [{ text: 'system text' }] },
       contents: [{ role: 'user', parts: [{ text: message }] }],
-      generationConfig: { responseMimeType: 'application/json', responseJsonSchema: sceneJsonSchema('gemini'), maxOutputTokens: 8192 },
+      generationConfig: { responseMimeType: 'application/json', responseJsonSchema: sceneJsonSchema('gemini'), maxOutputTokens: 16384 },
     });
     expect(Object.keys(r.headers('k')).sort()).toEqual(['content-type', 'x-goog-api-key']);
   });

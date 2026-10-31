@@ -9,6 +9,7 @@ import {
   usageCostMicroUsd,
   worstCaseMicroUsd,
 } from '../src/spend.ts';
+import { STUDY_MAX_OUTPUT_TOKENS } from '../src/study.ts';
 
 const NOW = new Date('2026-11-01T00:00:00Z');
 const LITE = priceFor('gemini-3.5-flash-lite', NOW);
@@ -33,20 +34,23 @@ describe('prices', () => {
 });
 
 describe('cost', () => {
-  it('assumes 6,000 input and 8,192 output tokens before a request is sent', () => {
-    expect([WORST_CASE_INPUT_TOKENS, WORST_CASE_OUTPUT_TOKENS]).toEqual([6_000, 8_192]);
-    expect(worstCaseMicroUsd(LITE)).toBe(22_280);
-    expect(worstCaseMicroUsd(FLASH)).toBe(35_220);
-    expect(worstCaseMicroUsd(priceFor('gemini-3.8-flash', new Date('2027-01-01T00:00:00Z')))).toBe(70_440);
+  it('assumes 6,000 input and 16,384 output tokens before an attempt is sent: the most a reply may be', () => {
+    expect([WORST_CASE_INPUT_TOKENS, WORST_CASE_OUTPUT_TOKENS]).toEqual([6_000, 16_384]);
+    expect(WORST_CASE_OUTPUT_TOKENS).toBe(STUDY_MAX_OUTPUT_TOKENS);
+    expect(worstCaseMicroUsd(LITE)).toBe(42_760);
+    expect(worstCaseMicroUsd(FLASH)).toBe(65_940);
+    expect(worstCaseMicroUsd(priceFor('gemini-3.8-flash', new Date('2027-01-01T00:00:00Z')))).toBe(131_880);
   });
 
-  it('adds up to the worst case the preregistration states for the whole study: 120 requests per model', () => {
+  it('adds up to the theoretical maximum the preregistration states for the whole study: 120 requests per model, each at the limit', () => {
     const now = 120 * worstCaseMicroUsd(LITE) + 120 * worstCaseMicroUsd(FLASH);
-    expect(now).toBe(6_900_000);
-    expect(now).toBeLessThan(SPEND_CAP_MICRO_USD);
+    expect(120 * worstCaseMicroUsd(LITE)).toBe(5_131_200);
+    expect(120 * worstCaseMicroUsd(FLASH)).toBe(7_912_800);
+    expect(now).toBe(13_044_000);
+    // Above the cap: the cap, not the arithmetic, is what bounds the study if replies are long.
+    expect(now).toBeGreaterThan(SPEND_CAP_MICRO_USD);
     const after = 120 * worstCaseMicroUsd(LITE) + 120 * worstCaseMicroUsd(priceFor('gemini-3.8-flash', new Date('2027-01-01T00:00:00Z')));
-    expect(after).toBe(11_126_400);
-    expect(after).toBeGreaterThan(SPEND_CAP_MICRO_USD);
+    expect(after).toBe(20_956_800);
   });
 
   it('bills thinking tokens as output, and rounds a partial micro-dollar up', () => {
@@ -63,8 +67,8 @@ describe('cost', () => {
   });
 
   it('counts an attempt with no reported usage at the worst case', () => {
-    expect(attemptCostMicroUsd(null, LITE)).toBe(22_280);
-    expect(attemptCostMicroUsd({ totalTokenCount: 5 }, FLASH)).toBe(35_220);
+    expect(attemptCostMicroUsd(null, LITE)).toBe(42_760);
+    expect(attemptCostMicroUsd({ totalTokenCount: 5 }, FLASH)).toBe(65_940);
     expect(attemptCostMicroUsd({ promptTokenCount: 1000, candidatesTokenCount: 500, thoughtsTokenCount: 1500 }, LITE)).toBe(5_300);
   });
 });

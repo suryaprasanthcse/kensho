@@ -13,3 +13,4 @@ export * from './harness.ts';
 export * from './spend.ts';
 export * from './transport.ts';
 export * from './runner.ts';
+export * from './study.ts';

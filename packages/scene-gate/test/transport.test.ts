@@ -14,7 +14,7 @@ import {
 const MODEL = 'gemini-3.5-flash-lite';
 const USAGE = { promptTokenCount: 1000, candidatesTokenCount: 500, thoughtsTokenCount: 1500 };
 const COST_OF_USAGE = 5_300;
-const WORST = 22_280;
+const WORST = 42_760;
 
 const ok = (rawOutput = '{}', over: Partial<NonNullable<ProviderReply['response']>> = {}): ProviderReply => ({
   status: 200,
@@ -49,10 +49,10 @@ describe('the transport policy', () => {
     expect([0, 1, 2].map((n) => retryDelayMs(n))).toEqual([2_000, 4_000, 8_000]);
   });
 
-  it('classifies a status: retry only 429 and 503, never another 4xx', () => {
+  it('classifies a status: retry only 429, 500, 502, 503 and 504, never another 4xx', () => {
     for (const s of [200, 201, 204]) expect(classifyStatus(s), String(s)).toBe('response');
-    for (const s of [429, 503]) expect(classifyStatus(s), String(s)).toBe('retry');
-    for (const s of [500, 502, 504, 599]) expect(classifyStatus(s), String(s)).toBe('transport_failure');
+    for (const s of [429, 500, 502, 503, 504]) expect(classifyStatus(s), String(s)).toBe('retry');
+    for (const s of [501, 505, 507, 511, 599]) expect(classifyStatus(s), String(s)).toBe('transport_failure');
     for (const s of [301, 400, 401, 403, 404, 408, 422]) expect(classifyStatus(s), String(s)).toBe('abort');
   });
 
@@ -124,13 +124,34 @@ describe('a request under the policy', () => {
     }
   });
 
-  it('does not retry another 5xx; it is a transport failure on the first attempt', async () => {
+  it('retries a 500, 502 and 504 as it does a 503, each with a 2 s wait', async () => {
+    for (const code of [500, 502, 504]) {
+      const d = deps();
+      const s = script([status(code), ok()]);
+      const out = await requestWithRetries(MODEL, s.call, d);
+      expect(out.kind, String(code)).toBe('response');
+      expect(out.attempts.map((a) => a.http_status)).toEqual([code, 200]);
+      expect(d.sleeps).toEqual([2_000]);
+    }
+  });
+
+  it('gives up on a 500 that keeps coming after four attempts, like any other retried status', async () => {
     const d = deps();
-    const s = script([status(500), ok()]);
+    const s = script([status(500), status(502), status(504), status(500), ok()]);
     const out = await requestWithRetries(MODEL, s.call, d);
     expect(out.kind).toBe('transport_failure');
-    expect(s.calls()).toBe(1);
-    expect(d.sleeps).toEqual([]);
+    expect(s.calls()).toBe(4);
+  });
+
+  it('does not retry a 5xx that is not on the list: it is a transport failure on the first attempt', async () => {
+    for (const code of [501, 505, 511]) {
+      const d = deps();
+      const s = script([status(code), ok()]);
+      const out = await requestWithRetries(MODEL, s.call, d);
+      expect(out.kind, String(code)).toBe('transport_failure');
+      expect(s.calls()).toBe(1);
+      expect(d.sleeps).toEqual([]);
+    }
   });
 
   it('never retries a reply that arrived, whatever it says: a refusal, a truncation and an empty text are results', async () => {
@@ -183,7 +204,7 @@ describe('every attempt counts toward the cap', () => {
   });
 
   it('stops between retries when the attempts so far have used up the room, and keeps those attempts', async () => {
-    const d = deps(new SpendLedger(50_000, 0));
+    const d = deps(new SpendLedger(100_000, 0));
     const s = script([status(503), status(503), status(503), ok()]);
     const out = await requestWithRetries(MODEL, s.call, d);
     expect(out.kind).toBe('spend_cap');

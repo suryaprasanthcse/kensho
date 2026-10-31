@@ -12,8 +12,8 @@ import { EXAMPLE_SCENE, cleanScene } from './fixtures.ts';
 const MODEL = 'gemini-3.5-flash-lite';
 const USAGE = { promptTokenCount: 1000, candidatesTokenCount: 500, thoughtsTokenCount: 1500 };
 const COST_OF_USAGE = 5_300;
-const WORST = 22_280;
-const PARAMETERS = { max_output_tokens: 8192 };
+const WORST = 42_760;
+const PARAMETERS = { max_output_tokens: 16384 };
 const SYSTEM = 'system text';
 
 const prompts = Array.from({ length: 10 }, (_, i) => ({ id: `p${String(i + 1).padStart(2, '0')}`, text: `prompt number ${i + 1}` }));
@@ -154,9 +154,9 @@ describe('the generation loop', () => {
 
   it('stops without sending when the next request could reach the $10 cap', async () => {
     const c = client(() => reply(CLEAN));
-    const d = deps(c.client, new SpendLedger(40_000));
+    const d = deps(c.client, new SpendLedger(60_000));
     const report = await runGenerations(config(d, prompts.slice(0, 3)));
-    // Requests cost 5,300 each and each needs room for 22,280 more: the 5th would reach 40,000.
+    // Requests cost 5,300 each and each needs room for 42,760 more: the 5th would reach 63,960, over 60,000.
     expect(report).toMatchObject({ status: 'incomplete', stopped: 'spend_cap', written: 4 });
     expect(c.generated).toHaveLength(4);
     expect(report.spent_micro_usd).toBe(4 * COST_OF_USAGE);
@@ -164,7 +164,7 @@ describe('the generation loop', () => {
 
   it('counts failed attempts toward the cap, and keeps them on a tape when the cap stops a request half way', async () => {
     const c = client(() => ({ status: 503 }));
-    const d = deps(c.client, new SpendLedger(50_000));
+    const d = deps(c.client, new SpendLedger(100_000));
     const report = await runGenerations(config(d, two));
     expect(report).toMatchObject({ status: 'incomplete', stopped: 'spend_cap', written: 1 });
     const tape = read('p01', 0);

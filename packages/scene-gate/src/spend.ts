@@ -29,9 +29,12 @@ export function priceFor(model: string, at: Date): Price {
   throw new RangeError(`no price recorded for model ${model}`);
 }
 
-/** What one request is assumed to cost before it is sent: 6,000 input tokens and 8,192 output tokens. */
+/**
+ * What one attempt is assumed to cost before it is sent: 6,000 input tokens and 16,384 output tokens, the most the
+ * study allows a reply to be (`maxOutputTokens`, which includes thinking tokens).
+ */
 export const WORST_CASE_INPUT_TOKENS = 6_000;
-export const WORST_CASE_OUTPUT_TOKENS = 8_192;
+export const WORST_CASE_OUTPUT_TOKENS = 16_384;
 
 export const worstCaseMicroUsd = (price: Price): number =>
   Math.ceil((WORST_CASE_INPUT_TOKENS * price.inputPerMTok + WORST_CASE_OUTPUT_TOKENS * price.outputPerMTok) / 1_000_000);
