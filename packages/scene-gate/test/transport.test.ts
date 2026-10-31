@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { SpendLedger } from '../src/spend.ts';
 import {
   AttemptSchema,
+  ProviderConfigError,
   TRANSPORT_POLICY,
   classifyStatus,
   requestWithRetries,
@@ -168,6 +169,15 @@ describe('a request under the policy', () => {
     const out = await requestWithRetries(MODEL, script([{ status: 200 }, ok()]).call, d);
     expect(out.kind).toBe('response');
     expect(out.attempts.map((a) => [a.http_status, a.error])).toEqual([[200, 'EmptyReply'], [200, null]]);
+  });
+
+  it('lets a configuration error through without retrying it or billing for it', async () => {
+    const d = deps();
+    const s = script([new ProviderConfigError('bad parameter'), ok()]);
+    await expect(requestWithRetries(MODEL, s.call, d)).rejects.toThrow(ProviderConfigError);
+    expect(s.calls()).toBe(1);
+    expect(d.sleeps).toEqual([]);
+    expect(d.ledger.spent).toBe(0);
   });
 
   it('records only the error class, never the message, which could hold anything', async () => {

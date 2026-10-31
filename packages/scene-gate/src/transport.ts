@@ -16,6 +16,17 @@ export const TRANSPORT_POLICY = { timeoutMs: 180_000, maxRetries: 3, baseDelayMs
 /** Delay before retry number `retryIndex` (0 for the first retry): 2 s, 4 s, 8 s. No jitter, so a run is reproducible. */
 export const retryDelayMs = (retryIndex: number, policy = TRANSPORT_POLICY): number => policy.baseDelayMs * policy.factor ** retryIndex;
 
+/**
+ * A request that can never succeed as configured (an unsupported parameter, a missing key). A client throws it, and
+ * `requestWithRetries` lets it through without retrying: retrying a bug four times, and billing for it, helps nobody.
+ */
+export class ProviderConfigError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ProviderConfigError';
+  }
+}
+
 /** What the provider returned. `response` is present for a 2xx status. */
 export interface ModelResponse {
   readonly rawOutput: string;
@@ -95,6 +106,7 @@ export async function requestWithRetries(
     try {
       reply = await call(policy.timeoutMs);
     } catch (thrown) {
+      if (thrown instanceof ProviderConfigError) throw thrown;
       error = thrown instanceof Error ? thrown.name : 'Error';
     }
     const finished = deps.now();

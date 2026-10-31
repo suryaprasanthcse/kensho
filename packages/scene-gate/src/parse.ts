@@ -20,10 +20,14 @@ export function endsUnterminated(text: string): boolean {
   return inString || depth > 0;
 }
 
+const REFUSAL_REASONS: ReadonlySet<string> = new Set(['refusal', 'safety', 'prohibited_content', 'blocklist', 'spii', 'recitation']);
+
 /**
  * Strict: the whole text must be one JSON document. Code fences or prose around it are unparseable, because a scene
  * the checks never saw is a failure of the generation, not something to be silently repaired.
- * `finishReason` only matters when parsing fails: a provider that says "refusal" or "length" names the cause.
+ * `finishReason` only matters when parsing fails: a provider that says "refusal" or "length" names the cause. Gemini's
+ * own reasons are understood as they are: `MAX_TOKENS` is a truncation, and `SAFETY`, `PROHIBITED_CONTENT`, `BLOCKLIST`,
+ * `SPII`, `RECITATION` and a blocked prompt (`PROMPT_...`) are refusals.
  */
 export function parseRawOutput(text: string, finishReason?: string | null): RawParse {
   if (text.trim() === '') return { ok: false, reason: 'empty', detail: 'the output is empty' };
@@ -31,8 +35,9 @@ export function parseRawOutput(text: string, finishReason?: string | null): RawP
     return { ok: true, value: JSON.parse(text) as unknown };
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);
-    if (finishReason === 'refusal') return { ok: false, reason: 'refusal', detail: 'the model reported a refusal' };
-    if (finishReason === 'length' || finishReason === 'max_tokens') {
+    const stop = finishReason?.toLowerCase();
+    if (stop && (REFUSAL_REASONS.has(stop) || stop.startsWith('prompt_'))) return { ok: false, reason: 'refusal', detail: `the model stopped on ${finishReason}` };
+    if (stop === 'length' || stop === 'max_tokens') {
       return { ok: false, reason: 'truncated', detail: `the model stopped on ${finishReason}` };
     }
     if (!text.includes('{')) return { ok: false, reason: 'refusal', detail: 'the output contains no JSON object' };

@@ -13,7 +13,8 @@
     "check-tapes": "tsx src/bin.ts check-tapes",
     "mutation": "tsx test/mutation/run.ts",
     "smoke-schema": "tsx scripts/smoke-schema.ts",
-    "smoke-repair": "tsx scripts/smoke-repair.ts"
+    "smoke-repair": "tsx scripts/smoke-repair.ts",
+    "e2e": "tsx scripts/e2e-runner.ts"
   },
   "dependencies": {
     "@kensho/diagnostics": "workspace:*",

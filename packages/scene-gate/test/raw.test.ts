@@ -35,6 +35,16 @@ describe('raw model output', () => {
     expect(evaluateRaw(text, {}, 'refusal').kind).toBe('checked');
   });
 
+  it("understands Gemini's finish reasons when the text does not parse", () => {
+    for (const reason of ['SAFETY', 'PROHIBITED_CONTENT', 'BLOCKLIST', 'SPII', 'RECITATION', 'PROMPT_SAFETY', 'PROMPT_OTHER']) {
+      expect(evaluateRaw('{"scene": ', {}, reason), reason).toMatchObject({ reason: 'refusal' });
+    }
+    expect(evaluateRaw('{"scene": ', {}, 'MAX_TOKENS')).toMatchObject({ reason: 'truncated' });
+    expect(evaluateRaw('{"scene": scene-gate/1}', {}, 'STOP')).toMatchObject({ reason: 'unparseable' });
+    expect(evaluateRaw('{"scene": scene-gate/1}', {}, 'OTHER')).toMatchObject({ reason: 'unparseable' });
+    expect(evaluateRaw('', {}, 'MAX_TOKENS')).toMatchObject({ reason: 'empty' });
+  });
+
   it('reports unparseable text that is complete as unparseable', () => {
     expect(evaluateRaw('{"scene": scene-gate/1}')).toMatchObject({ reason: 'unparseable' });
   });
