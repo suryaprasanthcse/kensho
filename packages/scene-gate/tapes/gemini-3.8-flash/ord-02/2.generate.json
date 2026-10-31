@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.8-flash",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-02",
+  "prompt_hash": "c1e1473f2112e8f38189a6105922225c94721726bd9ddcc34828be7a803dc8f6",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 2,
+  "timestamp": "2026-10-31T21:32:24.254Z",
+  "raw_output": "{\"scene\":\"scene-gate/1\",\"bounds_mm\":[-10000,0,-10000,10000,4000,10000],\"controller\":{\"height_mm\":1750,\"radius_mm\":300,\"jump_height_mm\":800},\"spawn\":{\"pos_mm\":[0,0,0]},\"entities\":[{\"id\":\"wall_north\",\"kind\":\"static\",\"box_mm\":[16000,2000,400],\"pos_mm\":[0,1000,8000]},{\"id\":\"wall_south\",\"kind\":\"static\",\"box_mm\":[16000,2000,400],\"pos_mm\":[0,1000,-8000]},{\"id\":\"wall_east\",\"kind\":\"static\",\"box_mm\":[400,2000,15600],\"pos_mm\":[8000,1000,0]},{\"id\":\"wall_west\",\"kind\":\"static\",\"box_mm\":[400,2000,15600],\"pos_mm\":[-8000,1000,0]},{\"id\":\"coin_1\",\"kind\":\"pickup\",\"box_mm\":[300,300,300],\"pos_mm\":[3000,500,2000],\"tags\":[\"coin\"]},{\"id\":\"coin_2\",\"kind\":\"pickup\",\"box_mm\":[300,300,300],\"pos_mm\":[-3000,500,3000],\"tags\":[\"coin\"]},{\"id\":\"coin_3\",\"kind\":\"pickup\",\"box_mm\":[300,300,300],\"pos_mm\":[1000,500,-4000],\"tags\":[\"coin\"]}],\"rules\":[],\"objectives\":[{\"id\":\"collect_coins\",\"type\":\"collect\",\"tag\":\"coin\",\"count\":3}]}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1145,
+    "candidatesTokenCount": 444,
+    "thoughtsTokenCount": 1469,
+    "totalTokenCount": 3058
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:31:34.641Z",
+      "duration_ms": 49613,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1145,
+        "candidatesTokenCount": 444,
+        "thoughtsTokenCount": 1469,
+        "totalTokenCount": 3058
+      },
+      "cost_micro_usd": 8033
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

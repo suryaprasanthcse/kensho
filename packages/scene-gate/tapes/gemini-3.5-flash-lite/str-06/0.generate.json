@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-06",
+  "prompt_hash": "435b8d7d1645b02cb7f60c67c451b1c5686111e6053634d31ede4fb06d465af6",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 0,
+  "timestamp": "2026-10-31T21:23:59.452Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [-500, 0, -500, 15500, 4000, 500],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 300,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [0, 0, 0]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [16000, 200, 1000],\n      \"pos_mm\": [7500, -100, 0]\n    },\n    {\n      \"id\": \"wall_left\",\n      \"kind\": \"static\",\n      \"box_mm\": [200, 4000, 1000],\n      \"pos_mm\": [-600, 2000, 0]\n    },\n    {\n      \"id\": \"wall_right\",\n      \"kind\": \"static\",\n      \"box_mm\": [200, 4000, 1000],\n      \"pos_mm\": [15600, 2000, 0]\n    },\n    {\n      \"id\": \"div_1\",\n      \"kind\": \"static\",\n      \"box_mm\": [200, 4000, 1000],\n      \"pos_mm\": [4900, 2000, 0]\n    },\n    {\n      \"id\": \"div_2\",\n      \"kind\": \"static\",\n      \"box_mm\": [200, 4000, 1000],\n      \"pos_mm\": [10100, 2000, 0]\n    },\n    {\n      \"id\": \"door_1\",\n      \"kind\": \"door\",\n      \"requires\": \"key_green\",\n      \"box_mm\": [200, 1800, 800],\n      \"pos_mm\": [4900, 900, 0],\n      \"tags\": [\"door1\"]\n    },\n    {\n      \"id\": \"door_2\",\n      \"kind\": \"door\",\n      \"requires\": \"key_yellow\",\n      \"box_mm\": [200, 1800, 800],\n      \"pos_mm\": [10100, 900, 0],\n      \"tags\": [\"door2\"]\n    },\n    {\n      \"id\": \"key_green\",\n      \"kind\": \"key\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [2000, 100, 0]\n    },\n    {\n      \"id\": \"key_yellow\",\n      \"kind\": \"key\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [7500, 100, 0]\n    },\n    {\n      \"id\": \"goal\",\n      \"kind\": \"static\",\n      \"box_mm\": [400, 400, 400],\n      \"pos_mm\": [13500, 300, 0],\n      \"tags\": [\"goal_tag\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_reach\",\n      \"type\": \"reach\",\n      \"target\": \"goal\"\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1169,
+    "candidatesTokenCount": 916,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 2085
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:23:56.559Z",
+      "duration_ms": 2892,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1169,
+        "candidatesTokenCount": 916,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 2085
+      },
+      "cost_micro_usd": 2641
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

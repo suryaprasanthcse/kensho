@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-03",
+  "prompt_hash": "cfe07bd1ea46f53376d7eed5a88f514f2830d1450d6be94652b223b6c1d9ea36",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 2,
+  "timestamp": "2026-10-31T21:21:46.064Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [-5000, 0, -5000, 5000, 5000, 15000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [0, 0, 0]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [10000, 200, 20000],\n      \"pos_mm\": [0, -100, 5000]\n    },\n    {\n      \"id\": \"crate\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [800, 800, 800],\n      \"pos_mm\": [0, 400, 2000],\n      \"tags\": [\"obstacle\"]\n    },\n    {\n      \"id\": \"coin\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [0, 200, 10000],\n      \"tags\": [\"treasure\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_collect_coin\",\n      \"type\": \"collect\",\n      \"tag\": \"treasure\",\n      \"count\": 1\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1147,
+    "candidatesTokenCount": 411,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 1558
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:21:44.566Z",
+      "duration_ms": 1498,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1147,
+        "candidatesTokenCount": 411,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 1558
+      },
+      "cost_micro_usd": 1372
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

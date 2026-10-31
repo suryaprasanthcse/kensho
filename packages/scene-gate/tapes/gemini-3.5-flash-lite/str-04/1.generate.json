@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-04",
+  "prompt_hash": "74a57f48f6eab0ca8d0244a70efc3bd507a9e26bc01b9f43b3d9bad95a5b2df6",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:23:47.767Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [-5000, 0, -5000, 5000, 6000, 5000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [0, 0, 2000]\n  },\n  \"entities\": [\n    {\n      \"id\": \"wall_back\",\n      \"kind\": \"static\",\n      \"box_mm\": [10000, 4000, 200],\n      \"pos_mm\": [0, 2000, -2000]\n    },\n    {\n      \"id\": \"crate_1\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [-2000, 500, 0]\n    },\n    {\n      \"id\": \"crate_2\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [-2000, 1500, 0]\n    },\n    {\n      \"id\": \"crate_3\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [-2000, 2500, 0]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [2000, 100, 0],\n      \"tags\": [\"gold\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_collect_coin\",\n      \"type\": \"collect\",\n      \"tag\": \"gold\",\n      \"count\": 1\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1158,
+    "candidatesTokenCount": 554,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 1712
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:23:45.735Z",
+      "duration_ms": 2032,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1158,
+        "candidatesTokenCount": 554,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 1712
+      },
+      "cost_micro_usd": 1733
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

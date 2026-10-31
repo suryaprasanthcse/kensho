@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "repair",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-06",
+  "prompt_hash": "435b8d7d1645b02cb7f60c67c451b1c5686111e6053634d31ede4fb06d465af6",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:51:29.222Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [\n    -6000,\n    0,\n    -6000,\n    6000,\n    5000,\n    6000\n  ],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 300,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [\n      0,\n      0,\n      -4000\n    ]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        10000,\n        200,\n        10000\n      ],\n      \"pos_mm\": [\n        0,\n        100,\n        0\n      ]\n    },\n    {\n      \"id\": \"wall_left\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        4000,\n        10000\n      ],\n      \"pos_mm\": [\n        -5100,\n        2000,\n        0\n      ]\n    },\n    {\n      \"id\": \"wall_right\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        4000,\n        10000\n      ],\n      \"pos_mm\": [\n        5100,\n        2000,\n        0\n      ]\n    },\n    {\n      \"id\": \"wall_back\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        10000,\n        4000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        2000,\n        -5100\n      ]\n    },\n    {\n      \"id\": \"wall_front\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        10000,\n        4000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        2000,\n        5100\n      ]\n    },\n    {\n      \"id\": \"divider_1\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        6000,\n        4000,\n        200\n      ],\n      \"pos_mm\": [\n        2000,\n        2000,\n        -2000\n      ]\n    },\n    {\n      \"id\": \"divider_1_left\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        4000,\n        2000\n      ],\n      \"pos_mm\": [\n        -1900,\n        2000,\n        -2000\n      ]\n    },\n    {\n      \"id\": \"door_1\",\n      \"kind\": \"door\",\n      \"requires\": \"green_key\",\n      \"box_mm\": [\n        3800,\n        3000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        1500,\n        -2000\n      ]\n    },\n    {\n      \"id\": \"divider_2\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        6000,\n        4000,\n        200\n      ],\n      \"pos_mm\": [\n        -2000,\n        2000,\n        1000\n      ]\n    },\n    {\n      \"id\": \"divider_2_right\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        4000,\n        2000\n      ],\n      \"pos_mm\": [\n        1900,\n        2000,\n        1000\n      ]\n    },\n    {\n      \"id\": \"door_2\",\n      \"kind\": \"door\",\n      \"requires\": \"yellow_key\",\n      \"box_mm\": [\n        3800,\n        3000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        1500,\n        1000\n      ]\n    },\n    {\n      \"id\": \"green_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        -3000,\n        100,\n        -4000\n      ]\n    },\n    {\n      \"id\": \"yellow_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        3000,\n        100,\n        -500\n      ]\n    },\n    {\n      \"id\": \"goal_target\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        1000,\n        1000,\n        1000\n      ],\n      \"pos_mm\": [\n        0,\n        500,\n        4000\n      ]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"reach_goal\",\n      \"type\": \"reach\",\n      \"target\": \"goal_target\"\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 3165,
+    "candidatesTokenCount": 1400,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 4565
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:51:25.793Z",
+      "duration_ms": 3429,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 3165,
+        "candidatesTokenCount": 1400,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 4565
+      },
+      "cost_micro_usd": 4450
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

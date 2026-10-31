@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "repair",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-02",
+  "prompt_hash": "ad0535362225fa5ab7edab48939c54f7f5771e9a1642b121f5613767e6328d67",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:50:47.949Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [\n    -5000,\n    0,\n    -5000,\n    5000,\n    5000,\n    5000\n  ],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [\n      0,\n      0,\n      0\n    ]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        10000,\n        200,\n        10000\n      ],\n      \"pos_mm\": [\n        0,\n        100,\n        0\n      ]\n    },\n    {\n      \"id\": \"red_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        -1000,\n        300,\n        -1000\n      ],\n      \"tags\": [\n        \"item\"\n      ]\n    },\n    {\n      \"id\": \"red_door\",\n      \"kind\": \"door\",\n      \"requires\": \"red_key\",\n      \"box_mm\": [\n        400,\n        2000,\n        1000\n      ],\n      \"pos_mm\": [\n        0,\n        1100,\n        -2000\n      ],\n      \"tags\": [\n        \"gate\"\n      ]\n    },\n    {\n      \"id\": \"blue_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        300,\n        -3000\n      ],\n      \"tags\": [\n        \"item\"\n      ]\n    },\n    {\n      \"id\": \"blue_door\",\n      \"kind\": \"door\",\n      \"requires\": \"blue_key\",\n      \"guards\": [\n        \"goal_target\"\n      ],\n      \"box_mm\": [\n        400,\n        2000,\n        1000\n      ],\n      \"pos_mm\": [\n        0,\n        1100,\n        -4000\n      ],\n      \"tags\": [\n        \"gate\"\n      ]\n    },\n    {\n      \"id\": \"goal_target\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        500,\n        500,\n        500\n      ],\n      \"pos_mm\": [\n        0,\n        450,\n        -4500\n      ]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"reach_goal\",\n      \"type\": \"reach\",\n      \"target\": \"goal_target\"\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 2206,
+    "candidatesTokenCount": 783,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 2989
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:50:45.424Z",
+      "duration_ms": 2525,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 2206,
+        "candidatesTokenCount": 783,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 2989
+      },
+      "cost_micro_usd": 2620
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

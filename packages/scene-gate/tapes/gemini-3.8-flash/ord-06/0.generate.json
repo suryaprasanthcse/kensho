@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.8-flash",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-06",
+  "prompt_hash": "c55cb75a51f9577c6b33c96a0a0174b74bb0bce6f7143662d32d977b089f03bd",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 0,
+  "timestamp": "2026-10-31T21:47:20.835Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [-2000, 0, -2000, 2000, 4000, 22000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 300,\n    \"jump_height_mm\": 600\n  },\n  \"spawn\": {\n    \"pos_mm\": [0, 0, 0]\n  },\n  \"entities\": [\n    {\n      \"id\": \"wall_left\",\n      \"kind\": \"static\",\n      \"box_mm\": [400, 1000, 24000],\n      \"pos_mm\": [-1800, 500, 10000]\n    },\n    {\n      \"id\": \"wall_right\",\n      \"kind\": \"static\",\n      \"box_mm\": [400, 1000, 24000],\n      \"pos_mm\": [1800, 500, 10000]\n    },\n    {\n      \"id\": \"wall_back\",\n      \"kind\": \"static\",\n      \"box_mm\": [3200, 1000, 400],\n      \"pos_mm\": [0, 500, -1800]\n    },\n    {\n      \"id\": \"wall_front\",\n      \"kind\": \"static\",\n      \"box_mm\": [3200, 1000, 400],\n      \"pos_mm\": [0, 500, 21800]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [300, 300, 300],\n      \"pos_mm\": [0, 600, 3000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_2\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [300, 300, 300],\n      \"pos_mm\": [0, 600, 6000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_3\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [300, 300, 300],\n      \"pos_mm\": [0, 600, 9000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_4\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [300, 300, 300],\n      \"pos_mm\": [0, 600, 12000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_5\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [300, 300, 300],\n      \"pos_mm\": [0, 600, 15000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_6\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [300, 300, 300],\n      \"pos_mm\": [0, 600, 18000],\n      \"tags\": [\"coin\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"collect_all_coins\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 6\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1140,
+    "candidatesTokenCount": 934,
+    "thoughtsTokenCount": 1754,
+    "totalTokenCount": 3828
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:44:57.891Z",
+      "duration_ms": 142944,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1140,
+        "candidatesTokenCount": 934,
+        "thoughtsTokenCount": 1754,
+        "totalTokenCount": 3828
+      },
+      "cost_micro_usd": 10935
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

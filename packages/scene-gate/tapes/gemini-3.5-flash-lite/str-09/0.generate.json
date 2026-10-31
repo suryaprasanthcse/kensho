@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-09",
+  "prompt_hash": "5fd9d9494eceed26f3955dcd997dd90155f6ec66c92955eddd331dcdc49ea531",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 0,
+  "timestamp": "2026-10-31T21:24:46.310Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [-5000, 0, -5000, 5000, 5000, 5000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [0, 0, -3000]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [10000, 200, 10000],\n      \"pos_mm\": [0, -100, 0]\n    },\n    {\n      \"id\": \"gate_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [-2000, 100, -2000]\n    },\n    {\n      \"id\": \"crate_bottom\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [2000, 500, 0]\n    },\n    {\n      \"id\": \"crate_top\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [2000, 1500, 0]\n    },\n    {\n      \"id\": \"gate\",\n      \"kind\": \"door\",\n      \"requires\": \"gate_key\",\n      \"guards\": [\"exit_marker\"],\n      \"box_mm\": [200, 2000, 2000],\n      \"pos_mm\": [0, 1000, 2000]\n    },\n    {\n      \"id\": \"exit_marker\",\n      \"kind\": \"static\",\n      \"box_mm\": [1000, 100, 1000],\n      \"pos_mm\": [0, 50, 4000]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_unlock\",\n      \"type\": \"unlock\",\n      \"target\": \"gate\"\n    },\n    {\n      \"id\": \"obj_reach\",\n      \"type\": \"reach\",\n      \"target\": \"exit_marker\"\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1158,
+    "candidatesTokenCount": 654,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 1812
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:24:43.911Z",
+      "duration_ms": 2399,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1158,
+        "candidatesTokenCount": 654,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 1812
+      },
+      "cost_micro_usd": 1983
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

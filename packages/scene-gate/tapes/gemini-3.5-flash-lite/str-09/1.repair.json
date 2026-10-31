@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "repair",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-09",
+  "prompt_hash": "5fd9d9494eceed26f3955dcd997dd90155f6ec66c92955eddd331dcdc49ea531",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:51:57.641Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [\n    -5000,\n    -1000,\n    -5000,\n    5000,\n    5000,\n    5000\n  ],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [\n      0,\n      0,\n      -3000\n    ]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        10000,\n        200,\n        10000\n      ],\n      \"pos_mm\": [\n        0,\n        -100,\n        0\n      ]\n    },\n    {\n      \"id\": \"crate_bottom\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        1000,\n        1000,\n        1000\n      ],\n      \"pos_mm\": [\n        -2000,\n        500,\n        0\n      ],\n      \"tags\": [\n        \"crate\"\n      ]\n    },\n    {\n      \"id\": \"crate_top\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        1000,\n        1000,\n        1000\n      ],\n      \"pos_mm\": [\n        -2000,\n        1500,\n        0\n      ],\n      \"tags\": [\n        \"crate\"\n      ]\n    },\n    {\n      \"id\": \"key_gate\",\n      \"kind\": \"key\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        -2000,\n        2200,\n        0\n      ]\n    },\n    {\n      \"id\": \"gate\",\n      \"kind\": \"door\",\n      \"requires\": \"key_gate\",\n      \"box_mm\": [\n        2000,\n        3000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        1500,\n        2000\n      ],\n      \"tags\": [\n        \"barrier\"\n      ]\n    },\n    {\n      \"id\": \"exit_marker\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        1000,\n        100,\n        1000\n      ],\n      \"pos_mm\": [\n        0,\n        50,\n        3500\n      ]\n    }\n  ],\n  \"rules\": [\n    {\n      \"id\": \"rule_open_gate\",\n      \"on\": \"collect:key_gate\",\n      \"emit\": \"open:gate\"\n    }\n  ],\n  \"objectives\": [\n    {\n      \"id\": \"obj_unlock\",\n      \"type\": \"unlock\",\n      \"target\": \"gate\"\n    },\n    {\n      \"id\": \"obj_reach\",\n      \"type\": \"reach\",\n      \"target\": \"exit_marker\"\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 2242,
+    "candidatesTokenCount": 825,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 3067
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:51:55.063Z",
+      "duration_ms": 2578,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 2242,
+        "candidatesTokenCount": 825,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 3067
+      },
+      "cost_micro_usd": 2736
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

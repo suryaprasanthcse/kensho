@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.8-flash",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-03",
+  "prompt_hash": "cfe07bd1ea46f53376d7eed5a88f514f2830d1450d6be94652b223b6c1d9ea36",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:34:57.169Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [-2000, 0, -1000, 2000, 4000, 11000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 300,\n    \"jump_height_mm\": 600\n  },\n  \"spawn\": {\n    \"pos_mm\": [0, 0, 1000]\n  },\n  \"entities\": [\n    {\n      \"id\": \"wall_left\",\n      \"kind\": \"static\",\n      \"box_mm\": [200, 3000, 10000],\n      \"pos_mm\": [-1100, 1500, 5000]\n    },\n    {\n      \"id\": \"wall_right\",\n      \"kind\": \"static\",\n      \"box_mm\": [200, 3000, 10000],\n      \"pos_mm\": [1100, 1500, 5000]\n    },\n    {\n      \"id\": \"wall_back\",\n      \"kind\": \"static\",\n      \"box_mm\": [2400, 3000, 200],\n      \"pos_mm\": [0, 1500, -100]\n    },\n    {\n      \"id\": \"wall_front\",\n      \"kind\": \"static\",\n      \"box_mm\": [2400, 3000, 200],\n      \"pos_mm\": [0, 1500, 10100]\n    },\n    {\n      \"id\": \"crate_1\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [600, 600, 600],\n      \"pos_mm\": [0, 300, 2500]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [300, 300, 300],\n      \"pos_mm\": [0, 1000, 9000],\n      \"tags\": [\"coin\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_coin\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 1\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1147,
+    "candidatesTokenCount": 626,
+    "thoughtsTokenCount": 892,
+    "totalTokenCount": 2665
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:33:34.335Z",
+      "duration_ms": 82834,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1147,
+        "candidatesTokenCount": 626,
+        "thoughtsTokenCount": 892,
+        "totalTokenCount": 2665
+      },
+      "cost_micro_usd": 6553
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

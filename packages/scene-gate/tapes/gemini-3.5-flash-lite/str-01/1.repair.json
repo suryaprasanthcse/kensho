@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "repair",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-01",
+  "prompt_hash": "948aed8361432ee6912db959aada10026b7d7235f0d4737606b0c22e07ba78f5",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:50:43.064Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [\n    0,\n    0,\n    0,\n    10000,\n    5000,\n    10000\n  ],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [\n      1000,\n      200,\n      1000\n    ]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        10000,\n        200,\n        10000\n      ],\n      \"pos_mm\": [\n        5000,\n        100,\n        5000\n      ]\n    },\n    {\n      \"id\": \"wall_div\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        4000,\n        3000,\n        200\n      ],\n      \"pos_mm\": [\n        5000,\n        1700,\n        5000\n      ]\n    },\n    {\n      \"id\": \"red_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        2000,\n        300,\n        2000\n      ]\n    },\n    {\n      \"id\": \"red_door\",\n      \"kind\": \"door\",\n      \"requires\": \"red_key\",\n      \"box_mm\": [\n        2000,\n        3000,\n        200\n      ],\n      \"pos_mm\": [\n        2000,\n        1700,\n        5000\n      ]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        2000,\n        300,\n        8000\n      ],\n      \"tags\": [\n        \"coin\"\n      ]\n    },\n    {\n      \"id\": \"coin_2\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        3000,\n        300,\n        8000\n      ],\n      \"tags\": [\n        \"coin\"\n      ]\n    },\n    {\n      \"id\": \"coin_3\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        4000,\n        300,\n        8000\n      ],\n      \"tags\": [\n        \"coin\"\n      ]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_collect_coins\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 3\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 2269,
+    "candidatesTokenCount": 846,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 3115
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:50:40.577Z",
+      "duration_ms": 2487,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 2269,
+        "candidatesTokenCount": 846,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 3115
+      },
+      "cost_micro_usd": 2796
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

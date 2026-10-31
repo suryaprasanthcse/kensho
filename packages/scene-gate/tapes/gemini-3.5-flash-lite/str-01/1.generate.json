@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-01",
+  "prompt_hash": "948aed8361432ee6912db959aada10026b7d7235f0d4737606b0c22e07ba78f5",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:22:57.613Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [0, 0, 0, 10000, 4000, 10000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [1000, 0, 1000]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [10000, 200, 10000],\n      \"pos_mm\": [5000, -100, 5000]\n    },\n    {\n      \"id\": \"wall_div\",\n      \"kind\": \"static\",\n      \"box_mm\": [4000, 3000, 200],\n      \"pos_mm\": [5000, 1500, 5000]\n    },\n    {\n      \"id\": \"red_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [2000, 100, 2000]\n    },\n    {\n      \"id\": \"red_door\",\n      \"kind\": \"door\",\n      \"requires\": \"red_key\",\n      \"box_mm\": [2000, 3000, 200],\n      \"pos_mm\": [2000, 1500, 5000]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [2000, 100, 8000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_2\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [3000, 100, 8000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_3\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [4000, 100, 8000],\n      \"tags\": [\"coin\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_collect_coins\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 3\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1161,
+    "candidatesTokenCount": 728,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 1889
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:22:55.487Z",
+      "duration_ms": 2126,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1161,
+        "candidatesTokenCount": 728,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 1889
+      },
+      "cost_micro_usd": 2169
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

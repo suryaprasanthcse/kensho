@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "repair",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-03",
+  "prompt_hash": "cfe07bd1ea46f53376d7eed5a88f514f2830d1450d6be94652b223b6c1d9ea36",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 0,
+  "timestamp": "2026-10-31T21:49:31.867Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [\n    -3000,\n    0,\n    -2000,\n    3000,\n    3000,\n    14000\n  ],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 300,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [\n      0,\n      0,\n      0\n    ]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        4000,\n        200,\n        14000\n      ],\n      \"pos_mm\": [\n        0,\n        100,\n        5000\n      ]\n    },\n    {\n      \"id\": \"wall_left\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        3000,\n        14000\n      ],\n      \"pos_mm\": [\n        -2000,\n        1500,\n        5000\n      ]\n    },\n    {\n      \"id\": \"wall_right\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        3000,\n        14000\n      ],\n      \"pos_mm\": [\n        2000,\n        1500,\n        5000\n      ]\n    },\n    {\n      \"id\": \"crate\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        600,\n        600,\n        600\n      ],\n      \"pos_mm\": [\n        0,\n        500,\n        2000\n      ]\n    },\n    {\n      \"id\": \"coin\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        100,\n        10000\n      ],\n      \"tags\": [\n        \"treasure\"\n      ]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"collect_coin\",\n      \"type\": \"collect\",\n      \"tag\": \"treasure\",\n      \"count\": 1\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 2208,
+    "candidatesTokenCount": 631,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 2839
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:49:29.568Z",
+      "duration_ms": 2299,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 2208,
+        "candidatesTokenCount": 631,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 2839
+      },
+      "cost_micro_usd": 2240
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

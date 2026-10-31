@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-05",
+  "prompt_hash": "f64ccc50bf216d5589e389c859b7bfb5fb9f225748f709583d5d0e393e85084d",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:23:54.488Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [0, 0, 0, 5000, 5000, 5000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 300,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [1000, 0, 1000]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [5000, 200, 5000],\n      \"pos_mm\": [2500, -100, 2500]\n    },\n    {\n      \"id\": \"crate_1\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [800, 800, 800],\n      \"pos_mm\": [3500, 400, 1000],\n      \"tags\": [\"crate\"]\n    },\n    {\n      \"id\": \"crate_2\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [800, 800, 800],\n      \"pos_mm\": [3500, 1200, 1000],\n      \"tags\": [\"crate\"]\n    },\n    {\n      \"id\": \"crate_3\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [800, 800, 800],\n      \"pos_mm\": [3500, 2000, 1000],\n      \"tags\": [\"crate\"]\n    },\n    {\n      \"id\": \"crate_4\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [800, 800, 800],\n      \"pos_mm\": [3500, 2800, 1000],\n      \"tags\": [\"crate\"]\n    },\n    {\n      \"id\": \"door_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [2000, 100, 2000],\n      \"tags\": [\"item\"]\n    },\n    {\n      \"id\": \"room_door\",\n      \"kind\": \"door\",\n      \"requires\": \"door_key\",\n      \"box_mm\": [200, 2000, 1000],\n      \"pos_mm\": [2500, 1000, 3000]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [1000, 100, 2000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_2\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [1500, 100, 2000],\n      \"tags\": [\"coin\"]\n    }\n  ],\n  \"rules\": [\n    {\n      \"id\": \"rule_unlock_door\",\n      \"on\": \"collect:door_key\",\n      \"emit\": \"open:room_door\"\n    }\n  ],\n  \"objectives\": [\n    {\n      \"id\": \"obj_coins\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 2\n    },\n    {\n      \"id\": \"obj_door\",\n      \"type\": \"unlock\",\n      \"target\": \"room_door\"\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1148,
+    "candidatesTokenCount": 972,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 2120
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:23:51.804Z",
+      "duration_ms": 2684,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1148,
+        "candidatesTokenCount": 972,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 2120
+      },
+      "cost_micro_usd": 2775
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

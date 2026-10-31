@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.8-flash",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-01",
+  "prompt_hash": "261eb314a83a5b87eddfe4907d3cdf59fa787ac79182a41b2ada12f9bcc5071f",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 0,
+  "timestamp": "2026-10-31T21:26:29.233Z",
+  "raw_output": "{\"scene\":\"scene-gate/1\",\"bounds_mm\":[-7000,0,-7000,7000,4000,7000],\"controller\":{\"height_mm\":1800,\"radius_mm\":400,\"jump_height_mm\":1000},\"spawn\":{\"pos_mm\":[0,0,0]},\"entities\":[{\"id\":\"wall_north\",\"kind\":\"static\",\"box_mm\":[10000,3000,400],\"pos_mm\":[0,1500,5000]},{\"id\":\"wall_south\",\"kind\":\"static\",\"box_mm\":[10000,3000,400],\"pos_mm\":[0,1500,-5000]},{\"id\":\"wall_west\",\"kind\":\"static\",\"box_mm\":[400,3000,10800],\"pos_mm\":[-5200,1500,0]},{\"id\":\"wall_east\",\"kind\":\"static\",\"box_mm\":[400,3000,10800],\"pos_mm\":[5200,1500,0]},{\"id\":\"crate_1\",\"kind\":\"dynamic\",\"box_mm\":[800,800,800],\"pos_mm\":[-2000,400,-2000]},{\"id\":\"crate_2\",\"kind\":\"dynamic\",\"box_mm\":[800,800,800],\"pos_mm\":[-2000,1200,-2000]},{\"id\":\"crate_3\",\"kind\":\"dynamic\",\"box_mm\":[1000,1000,1000],\"pos_mm\":[2500,500,2000]},{\"id\":\"crate_4\",\"kind\":\"dynamic\",\"box_mm\":[800,800,800],\"pos_mm\":[2500,1400,2000]},{\"id\":\"crate_5\",\"kind\":\"dynamic\",\"box_mm\":[800,800,800],\"pos_mm\":[-3000,400,3000]},{\"id\":\"coin_1\",\"kind\":\"pickup\",\"box_mm\":[300,300,300],\"pos_mm\":[0,500,3000],\"tags\":[\"coin\"]},{\"id\":\"coin_2\",\"kind\":\"pickup\",\"box_mm\":[300,300,300],\"pos_mm\":[-2000,1800,-2000],\"tags\":[\"coin\"]},{\"id\":\"coin_3\",\"kind\":\"pickup\",\"box_mm\":[300,300,300],\"pos_mm\":[2500,2000,2000],\"tags\":[\"coin\"]},{\"id\":\"coin_4\",\"kind\":\"pickup\",\"box_mm\":[300,300,300],\"pos_mm\":[3500,500,-2500],\"tags\":[\"coin\"]},{\"id\":\"coin_5\",\"kind\":\"pickup\",\"box_mm\":[300,300,300],\"pos_mm\":[-3500,500,0],\"tags\":[\"coin\"]}],\"rules\":[],\"objectives\":[{\"id\":\"obj_collect_coins\",\"type\":\"collect\",\"tag\":\"coin\",\"count\":5}]}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1137,
+    "candidatesTokenCount": 769,
+    "thoughtsTokenCount": 2134,
+    "totalTokenCount": 4040
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:24:58.545Z",
+      "duration_ms": 90688,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1137,
+        "candidatesTokenCount": 769,
+        "thoughtsTokenCount": 2134,
+        "totalTokenCount": 4040
+      },
+      "cost_micro_usd": 11739
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

@@ -1,0 +1,56 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-06",
+  "prompt_hash": "c55cb75a51f9577c6b33c96a0a0174b74bb0bce6f7143662d32d977b089f03bd",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:22:25.635Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [-2000, 0, -2000, 10000, 4000, 2000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 300,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [-1000, 0, 0]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [12000, 200, 4000],\n      \"pos_mm\": [4000, -100, 0]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [0, 200, 0],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_2\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [1000, 200, 0],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_3\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [2000, 200, 0],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_4\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [3000, 200, 0],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_5\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [4000, 200, 0],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_6\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [5000, 200, 0],\n      \"tags\": [\"coin\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"collect_all_coins\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 6\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1140,
+    "candidatesTokenCount": 712,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 1852
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:22:16.535Z",
+      "duration_ms": 467,
+      "http_status": 429,
+      "error": null,
+      "usage": null,
+      "cost_micro_usd": 42760
+    },
+    {
+      "attempt": 2,
+      "started": "2026-10-31T21:22:19.008Z",
+      "duration_ms": 377,
+      "http_status": 429,
+      "error": null,
+      "usage": null,
+      "cost_micro_usd": 42760
+    },
+    {
+      "attempt": 3,
+      "started": "2026-10-31T21:22:23.404Z",
+      "duration_ms": 2231,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1140,
+        "candidatesTokenCount": 712,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 1852
+      },
+      "cost_micro_usd": 2122
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

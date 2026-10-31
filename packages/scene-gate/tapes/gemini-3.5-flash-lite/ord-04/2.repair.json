@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "repair",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-04",
+  "prompt_hash": "be26fdd7d3222d0337f0c91da026867d99b1107d6b3f9bb38f492b6156ae72a6",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 2,
+  "timestamp": "2026-10-31T21:49:45.788Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [\n    -5000,\n    0,\n    -5000,\n    5000,\n    5000,\n    5000\n  ],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 300,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [\n      0,\n      0,\n      4000\n    ]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        10000,\n        200,\n        10000\n      ],\n      \"pos_mm\": [\n        0,\n        100,\n        0\n      ]\n    },\n    {\n      \"id\": \"wall_north\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        9600,\n        4000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        2200,\n        -4900\n      ]\n    },\n    {\n      \"id\": \"wall_south\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        9600,\n        4000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        2200,\n        4900\n      ]\n    },\n    {\n      \"id\": \"wall_west\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        4000,\n        10000\n      ],\n      \"pos_mm\": [\n        -4900,\n        2200,\n        0\n      ]\n    },\n    {\n      \"id\": \"wall_east\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        4000,\n        10000\n      ],\n      \"pos_mm\": [\n        4900,\n        2200,\n        0\n      ]\n    },\n    {\n      \"id\": \"crate_nw\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        800,\n        800,\n        800\n      ],\n      \"pos_mm\": [\n        -4300,\n        600,\n        -4300\n      ]\n    },\n    {\n      \"id\": \"crate_ne\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        800,\n        800,\n        800\n      ],\n      \"pos_mm\": [\n        4300,\n        600,\n        -4300\n      ]\n    },\n    {\n      \"id\": \"crate_sw\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        800,\n        800,\n        800\n      ],\n      \"pos_mm\": [\n        -4300,\n        600,\n        4300\n      ]\n    },\n    {\n      \"id\": \"crate_se\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        800,\n        800,\n        800\n      ],\n      \"pos_mm\": [\n        4300,\n        600,\n        4300\n      ]\n    },\n    {\n      \"id\": \"coin_centre\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        300,\n        0\n      ],\n      \"tags\": [\n        \"coin\"\n      ]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"collect_coin\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 1\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 2882,
+    "candidatesTokenCount": 1043,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 3925
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:49:42.961Z",
+      "duration_ms": 2827,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 2882,
+        "candidatesTokenCount": 1043,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 3925
+      },
+      "cost_micro_usd": 3473
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

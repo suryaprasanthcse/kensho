@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-03",
+  "prompt_hash": "09eaa121c9eab060e2cc81781cb4df8c441c8db2fd9ce1a2da4a857952880ff7",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 2,
+  "timestamp": "2026-10-31T21:23:43.583Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [0, 0, 0, 10000, 4000, 10000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [1000, 0, 1000]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [10000, 200, 10000],\n      \"pos_mm\": [5000, -100, 5000]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [2000, 100, 2000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_2\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [4000, 100, 2000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_3\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [6000, 100, 2000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_4\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [8000, 100, 2000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_5\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [3000, 100, 6000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_6\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [5000, 100, 6000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_7\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [7000, 100, 6000],\n      \"tags\": [\"coin\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_collect_coins\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 7\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1146,
+    "candidatesTokenCount": 813,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 1959
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:23:41.369Z",
+      "duration_ms": 2214,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1146,
+        "candidatesTokenCount": 813,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 1959
+      },
+      "cost_micro_usd": 2377
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

@@ -1,0 +1,54 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.8-flash",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-07",
+  "prompt_hash": "b64aa72f9c863e3de8732e11ee168a500451ff9629c981d1874f0a85d1fbce86",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:48:25.146Z",
+  "outcome": "transport_failure",
+  "raw_output": "",
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:48:09.280Z",
+      "duration_ms": 513,
+      "http_status": 429,
+      "error": null,
+      "usage": null,
+      "cost_micro_usd": 65940
+    },
+    {
+      "attempt": 2,
+      "started": "2026-10-31T21:48:11.801Z",
+      "duration_ms": 384,
+      "http_status": 429,
+      "error": null,
+      "usage": null,
+      "cost_micro_usd": 65940
+    },
+    {
+      "attempt": 3,
+      "started": "2026-10-31T21:48:16.191Z",
+      "duration_ms": 468,
+      "http_status": 429,
+      "error": null,
+      "usage": null,
+      "cost_micro_usd": 65940
+    },
+    {
+      "attempt": 4,
+      "started": "2026-10-31T21:48:24.668Z",
+      "duration_ms": 478,
+      "http_status": 429,
+      "error": null,
+      "usage": null,
+      "cost_micro_usd": 65940
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-09",
+  "prompt_hash": "fbe3d53895d5705f55b3df1c265da57beac06ee5f46acbd682f17ae9e3925564",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 0,
+  "timestamp": "2026-10-31T21:22:42.350Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [0, 0, 0, 10000, 5000, 10000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [1000, 0, 500]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [10000, 200, 10000],\n      \"pos_mm\": [5000, -100, 5000]\n    },\n    {\n      \"id\": \"crate_1_1\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [3000, 500, 3000]\n    },\n    {\n      \"id\": \"crate_1_2\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [4500, 500, 3000]\n    },\n    {\n      \"id\": \"crate_1_3\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [6000, 500, 3000]\n    },\n    {\n      \"id\": \"crate_1_4\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [7500, 500, 3000]\n    },\n    {\n      \"id\": \"crate_1_5\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [9000, 500, 3000]\n    },\n    {\n      \"id\": \"crate_2_1\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [3000, 500, 7000]\n    },\n    {\n      \"id\": \"crate_2_2\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [4500, 500, 7000]\n    },\n    {\n      \"id\": \"crate_2_3\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [6000, 500, 7000]\n    },\n    {\n      \"id\": \"crate_2_4\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [7500, 500, 7000]\n    },\n    {\n      \"id\": \"crate_2_5\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [9000, 500, 7000]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [4500, 200, 5000],\n      \"tags\": [\"coin\"]\n    },\n    {\n      \"id\": \"coin_2\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [7500, 200, 5000],\n      \"tags\": [\"coin\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"collect_coins\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 2\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1145,
+    "candidatesTokenCount": 1170,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 2315
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:22:39.288Z",
+      "duration_ms": 3062,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1145,
+        "candidatesTokenCount": 1170,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 2315
+      },
+      "cost_micro_usd": 3269
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

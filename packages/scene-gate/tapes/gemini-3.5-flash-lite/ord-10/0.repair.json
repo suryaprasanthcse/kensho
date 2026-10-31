@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "repair",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-10",
+  "prompt_hash": "3519ad85323bd8cd74c6efc4c650a60079a35409066c960c79d0dcd2ab3d9c15",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 0,
+  "timestamp": "2026-10-31T21:50:35.310Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [\n    -5000,\n    0,\n    -5000,\n    5000,\n    5000,\n    5000\n  ],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [\n      0,\n      0,\n      -4000\n    ]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        10000,\n        100,\n        10000\n      ],\n      \"pos_mm\": [\n        0,\n        -50,\n        0\n      ]\n    },\n    {\n      \"id\": \"crate_1\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        800,\n        800,\n        800\n      ],\n      \"pos_mm\": [\n        -1500,\n        400,\n        -1000\n      ]\n    },\n    {\n      \"id\": \"crate_2\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [\n        800,\n        800,\n        800\n      ],\n      \"pos_mm\": [\n        1500,\n        400,\n        0\n      ]\n    },\n    {\n      \"id\": \"goal_marker\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        500,\n        500,\n        500\n      ],\n      \"pos_mm\": [\n        0,\n        250,\n        4000\n      ],\n      \"tags\": [\n        \"goal\"\n      ]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"reach_goal\",\n      \"type\": \"collect\",\n      \"tag\": \"goal\",\n      \"count\": 1\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1957,
+    "candidatesTokenCount": 546,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 2503
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:50:33.478Z",
+      "duration_ms": 1832,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1957,
+        "candidatesTokenCount": 546,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 2503
+      },
+      "cost_micro_usd": 1953
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

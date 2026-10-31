@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.8-flash",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-02",
+  "prompt_hash": "c1e1473f2112e8f38189a6105922225c94721726bd9ddcc34828be7a803dc8f6",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:31:34.640Z",
+  "raw_output": "{\"scene\":\"scene-gate/1\",\"bounds_mm\":[-6000,0,-6000,6000,4000,6000],\"controller\":{\"height_mm\":1800,\"radius_mm\":300,\"jump_height_mm\":600},\"spawn\":{\"pos_mm\":[0,0,0]},\"entities\":[{\"id\":\"wall_north\",\"kind\":\"static\",\"box_mm\":[10400,2000,400],\"pos_mm\":[0,1000,5000]},{\"id\":\"wall_south\",\"kind\":\"static\",\"box_mm\":[10400,2000,400],\"pos_mm\":[0,1000,-5000]},{\"id\":\"wall_east\",\"kind\":\"static\",\"box_mm\":[400,2000,9600],\"pos_mm\":[5000,1000,0]},{\"id\":\"wall_west\",\"kind\":\"static\",\"box_mm\":[400,2000,9600],\"pos_mm\":[-5000,1000,0]},{\"id\":\"coin_1\",\"kind\":\"pickup\",\"box_mm\":[200,200,200],\"pos_mm\":[2000,500,2000],\"tags\":[\"coin\"]},{\"id\":\"coin_2\",\"kind\":\"pickup\",\"box_mm\":[200,200,200],\"pos_mm\":[-2500,500,1500],\"tags\":[\"coin\"]},{\"id\":\"coin_3\",\"kind\":\"pickup\",\"box_mm\":[200,200,200],\"pos_mm\":[500,500,-3000],\"tags\":[\"coin\"]}],\"rules\":[],\"objectives\":[{\"id\":\"collect_coins\",\"type\":\"collect\",\"tag\":\"coin\",\"count\":3}]}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1145,
+    "candidatesTokenCount": 437,
+    "thoughtsTokenCount": 1484,
+    "totalTokenCount": 3066
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:30:16.552Z",
+      "duration_ms": 78088,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1145,
+        "candidatesTokenCount": 437,
+        "thoughtsTokenCount": 1484,
+        "totalTokenCount": 3066
+      },
+      "cost_micro_usd": 8063
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

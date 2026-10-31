@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "generate",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "ord-04",
+  "prompt_hash": "be26fdd7d3222d0337f0c91da026867d99b1107d6b3f9bb38f492b6156ae72a6",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 1,
+  "timestamp": "2026-10-31T21:21:50.799Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [0, 0, 0, 10000, 5000, 10000],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [5000, 0, 2000]\n  },\n  \"entities\": [\n    {\n      \"id\": \"wall_north\",\n      \"kind\": \"static\",\n      \"box_mm\": [10000, 3000, 200],\n      \"pos_mm\": [5000, 1500, 10000]\n    },\n    {\n      \"id\": \"wall_south\",\n      \"kind\": \"static\",\n      \"box_mm\": [10000, 3000, 200],\n      \"pos_mm\": [5000, 1500, 0]\n    },\n    {\n      \"id\": \"wall_west\",\n      \"kind\": \"static\",\n      \"box_mm\": [200, 3000, 10000],\n      \"pos_mm\": [0, 1500, 5000]\n    },\n    {\n      \"id\": \"wall_east\",\n      \"kind\": \"static\",\n      \"box_mm\": [200, 3000, 10000],\n      \"pos_mm\": [10000, 1500, 5000]\n    },\n    {\n      \"id\": \"crate_nw\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [1000, 500, 9000]\n    },\n    {\n      \"id\": \"crate_ne\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [9000, 500, 9000]\n    },\n    {\n      \"id\": \"crate_sw\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [1000, 500, 1000]\n    },\n    {\n      \"id\": \"crate_se\",\n      \"kind\": \"dynamic\",\n      \"box_mm\": [1000, 1000, 1000],\n      \"pos_mm\": [9000, 500, 1000]\n    },\n    {\n      \"id\": \"coin_centre\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [200, 200, 200],\n      \"pos_mm\": [5000, 1000, 5000],\n      \"tags\": [\"gold\"]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_collect_coin\",\n      \"type\": \"collect\",\n      \"tag\": \"gold\",\n      \"count\": 1\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 1145,
+    "candidatesTokenCount": 858,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 2003
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:21:48.542Z",
+      "duration_ms": 2257,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 1145,
+        "candidatesTokenCount": 858,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 2003
+      },
+      "cost_micro_usd": 2489
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}

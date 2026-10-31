@@ -1,0 +1,38 @@
+{
+  "version": "scene-gate-tape/1",
+  "kind": "repair",
+  "model": "gemini-3.5-flash-lite",
+  "parameters": {
+    "max_output_tokens": 16384
+  },
+  "prompt_id": "str-01",
+  "prompt_hash": "948aed8361432ee6912db959aada10026b7d7235f0d4737606b0c22e07ba78f5",
+  "system_hash": "09ff30a17d6e4590df4f1b91eaa224174eb4da94bf871e7e0a1031eb72bf415a",
+  "sample": 0,
+  "timestamp": "2026-10-31T21:50:40.576Z",
+  "raw_output": "{\n  \"scene\": \"scene-gate/1\",\n  \"bounds_mm\": [\n    -5000,\n    0,\n    -5000,\n    5000,\n    5000,\n    5000\n  ],\n  \"controller\": {\n    \"height_mm\": 1800,\n    \"radius_mm\": 400,\n    \"jump_height_mm\": 500\n  },\n  \"spawn\": {\n    \"pos_mm\": [\n      0,\n      0,\n      -3000\n    ]\n  },\n  \"entities\": [\n    {\n      \"id\": \"floor\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        9600,\n        200,\n        9600\n      ],\n      \"pos_mm\": [\n        0,\n        -100,\n        0\n      ]\n    },\n    {\n      \"id\": \"wall_back\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        9600,\n        3000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        1500,\n        4900\n      ]\n    },\n    {\n      \"id\": \"wall_front\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        9600,\n        3000,\n        200\n      ],\n      \"pos_mm\": [\n        0,\n        1500,\n        -4900\n      ]\n    },\n    {\n      \"id\": \"wall_left\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        3000,\n        9600\n      ],\n      \"pos_mm\": [\n        -4900,\n        1500,\n        0\n      ]\n    },\n    {\n      \"id\": \"wall_right\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        200,\n        3000,\n        9600\n      ],\n      \"pos_mm\": [\n        4900,\n        1500,\n        0\n      ]\n    },\n    {\n      \"id\": \"partition\",\n      \"kind\": \"static\",\n      \"box_mm\": [\n        6800,\n        3000,\n        200\n      ],\n      \"pos_mm\": [\n        1500,\n        1500,\n        0\n      ]\n    },\n    {\n      \"id\": \"red_key\",\n      \"kind\": \"key\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        -2000,\n        100,\n        0\n      ]\n    },\n    {\n      \"id\": \"red_door\",\n      \"kind\": \"door\",\n      \"requires\": \"red_key\",\n      \"box_mm\": [\n        1200,\n        2500,\n        200\n      ],\n      \"pos_mm\": [\n        -3000,\n        1250,\n        0\n      ],\n      \"tags\": [\n        \"door\"\n      ]\n    },\n    {\n      \"id\": \"coin_1\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        -3000,\n        200,\n        2000\n      ],\n      \"tags\": [\n        \"coin\"\n      ]\n    },\n    {\n      \"id\": \"coin_2\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        -2000,\n        200,\n        3000\n      ],\n      \"tags\": [\n        \"coin\"\n      ]\n    },\n    {\n      \"id\": \"coin_3\",\n      \"kind\": \"pickup\",\n      \"box_mm\": [\n        200,\n        200,\n        200\n      ],\n      \"pos_mm\": [\n        -4000,\n        200,\n        3000\n      ],\n      \"tags\": [\n        \"coin\"\n      ]\n    }\n  ],\n  \"rules\": [],\n  \"objectives\": [\n    {\n      \"id\": \"obj_collect_coins\",\n      \"type\": \"collect\",\n      \"tag\": \"coin\",\n      \"count\": 3\n    }\n  ]\n}",
+  "finish_reason": "STOP",
+  "usage": {
+    "promptTokenCount": 3140,
+    "candidatesTokenCount": 1179,
+    "thoughtsTokenCount": null,
+    "totalTokenCount": 4319
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "started": "2026-10-31T21:50:37.211Z",
+      "duration_ms": 3365,
+      "http_status": 200,
+      "error": null,
+      "usage": {
+        "promptTokenCount": 3140,
+        "candidatesTokenCount": 1179,
+        "thoughtsTokenCount": null,
+        "totalTokenCount": 4319
+      },
+      "cost_micro_usd": 3890
+    }
+  ],
+  "commit": "f34a06c89337acb061153fbb624f25de52197ecd"
+}
