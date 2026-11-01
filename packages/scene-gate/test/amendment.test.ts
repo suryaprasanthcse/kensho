@@ -61,6 +61,31 @@ describe('AMENDMENT-1.md, a draft that has not been run', () => {
     expect(doc).toContain('**Status: DRAFT. Not frozen. Not run.**');
   });
 
+  it('closes the decided items, leaves only the AI Studio values and the manifest hash open, and keeps a restart from resetting the stop count', () => {
+    const section = (from: string, to: string): string => doc.slice(doc.indexOf(from), doc.indexOf(to));
+    expect(section('## 3. What changes', '### If the amended run stops')).not.toContain('OPEN');
+    expect(doc).toContain('**A restart does not reset the stop count.**');
+    expect(doc).toContain('recomputes the number of `transport_failure` tapes already written under this amendment');
+    expect(doc).toContain('The operator does not interrupt a run to avoid the stop rule.');
+    expect(doc).toContain('may be missing from the ledger');
+    expect(doc).toContain('Section 4 records what could be learned before freezing.');
+    expect(doc).not.toContain('settles this before anything is frozen');
+    expect(doc).not.toContain('SHA-256 of this document at freeze');
+    expect(doc).toContain('The tag pins this document');
+    expect(doc).toContain('part of this implementation and has its own tests');
+    expect(doc).not.toContain('documentation on this was not checked');
+    expect(doc).not.toContain('read again before freezing');
+    expect(doc).toContain('These were the branches considered before Step 0.');
+    expect(doc).toContain('the replacement clauses of the second and third branches do not apply');
+    expect(doc).toContain('Limits vary depending on the specific model being used');
+    const nine = doc.slice(doc.indexOf('## 9. Open decisions'));
+    const open = nine.split('\n').filter((l) => l.includes('`OPEN`'));
+    expect(open).toHaveLength(1);
+    expect(open[0]).toMatch(/^4\. /);
+    for (const n of [1, 2, 3, 5, 6, 7]) expect(nine).toMatch(new RegExp(`\\n${n}\\. Decided \\(owner, 2026-11-01\\)`));
+    expect(doc.match(/`OPEN`/g)?.length).toBeGreaterThan(0);
+  });
+
   it('records the cost-cap arithmetic and what happens when the cap is reached', () => {
     expect(doc).toContain('**$6.519754**');
     expect(doc).toContain('74 × $0.06594 = $4.8796; **$1.6402 to spare**');
