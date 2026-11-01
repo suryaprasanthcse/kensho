@@ -109,6 +109,20 @@ describe('RESULTS.md', () => {
     expect(md).toContain('M1 unplayable rate: fail / (pass + fail)');
   });
 
+  it('states the final status, the owner-read quota as consistent with and not shown to be the cause, and no pending amendment', () => {
+    seed();
+    const md = buildResults(root, PROMPTS, SYSTEM);
+    expect(md).toContain('**Final status: the study is complete for `gemini-3.5-flash-lite` and incomplete for `gemini-3.8-flash`.**');
+    expect(md).toContain('no amendment was run: one to finish them was drafted and withdrawn before it was frozen');
+    expect(md).toContain('### What is known about the 429s');
+    expect(md).toContain('2026-11-01 at 19:08 IST');
+    expect(md).toContain('a limit of 20 requests per day (RPD) on the Free tier');
+    expect(md).toContain('**consistent with a daily request quota**');
+    expect(md).toContain('**not shown to be the cause**');
+    expect(md).not.toMatch(/draft(?!ed)/i);
+    expect(md.indexOf('### What is known about the 429s')).toBeLessThan(md.indexOf('## 2. Exploratory analyses: NOT pre-registered'));
+  });
+
   it('is deterministic', () => {
     seed();
     expect(buildResults(root, PROMPTS, SYSTEM)).toBe(buildResults(root, PROMPTS, SYSTEM));
