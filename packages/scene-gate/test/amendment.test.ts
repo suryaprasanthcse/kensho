@@ -45,6 +45,21 @@ describe('AMENDMENT-1.md, a draft that has not been run', () => {
     expect(doc).toContain('git push origin scene-gate scene-gate-amendment-1');
   });
 
+  it('records the provider facts, the open AI Studio slot, the 37 to 74 range and what a stop means', () => {
+    expect(doc).toContain('Rate limits are applied per project, not per API key');
+    expect(doc).toContain('reset at midnight Pacific time');
+    expect(doc).toContain('**13:30 IST**');
+    expect(doc).toContain('2026-11-02 13:30 IST');
+    expect(doc).toContain('`OPEN`: gemini-3.8-flash RPD = __, tier = __, read on __');
+    expect(doc).toContain('37 to 74 requests before retries');
+    expect(doc).not.toContain('about 74 requests');
+    expect(doc).toContain('**There is no second attempt under this amendment**');
+    expect(doc).toContain('reported as **not run**');
+    expect(doc).toContain('Decision 1 (owner, 2026-11-01): section 3 is kept as drafted.');
+    expect(doc).toContain('the client does not read the body of a 429');
+    expect(doc).toContain('**Status: DRAFT. Not frozen. Not run.**');
+  });
+
   it('states what the 429s do and do not show, and makes a diagnosis the first step', () => {
     expect(doc).toContain('**Every one of the 28 failed attempts was HTTP 429**');
     expect(doc).toContain('**That is a hypothesis, not a finding.**');

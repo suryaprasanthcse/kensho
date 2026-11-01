@@ -22,7 +22,7 @@ The study ran once from the frozen commit `f34a06c` and is recorded in `RESULTS.
 
 `gemini-3.5-flash-lite` was served at about 15 requests a minute and also met 429s (25 attempts in all, 15 of them in its four `transport_failure` tapes: three generations and one repair), and recovered from most of them by retrying.
 
-**What this does and does not show.** A 429 is a refusal to serve a request because of a limit. The study never reads an error body, so the tapes do not say which limit: a per-minute rate, a per-minute token budget, or a daily request quota on this key and this model. `gemini-3.8-flash` was asked for only about one request every 80 s during the run, which is slow, so a per-minute rate limit looks unlikely. A quota that counts requests per day is consistent with the timing: this model had also been called earlier the same day by the smoke and end-to-end checks, and the 429s began after 16 study requests. **That is a hypothesis, not a finding.** If it is a daily quota, no pacing and no backoff of minutes will help; the run would have to wait for the quota to reset, or for the key's tier to change. Section 4 settles this before anything is frozen.
+**What this does and does not show.** A 429 is a refusal to serve a request because of a limit. The study never reads an error body, so the tapes do not say which limit: a per-minute rate, a per-minute token budget, or a daily request quota on this project (section 4 records that the provider applies limits per project, not per key). `gemini-3.8-flash` was asked for only about one request every 80 s during the run, which is slow, so a per-minute rate limit looks unlikely. A quota that counts requests per day is consistent with the timing: this model had also been called earlier the same day by the smoke and end-to-end checks, and the 429s began after 16 study requests. **That is a hypothesis, not a finding.** If it is a daily quota, no pacing and no backoff of minutes will help; the run would have to wait for the quota to reset, or for the project's tier to change. Section 4 settles this before anything is frozen.
 
 ## 2. What does not change
 
@@ -46,6 +46,10 @@ Everything below applies to `gemini-3.8-flash` requests made under this amendmen
 | The 10% stop | more than 10% of the 60 planned generations of a model | more than 10% of the **37** generations requested under this amendment, that is 4 or more `transport_failure`, ends the amended run. The 7 earlier failures are not counted toward this stop (otherwise the amended run would stop on its first request) and **are** counted in every result |
 | Repair round | none for a stopped model | one repair request for every failing `gemini-3.8-flash` scene (those from the 16 existing and those from the new ones), as in the preregistration; no stop rule, as before |
 
+### If the amended run stops
+
+If the run stops under the stop rule in the table (4 or more `transport_failure` among the 37 requested generations), it ends there. The pairs not yet requested are reported as **not run**, listed by prompt and sample. As in the preregistration, a model stopped by the rule gets no repair round, so no repair is run for it either, and any failing scene among the generations that did complete stays unrepaired and is reported so. **There is no second attempt under this amendment**: no rerun of the stopped pairs, no restart of the command to continue them, and no change of waits, pacing or stop rule. Anything further needs a new amendment document, written after the stop is reported. The same holds for a stop by the spend cap and for a rejected request (a 4xx other than 429), which end the run as they do in the preregistration. A run that is only interrupted (the process is killed, the machine is switched off) has not stopped under a rule, and is started again with the same command; a request that already has a tape is skipped.
+
 What each change is for: the old waits (14 s in total) were about the length of a rate-limit window and no longer than it; a retry that comes back inside the limit window is refused again and burns an attempt. The pacing and the `Retry-After` clause only matter if the limit is a per-minute rate.
 
 ## 4. Step 0: find out what the 429 is, before freezing
@@ -67,7 +71,21 @@ It prints the status and, with `--diagnose`, the short error message with the ke
 - **If the message names a per-minute limit** (requests or tokens per minute): section 3 stands as drafted.
 - **If it names a daily quota that is used up:** pacing and backoff cannot help. Section 3 is replaced by: the amended run waits until the quota is available again (a start date and time are written here), a 429 whose message names a daily quota ends the run **without** counting as a `transport_failure`, and the run is restarted by the same command in later sessions, skipping existing tapes. That needs the client to read the body of a 429 for the quota message, which is a further change to be tested and listed in section 5.
 - **If it says something else** (for example billing or an unavailable model): this amendment is withdrawn and that is recorded.
-- **If the request is served** (what happened): the cause is still unknown. The draft's section 3 can go ahead, but with its main risk stated: if the limit is a daily request quota of a size such as the 16 requests served before the first 429, the amended run needs about 74 requests (37 generations and up to 37 repairs, more with retries) and would meet the same wall again after the first few. The alternative is the daily-quota clause above, which makes a 429 a pause and not a failure and spreads the run over several days. That clause needs the client to read the body of a 429, so it is a larger change; whether to include it is decision 1 in section 9.
+- **If the request is served** (what happened): the cause is still unknown. The draft's section 3 can go ahead, but with its main risk stated: if the limit is a daily request quota of a size such as the 16 requests served before the first 429, the amended run needs 37 to 74 requests before retries (37 generations, plus one repair for each scene that fails, so 37 when every new scene passes and 74 when every one fails; the 16 existing scenes all pass and need none) and would meet the same wall again after the first few. The alternative was a daily-quota clause that makes a 429 a pause and not a failure and spreads the run over several days, which needs the client to read the body of a 429.
+- **Decision 1 (owner, 2026-11-01): section 3 is kept as drafted.** The daily-quota clause is not added and the client does not read the body of a 429. So if the limit is a daily quota smaller than the run, the run stops under the stop rule and section 3 says what then happens.
+
+### What the provider's documentation says (read 2026-11-01)
+
+From https://ai.google.dev/gemini-api/docs/rate-limits, read through a summarising fetch and not as the raw page, so it is to be read again before freezing:
+
+- **Limits apply per project, not per API key** ("Rate limits are applied per project, not per API key"). Every request from the project counts together: the smoke and end-to-end checks, `gemini-3.5-flash-lite` and `gemini-3.8-flash`, whichever key sent them. The text read does not say whether a daily quota is also counted per model.
+- **Requests-per-day quotas reset at midnight Pacific time.**
+- The page gives no number for any model. The limits of the project are shown in AI Studio (https://aistudio.google.com/rate-limit?timeRange=last-28-days). It names the tiers Free and Tier 1 to Tier 3, with automatic upgrades by billing and spend.
+- **The reset in IST.** US daylight saving time ended on 2026-11-01. Midnight on 1 November was still 00:00 PDT = 07:00 UTC = 12:30 IST, so Step 0 (16:31 IST) came after that reset, and the study's 429s (about 03:17 to 03:19 IST on 1 November, that is about 14:47 PDT on 31 October) came before it. From 2 November midnight is 00:00 PST = 08:00 UTC = **13:30 IST**, so the next reset is 2026-11-02 13:30 IST.
+
+| Slot | Value |
+|---|---|
+| AI Studio limit for the project | `OPEN`: gemini-3.8-flash RPD = __, tier = __, read on __ (to be supplied by the owner; not read) |
 
 ## 5. Implementation plan (not done)
 
@@ -106,8 +124,10 @@ This amendment is written after the results of `gemini-3.5-flash-lite` and the 1
 
 ## 9. Open decisions for the owner
 
-1. What to do about Step 0 being inconclusive: go ahead on section 3 as drafted and accept that a daily quota would stop the run again; or add the daily-quota clause (a 429 is a pause, the run is split over several days) before freezing.
+1. Decided (owner, 2026-11-01): section 3 as drafted; no daily-quota clause; 429 bodies are not read.
 2. The waits (30 s, 90 s, 270 s), the `Retry-After` clause and the 10 s pacing, or other values.
 3. The stop rule base: 4 of the 37 requested, as drafted, or something else.
-4. Whether to wait for a quota reset or a change of tier if Step 0 points to a daily quota.
-5. Confirm that `gemini-3.5-flash-lite` is left alone.
+4. What to do once the AI Studio limit in section 4 is filled in, if its RPD is below the 37 to 74 requests the run needs (retries count as requests): wait for a tier change before freezing, freeze anyway and accept the stop, or withdraw. Section 3 cannot spread a run over days.
+5. The cost cap: whether the $10 cap covers the full run, and what to do if it does not in the worst case (arithmetic in the reply that accompanies this draft; not yet written into this document).
+6. Whether "no repair round for a stopped model" (section 3, as in the preregistration) is what is wanted here.
+7. Confirm that `gemini-3.5-flash-lite` is left alone.
