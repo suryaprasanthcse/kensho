@@ -50,6 +50,24 @@ Everything below applies to `gemini-3.8-flash` requests made under this amendmen
 
 If the run stops under the stop rule in the table (4 or more `transport_failure` among the 37 requested generations), it ends there. The pairs not yet requested are reported as **not run**, listed by prompt and sample. As in the preregistration, a model stopped by the rule gets no repair round, so no repair is run for it either, and any failing scene among the generations that did complete stays unrepaired and is reported so. **There is no second attempt under this amendment**: no rerun of the stopped pairs, no restart of the command to continue them, and no change of waits, pacing or stop rule. Anything further needs a new amendment document, written after the stop is reported. The same holds for a stop by the spend cap and for a rejected request (a 4xx other than 429), which end the run as they do in the preregistration. A run that is only interrupted (the process is killed, the machine is switched off) has not stopped under a rule, and is started again with the same command; a request that already has a tape is skipped.
 
+### The spend cap and this run
+
+The cap and its pricing are not changed: every attempt counts, and an attempt with no usage (a 429 included) is counted at the worst case of $0.06594 for `gemini-3.8-flash` (6,000 input and 16,384 output tokens). 429s are not counted cheaper.
+
+The arithmetic, from the 132 tapes (the counted spend is $3.480246, which `check-tapes` reports as 3,480,246 micro-dollars):
+
+| | |
+|---|---|
+| Remaining under the $10 cap | $10 − $3.480246 = **$6.519754** |
+| 74 replies, each at the worst case, no failed attempt | 74 × $0.06594 = $4.8796; **$1.6402 to spare** |
+| 74 replies at the observed mean of $0.009098 (16 replies of this model) | $0.6733; leaves $5.8465, room for **88 failed attempts** at $0.06594 (88.7) |
+| 74 replies at the worst case, then failed attempts | $1.6402 / $0.06594 = 24.9, room for **24 failed attempts** |
+| The most failed attempts the stop rule allows in the generation phase | 3 failed requests × 4 attempts + 34 requests × 3 failed attempts before a reply = **114 failed attempts = $7.5172, before any reply is priced** |
+
+$7.5172 is more than the $6.5198 that remains. **So the cap does not guarantee a full run.** It covers the run when there are no retries, and when there are up to 88 failed attempts at the observed reply cost (24 if every reply cost the worst case). It does not cover the theoretical maximum under the stop rule. In the study the 28 failed attempts of this model cost $1.8463, which is 53% of the $3.4802 counted.
+
+**If the cap is reached,** the runner stops with `spend_cap`, under the rule already in `DECISIONS.md`: the attempts already made on an unfinished request are written as a `transport_failure` tape so that their cost stays on the record (if the cap stops it before any attempt, nothing is written), and the run ends as incomplete. The remaining pairs are reported as **not run**, and the rule in "If the amended run stops" applies in full: no repair round, no second attempt under this amendment.
+
 What each change is for: the old waits (14 s in total) were about the length of a rate-limit window and no longer than it; a retry that comes back inside the limit window is refused again and burns an attempt. The pacing and the `Retry-After` clause only matter if the limit is a per-minute rate.
 
 ## 4. Step 0: find out what the 429 is, before freezing
@@ -128,6 +146,6 @@ This amendment is written after the results of `gemini-3.5-flash-lite` and the 1
 2. The waits (30 s, 90 s, 270 s), the `Retry-After` clause and the 10 s pacing, or other values.
 3. The stop rule base: 4 of the 37 requested, as drafted, or something else.
 4. What to do once the AI Studio limit in section 4 is filled in, if its RPD is below the 37 to 74 requests the run needs (retries count as requests): wait for a tier change before freezing, freeze anyway and accept the stop, or withdraw. Section 3 cannot spread a run over days.
-5. The cost cap: whether the $10 cap covers the full run, and what to do if it does not in the worst case (arithmetic in the reply that accompanies this draft; not yet written into this document).
+5. Decided (owner, 2026-11-01): the cap stop is accepted. The ledger and the worst-case pricing are not changed, and 429s are not counted cheaper. The cap does not guarantee a full run (see "The spend cap and this run" in section 3).
 6. Whether "no repair round for a stopped model" (section 3, as in the preregistration) is what is wanted here.
 7. Confirm that `gemini-3.5-flash-lite` is left alone.

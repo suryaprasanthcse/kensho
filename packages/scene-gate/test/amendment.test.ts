@@ -3,6 +3,7 @@ import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { failedAttempts } from '../scripts/results.ts';
 import { checkTapes, listTapeFiles } from '../src/harness.ts';
+import { SPEND_CAP_MICRO_USD, priceFor, worstCaseMicroUsd } from '../src/spend.ts';
 import { recordedHashes } from '../src/study-run.ts';
 import { transportFailureLimitExceeded } from '../src/transport.ts';
 
@@ -58,6 +59,28 @@ describe('AMENDMENT-1.md, a draft that has not been run', () => {
     expect(doc).toContain('Decision 1 (owner, 2026-11-01): section 3 is kept as drafted.');
     expect(doc).toContain('the client does not read the body of a 429');
     expect(doc).toContain('**Status: DRAFT. Not frozen. Not run.**');
+  });
+
+  it('records the cost-cap arithmetic and what happens when the cap is reached', () => {
+    expect(doc).toContain('**$6.519754**');
+    expect(doc).toContain('74 × $0.06594 = $4.8796; **$1.6402 to spare**');
+    expect(doc).toContain('**88 failed attempts**');
+    expect(doc).toContain('**114 failed attempts = $7.5172, before any reply is priced**');
+    expect(doc).toContain('**So the cap does not guarantee a full run.**');
+    expect(doc).toContain('429s are not counted cheaper');
+    expect(doc).toContain('the runner stops with `spend_cap`');
+    expect(doc).toContain('written as a `transport_failure` tape');
+    expect(doc).toContain('Decided (owner, 2026-11-01): the cap stop is accepted.');
+    // the figures follow from the frozen prices and the tapes
+    const worst = worstCaseMicroUsd(priceFor(FLASH, new Date('2026-11-01T00:00:00Z')));
+    expect(worst).toBe(65_940);
+    const remaining = SPEND_CAP_MICRO_USD - 3_480_246;
+    expect(remaining).toBe(6_519_754);
+    expect(74 * worst).toBe(4_879_560);
+    expect(remaining - 74 * worst).toBe(1_640_194);
+    expect(114 * worst).toBe(7_517_160);
+    expect(114 * worst).toBeGreaterThan(remaining);
+    expect(3 * 4 + 34 * 3).toBe(114);
   });
 
   it('states what the 429s do and do not show, and makes a diagnosis the first step', () => {
