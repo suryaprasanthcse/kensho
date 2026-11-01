@@ -77,7 +77,9 @@ pnpm --filter @kensho/scene-gate check-tapes <tapes-dir>
 
 `scripts/smoke-repair.ts` (`pnpm --filter @kensho/scene-gate smoke-repair <model>...`) sends one repair request per model for a fixture scene with a known error, built the way the study builds it, and prints one status line per model.
 
-`RESULTS.md` is generated from the tapes by `pnpm --filter @kensho/scene-gate results --tapes tapes --out RESULTS.md`: the pre-registered metrics first, then exploratory analyses labelled as not pre-registered. A test fails if it no longer matches the tapes. `AMENDMENT-1.md` is a draft, not frozen and not run, for finishing the `gemini-3.8-flash` generations that the 10% rule stopped.
+`RESULTS.md` is generated from the tapes by `pnpm --filter @kensho/scene-gate results --tapes tapes --out RESULTS.md`: the pre-registered metrics first, then exploratory analyses labelled as not pre-registered. A test fails if it no longer matches the tapes. `AMENDMENT-1.md` records an amendment to finish the `gemini-3.8-flash` generations that the 10% rule stopped. It was withdrawn before it was frozen or run, because AI Studio shows a limit of 20 requests a day for that model on the Free tier, fewer than the 37 to 74 requests it needed.
+
+Final status of the study: `gemini-3.5-flash-lite` is complete; `gemini-3.8-flash` is incomplete under the pre-registered 10% rule (23 of 60 generations, no repair round). The 132 tapes in `tapes/` are the record.
 
 The mutation check disables each check in turn (its module is aliased to a no-op) and asserts the suite then fails. It exits non-zero if any check survives.
 
