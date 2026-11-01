@@ -17,8 +17,9 @@ describe('AMENDMENT-1.md, a draft that has not been run', () => {
     expect(doc).toContain('**Status: DRAFT. Not frozen. Not run.**');
     expect(doc).not.toMatch(/Status: FROZEN/);
     expect(doc).toContain('`scene-gate-amendment-1`');
-    expect(doc).toContain('Step 0 result: `OPEN`');
-    expect(doc).toContain('(not run)');
+    expect(doc).toContain('Step 0 result: run on 2026-11-01 at 16:31 IST. `gemini: HTTP 200, reply parses: yes`. Inconclusive about the cause.');
+    expect(doc).toContain('One successful request cannot tell the two apart');
+    expect(doc).toContain('**If the request is served** (what happened)');
   });
 
   it('changes transport only: the same prompts, checks, model and metrics, and leaves existing tapes untouched', () => {

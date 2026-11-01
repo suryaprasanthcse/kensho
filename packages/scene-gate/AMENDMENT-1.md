@@ -58,11 +58,16 @@ SMOKE_GEMINI_MODEL=gemini-3.8-flash pnpm --filter @kensho/scene-gate smoke-schem
 
 It prints the status and, with `--diagnose`, the short error message with the key removed. Its result is written here before this document is frozen:
 
-> **Step 0 result: `OPEN`** (not run).
+> **Step 0 result: run on 2026-11-01 at 16:31 IST. `gemini: HTTP 200, reply parses: yes`. Inconclusive about the cause.**
+>
+> One request to `gemini-3.8-flash` with `--diagnose` was served normally, so there was no 429 and no error message to read. The 429s of the study were at about 03:17 to 03:19 IST on 1 November, roughly 13 hours earlier. This request was also made after midnight Pacific time (12:30 IST), when daily quotas are generally expected to reset (the provider's documentation on this was not checked). So the result is consistent with a daily quota that has since reset, and equally consistent with a per-minute limit that had cleared long before. One successful request cannot tell the two apart, and no further request was made, because probing a limit means using up the quota the run needs.
+>
+> What it does show: the model can be served now, and the 429s are not a standing refusal of the key or the model.
 
 - **If the message names a per-minute limit** (requests or tokens per minute): section 3 stands as drafted.
 - **If it names a daily quota that is used up:** pacing and backoff cannot help. Section 3 is replaced by: the amended run waits until the quota is available again (a start date and time are written here), a 429 whose message names a daily quota ends the run **without** counting as a `transport_failure`, and the run is restarted by the same command in later sessions, skipping existing tapes. That needs the client to read the body of a 429 for the quota message, which is a further change to be tested and listed in section 5.
 - **If it says something else** (for example billing or an unavailable model): this amendment is withdrawn and that is recorded.
+- **If the request is served** (what happened): the cause is still unknown. The draft's section 3 can go ahead, but with its main risk stated: if the limit is a daily request quota of a size such as the 16 requests served before the first 429, the amended run needs about 74 requests (37 generations and up to 37 repairs, more with retries) and would meet the same wall again after the first few. The alternative is the daily-quota clause above, which makes a 429 a pause and not a failure and spreads the run over several days. That clause needs the client to read the body of a 429, so it is a larger change; whether to include it is decision 1 in section 9.
 
 ## 5. Implementation plan (not done)
 
@@ -101,7 +106,7 @@ This amendment is written after the results of `gemini-3.5-flash-lite` and the 1
 
 ## 9. Open decisions for the owner
 
-1. Run Step 0 (one live request), and what to do with the answer.
+1. What to do about Step 0 being inconclusive: go ahead on section 3 as drafted and accept that a daily quota would stop the run again; or add the daily-quota clause (a 429 is a pause, the run is split over several days) before freezing.
 2. The waits (30 s, 90 s, 270 s), the `Retry-After` clause and the 10 s pacing, or other values.
 3. The stop rule base: 4 of the 37 requested, as drafted, or something else.
 4. Whether to wait for a quota reset or a change of tier if Step 0 points to a daily quota.
