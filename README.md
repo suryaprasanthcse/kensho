@@ -1,16 +1,21 @@
 # kensho
 
-A proposer–verifier gate for prompt-to-3D game content: the model proposes, deterministic code decides, and nothing is loaded that a gate has not passed.
+A proposer–verifier gate for prompt-to-3D game content: the model proposes, and deterministic code decides what passes.
+
+**Start with [`packages/scene-gate`](packages/scene-gate).** It checks model-written game scenes in my own toy format, not any company's DSL. In its study, 49 of 57 schema-valid scenes from Gemini 3.5 Flash-Lite failed at least one of ten checks, and 34 of those failed only the bounds check. One repair round fully fixed 8 of the 49. Method, results and limits are in its [README](packages/scene-gate/README.md) and [RESULTS.md](packages/scene-gate/RESULTS.md).
+
+I wrote the specifications, set the thresholds and ran the experiments; Claude Code wrote the code and tests under my direction, and the commit history says so.
 
 This repository is a monorepo (TypeScript with pnpm workspaces, plus Python placeholders). Only a small slice has code today:
 
 | Package | What it does |
 |---|---|
+| `@kensho/scene-gate` | Checks for model-written game scenes, with one diagnostic-guided repair round |
 | `@kensho/ir` | IR schema, canonical JSON, domain-prefixed SHA-256 |
 | `@kensho/diagnostics` | Diagnostic type and the code registry |
 | `@kensho/synthetic_oracle` | Seeded GLB fixtures with known, injected defects |
 | `@kensho/gates-asset` | The asset gate (`asset-gate`) |
-| `@kensho/bundle` | Signed, content-addressed bundles |
+| `@kensho/bundle` | Content-addressed bundles |
 | `@kensho/harness-render` | The render smoke test (`smoke`) |
 | `@kensho/cli` | The `kensho` command |
 | `@kensho/bench` | The proof runner |
